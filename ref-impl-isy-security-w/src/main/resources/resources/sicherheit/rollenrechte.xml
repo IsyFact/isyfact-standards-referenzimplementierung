@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Anwendung AnwendungsId="Default"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="">
+    <!-- test privileges -->
+    <rechte>
+        <rechtId Id="Recht_A"/>
+    </rechte>
+    <rechte>
+        <rechtId Id="Recht_B"/>
+    </rechte>
+    <rechte>
+        <rechtId Id="Recht_C"/>
+    </rechte>
+    <!-- test role to privileges mappings -->
+
+    <rollen RolleId="role-abc">
+        <rechtId Id="Recht_A"/>
+        <rechtId Id="Recht_B"/>
+        <rechtId Id="Recht_C"/>
+    </rollen>
+    <rollen RolleId="role-none">
+    </rollen>
+    <rollen RolleId="role-a">
+        <rechtId Id="Recht_A"/>
+    </rollen>
+    <rollen RolleId="role-b">
+        <rechtId Id="Recht_B"/>
+    </rollen>
+    <rollen RolleId="role-c">
+        <rechtId Id="Recht_C"/>
+    </rollen>
+</Anwendung>

@@ -1,0 +1,6 @@
+de\bund\bva\isyfact\shop\service\rest\api\ProduktControllerApiTest.class
+de\bund\bva\isyfact\shop\service\rest\security\AuthenticationManagerTest.class
+de\bund\bva\isyfact\shop\service\rest\security\SecuredResourceTest.class
+de\bund\bva\isyfact\shop\service\rest\api\ApiTest.class
+de\bund\bva\isyfact\shop\service\rest\security\AbstractResourceTest.class
+de\bund\bva\isyfact\shop\service\rest\security\PublicResourceTest.class

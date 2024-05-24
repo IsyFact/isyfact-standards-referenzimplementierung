@@ -1,0 +1,15 @@
+C:\Users\mayrk\git\isyfact-standards-referenzimplementierung\ref-impl-isy-security-rw\src\main\java\de\bund\bva\isyfact\shop\persistence\entity\Produkt.java
+C:\Users\mayrk\git\isyfact-standards-referenzimplementierung\ref-impl-isy-security-rw\src\main\java\de\bund\bva\isyfact\shop\core\impl\AwfProdukteSuchen.java
+C:\Users\mayrk\git\isyfact-standards-referenzimplementierung\ref-impl-isy-security-rw\src\main\java\de\bund\bva\isyfact\shop\core\ProduktVerwaltung.java
+C:\Users\mayrk\git\isyfact-standards-referenzimplementierung\ref-impl-isy-security-rw\src\main\java\de\bund\bva\isyfact\shop\service\rest\advice\RuntimeExceptionAdvice.java
+C:\Users\mayrk\git\isyfact-standards-referenzimplementierung\ref-impl-isy-security-rw\src\main\java\de\bund\bva\isyfact\shop\service\rest\exception\ProduktNotFoundException.java
+C:\Users\mayrk\git\isyfact-standards-referenzimplementierung\ref-impl-isy-security-rw\src\main\java\de\bund\bva\isyfact\shop\RestApplicationRW.java
+C:\Users\mayrk\git\isyfact-standards-referenzimplementierung\ref-impl-isy-security-rw\src\main\java\de\bund\bva\isyfact\shop\core\mapper\ProduktBoMapper.java
+C:\Users\mayrk\git\isyfact-standards-referenzimplementierung\ref-impl-isy-security-rw\src\main\java\de\bund\bva\isyfact\shop\service\rest\advice\ProduktNotFoundAdvice.java
+C:\Users\mayrk\git\isyfact-standards-referenzimplementierung\ref-impl-isy-security-rw\src\main\java\de\bund\bva\isyfact\shop\persistence\dao\ProduktRepository.java
+C:\Users\mayrk\git\isyfact-standards-referenzimplementierung\ref-impl-isy-security-rw\src\main\java\de\bund\bva\isyfact\shop\service\rest\ProduktController.java
+C:\Users\mayrk\git\isyfact-standards-referenzimplementierung\ref-impl-isy-security-rw\src\main\java\de\bund\bva\isyfact\shop\core\impl\ProduktVerwaltungImpl.java
+C:\Users\mayrk\git\isyfact-standards-referenzimplementierung\ref-impl-isy-security-rw\src\main\java\de\bund\bva\isyfact\shop\service\rest\advice\ErrorMessage.java
+C:\Users\mayrk\git\isyfact-standards-referenzimplementierung\ref-impl-isy-security-rw\src\main\java\de\bund\bva\isyfact\shop\core\daten\ProduktBo.java
+C:\Users\mayrk\git\isyfact-standards-referenzimplementierung\ref-impl-isy-security-rw\src\main\java\de\bund\bva\isyfact\shop\core\impl\AwfProdukteAktualisieren.java
+C:\Users\mayrk\git\isyfact-standards-referenzimplementierung\ref-impl-isy-security-rw\src\main\java\de\bund\bva\isyfact\shop\service\rest\configuration\OAuth2ServerSecurityConfig.java

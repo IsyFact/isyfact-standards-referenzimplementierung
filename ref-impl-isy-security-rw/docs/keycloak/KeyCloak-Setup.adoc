@@ -1,0 +1,91 @@
+= KeyCloak: Setup und Konfiguration für die Referenzimplementierung 'Security'
+msg systems ag
+3.0, July 29, 2022: AsciiDoc article template
+:toc:
+:icons: font
+:url-quickref: https://docs.asciidoctor.org/asciidoc/latest/syntax-quick-reference/
+
+Die Referenzimplementierung 'Security' benötigt einen externen IAM-Service (IAM: Identity & Access Management),
+der die OIDC-konforme Authentifizierung u. Autorisierung der in den Tests verwendeten Nutzer übernimmt.
+Aus Gründen der Einfachheit und Verfügbarkeit wird hierfür KeyCloak verwendet.
+
+Dieses Dokument beschreibt die Installation eines lokalen KeyCloak und dessen Konfiguration
+für die Verwendung im IsyFact-Standard Baustein 'Security' allgemein und speziell
+für die Referenzimplementierung 'Security'. +
+Es richtet sich an Architekten und Entwickler von IsyFact-Anwendungen, die verstehen wollen,
+wie sie den IsyFact-Standard Baustein 'Security' in ihrer Anwendung verwenden und einbauen können.
+
+== KeyCloak-Setup
+Zielgruppe dieses Abschnitts sind Architekten und Entwickler von IsyFact-Anwendungen,
+die KeyCloak in ihrer Entwicklungs-Umgebung installieren wollen -
+entweder, um die Referenzimplementierung 'Security' laufen zu lassen oder zur Einbindung in ihre Anwendung.
+
+Es wird Schritt für Schritt beschrieben,
+wie KeyCloak lokal zu installieren ist, wie KeyCloak gestartet wird und
+wie die bereits fertige Konfiguration für die Referenzimplementierung 'Security' importiert wird.
+
+=== Download und Installation der KeyCloak-Software
+Die aktuelle Version (und ältere) zum freien Download sowie Guides und Dokumentation findet sich unter https://www.keycloak.org/.
+Zur Erstellung der Referenzimplementierung 'Security' und des Konfigurations-Exports wurde die
+(zu diesem Zeitpunkt aktuelle) Version 24.0.3 von KeyCloak verwendet.
+
+Zur Installation von KeyCloak reicht es, die heruntergeladene Datei (*.zip für Windows bzw. *.tar.gz für Linux)
+in ein beliebiges Verzeichnis auszupacken. Darin sollte dann das Installationsverzeichnis 'keycloak-<Version z.B. 24.0.3>' vorhanden sein.
+
+=== Start und Stop der KeyCloak-Software
+Für den Nicht-produktiven Einsatz, also zum Ausprobieren, Testen und Verwendung in der Anwendungsentwicklung
+kann KeyCloak im sogenannten 'development mode' gestartet werden. In diesem Modus muss KeyCloak nicht weiter für die
+Umgebung konfiguriert werden, sondern läuft 'Out of the box' mit einer integrierten H2-Datenbank. +
+Die Referenzimplementierung 'Security' erwartet, dass KeyCloak den HTTP-Port 8989 verwendet. +
+Somit wird KeyCloak aus dem Installationsverzeichnis aus der Kommandozeile gestartet mit dem Befehl +
+`.\bin\kc.bat start-dev --http-port=8989`
+
+Beim ersten Start von KeyCloak werden finale Installations- und Konfigurationsschritte durchgeführt.
+Danach kann im Internet-Browser die Administrations-GUI über die URL
+'http://localhost:8989/[http://localhost:8989/]' aufgerufen werden. +
+Dort muss beim ersten Start ein Admin-Benutzer für KeyCloak erstellt werden (mit Name u. Passwort). +
+Diese Schritte und wie es allgemein weitergeht, finden sich auch in einem https://www.keycloak.org/getting-started/getting-started-zip['Getting Started Guide'] von keycloak.org.
+
+Zum Stoppen von KeyCloak sollte der laufende Kommandozeilenprozess abgebrochen werden mit <Ctrl-C> (Windows).
+Sonst kann es passieren, dass KeyCloak nicht sauber herunterfährt und nicht wieder gestartet werden kann.
+
+=== Import der Konfiguration der Referenzimplementierung 'Security'
+Die für die Referenzimplementierung 'Security' notwendige Konfiguration mit den verwendeten users, clients und roles
+steht als Importdatei 'ref-impl-isy-security.json' zur Verfügung.
+Sie kann mit folgender Prozedur importiert werden (getestet mit KeyCloak Version 24.0.3):
+
+. Bei einem Import über die Kommandozeile darf KeyCloak-Instanz NICHT laufen!
+
+. Windows-Terminal aufrufen (z.B. Powershell, cmd) und Wechsel in Verzeichnis der KeyCloak-Installation: +
+`cd <KeyCloak-Installationsverzeichnis>`
+
+. Vorher exportierte (und 'gesäuberte') Konfigurationsdatei (*.json) im 'tmp' Verzeichnis ablegen und importieren: +
+`.\bin\kc.bat import --file=.\tmp\ref-impl-isy-security-realm.json` +
+=> Log-Ausgabe prüfen. Achtung: Beim Import wird ein ggf. existierendes gleichnamiges realm überschrieben. Ggf. sollte man es vorher löschen.
+
+=== Export einer KeyCloak-Konfiguration (realm)
+Die oben erwähnte Importdatei wurde nach folgender Prozedur erstellt (getestet mit KeyCloak Version 24.0.3):
+
+
+. Bei einem Export über die Kommandozeile darf KeyCloak-Instanz NICHT laufen!
+
+. Windows-Terminal aufrufen (z.B. Powershell, cmd) und Wechsel in Verzeichnis der KeyCloak-Installation: +
+`cd <KeyCloak-Installationsverzeichnis>`
+
+. Realm 'ref-impl-isy-security' exportieren (als JSON-Datei, mit usern in derselben Datei): +
+`.\bin\kc.bat export --dir=.\tmp --realm=ref-impl-isy-security --users=realm_file` +
+=> Im Verzeichnis 'tmp' wird die Datei 'ref-impl-isy-security-realm.json' erzeugt, die die Konfiguration des realm 'ref-impl-isy-security' enthält, sowie die darin angelegten User.
+
+. Clean JSON export file: +
+Wie in z.B. https://howtodoinjava.com/devops/keycloak-script-upload-is-disabled/ beschrieben,
+kann die eben erzeugte Exportdatei nicht direkt zum Import verwendet werden,
+da darin enthaltene Javascript-Elemente seit KeyCloak-Version 18 nicht mehr importiert werden können,
+sondern der Import mit dem Fehler “Script upload is disabled” abbricht.
+Deshalb muss die Exportdatei bereinigt werden: +
+
+.. IsyFactStandards-realm.json in Texteditor öffnen (z.B. Editor, Notepad++)
+.. Alle Vorkommnisse von ‘authorizationSettings‘ suchen und kompletten Abschnitt löschen
+- inklusive vorher stehendes Komma (in der Zeile davor)
+- bis einschließlich schließender geschweifter Klammer.
+
+.. 'Gesäuberte' Exportdatei speichern (evtl. unter neuem Namen, mit Endung: .json)

@@ -1,0 +1,46 @@
+# ----------------------------------------------------------------------------------------------------------------------
+# Isy-Fact Configuration
+isy:
+  logging:
+    anwendung:
+      name: IsyFact-Standards-Tutorial
+      typ: GA
+      version: 0.0.0-SNAPSHOT
+  security:
+    roles-claim-name: isyfact_roles     # see key cloak ... TODO
+    test:
+      confidential-client:
+        client-id: confidential-client
+        client-secret: RCX1o8KF1Iez3d0XvcKPOJjiDIFnpKay
+
+# ----------------------------------------------------------------------------------------------------------------------
+# Spring Configuration
+server:
+  port: 8082
+spring:
+  messages:
+    basename: resources/nachrichten/fehler
+  security:
+    # persistence: database user
+    user:
+      password: password
+    # security: IAM-URI
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: 'http://localhost:8989/realms/ref-impl-isy-security'    # see key cloak ...
+      client:
+        provider:
+          testrealm:
+            issuer-uri: 'http://localhost:8989/realms/ref-impl-isy-security'  # see key cloak ...
+        registration:
+          reg-client-a:
+            client-id: client-a                                               # see key cloak ...
+            client-secret: piPYyzamZYat6USdEls15OTOJdAFU60v                   # see key cloak ...
+            authorization-grant-type: client_credentials
+            provider: testrealm                                               # see spring.security.oauth2.client.provider
+          #reg-client-b:
+          #  client-id: client-b                                               # see key cloak ...
+          #  client-secret: htXMYwbXuxftL1x5gblwy1ysbDysLnKB                   # see key cloak ...
+          #  authorization-grant-type: client_credentials
+          #  provider: testrealm                                               # see spring.security.oauth2.client.provider
