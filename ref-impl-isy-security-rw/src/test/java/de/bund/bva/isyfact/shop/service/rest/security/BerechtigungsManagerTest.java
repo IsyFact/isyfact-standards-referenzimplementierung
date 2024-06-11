@@ -37,9 +37,6 @@ public class BerechtigungsManagerTest extends AbstractResourceTest {
     // public resource: ProduktController is configured as public & not secured
             ProduktController produktController;
 
-    public BerechtigungsManagerTest(Security security) {
-        this.security = security;
-    }
 
     /**
      * Call without authentication: ProduktNotFoundException expected
