@@ -18,8 +18,8 @@ public interface ProduktVerwaltung {
      * Searches for products by a given name.
      * If no such name is passed, all products are returned, without any restriction.
      *
-     * @param name
-     * @return list of products
+     * @param name name of products to search for
+     * @return list of products found
      */
     List<ProduktBo> findAllProduktBo(String name);
 

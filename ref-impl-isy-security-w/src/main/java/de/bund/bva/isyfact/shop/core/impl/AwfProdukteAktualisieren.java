@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
-/*
+/**
  * This class provides a method for updating a given product
  * that is managed by an external REST application running under localhost:8081.
  */
@@ -21,12 +21,13 @@ public class AwfProdukteAktualisieren {
     public AwfProdukteAktualisieren(WebClient webClient) {
         this.webClient = webClient;
     }
-    private WebClient webClient;
+    private final WebClient webClient;
 
     /**
-     * this method uses the above webClient in order to update the given Produkt business object
-     * @param produktBo
-     * @return
+     * Updates the properties of the given product
+     * this method uses the above webClient to call 'Update Produkt' of RestApplicationRW in module ref-impl-security-rw.
+     * @param produktBo Produkt business object with new attributes to be updated
+     * @return the updated Produkt business object, as in database
      */
     public ProduktBo updateProduktBo(ProduktBo produktBo) {
 

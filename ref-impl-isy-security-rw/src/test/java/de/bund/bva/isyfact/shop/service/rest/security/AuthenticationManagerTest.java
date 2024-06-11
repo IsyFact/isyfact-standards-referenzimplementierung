@@ -19,11 +19,11 @@ public class AuthenticationManagerTest extends AbstractResourceTest {
      * - as explicit client (Client-Credential-Flow with auth-data as parameters)
      * - as registered client (Client-Credential-Flow with auth-data from application resources)
      * - as registered techn. user (Resource-Owner-Password-Flow with auth-data from application resources)
-     *
+     * <p>
      *  This shows the different methods of authentication provided by the Authentifizierungsmanager,
      *  the kinds of credentials and their configuration & storage,
      *  and proves, that an access token with the correct roles/rights is placed in the SecurityContext.
-     *
+     * <p>
      * Note: Needs a configured IAM running
      **/
 
@@ -82,7 +82,7 @@ public class AuthenticationManagerTest extends AbstractResourceTest {
         assertNotNull(getAuthentication());
         // - Actual Isyfact privileges do NOT include 'PRIV_Recht_B' (as role-b is NOT assigned to clientA in IAM)
         assertThrowsExactly(org.springframework.security.access.AccessDeniedException.class ,
-                () -> {security.getBerechtigungsmanager().pruefeRecht("PRIV_Recht_B");},
+                () -> security.getBerechtigungsmanager().pruefeRecht("PRIV_Recht_B"),
                 "clientA DOES have IsyFact privilege 'PRIV_Recht_B'");
     }
 

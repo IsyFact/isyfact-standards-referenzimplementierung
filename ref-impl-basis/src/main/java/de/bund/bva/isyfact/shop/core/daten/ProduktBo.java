@@ -17,9 +17,9 @@ public class ProduktBo {
 
     /**
      * the all-arguments-constructor is used in the ProduktBoMapper class.
-     * @param id
-     * @param name
-     * @param beschreibung
+     * @param id database ID
+     * @param name name
+     * @param beschreibung description
      */
     public ProduktBo(long id, String name, String beschreibung) {
         this.id = id;
@@ -43,7 +43,7 @@ public class ProduktBo {
         return beschreibung;
     }
 
-    public void setDescription(String beschreibung) {
+    public void setBeschreibung(String beschreibung) {
         this.beschreibung = beschreibung;
     }
 

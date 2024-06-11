@@ -11,7 +11,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
  * running on localhost:8082 we can call secured endpoints running on a different host localhost:8081.
  * For performing this call it is necessary
  * - that we authenticate ourselves as registered client (A) with role-A and PRIV_Recht_A.
- * - and to have a mechnism that extracts the required token from the current security context
+ * - and to have a mechanism that extracts the required token from the current security context
  * - and to put this token into the header of the outgoing request.
  */
 public class ProduktControllerApiTest extends ApiTest {
@@ -22,11 +22,11 @@ public class ProduktControllerApiTest extends ApiTest {
         // given
         // a client having the required role / right to trigger a task
         // but not the role / right required by external the endpoint to be called in this task
-        String clientBId = "client-b";                 // see key cloak ...
-        String clientBSecret = "htXMYwbXuxftL1x5gblwy1ysbDysLnKB";           // see key cloak ...
+        String clientBId = "client-b";                                  // see key cloak ...
+        String clientBSecret = "htXMYwbXuxftL1x5gblwy1ysbDysLnKB";      // see key cloak ...
 
         // and a modified product
-        ProduktBo modifiedProduktBo = new ProduktBo(1,"Allgäuer Emmentaler","Hartkäse");
+        ProduktBo modifiedProduktBo = new ProduktBo(4,"mittelalter Gouda","Schnittkäse");
 
         // and a token for this client
         String token = initializeTokenForClient(clientBId, clientBSecret);
@@ -38,7 +38,7 @@ public class ProduktControllerApiTest extends ApiTest {
         // then
         // authentication for the external service, and executing this service works as expected:
         // it returns the right product
-        assertEquals(1L, result.getId());
-        assertEquals("Allgäuer Emmentaler",result.getName());
+        assertEquals(4L, result.getId());
+        assertEquals("mittelalter Gouda", result.getName());
     }
 }

@@ -4,7 +4,6 @@ import de.bund.bva.isyfact.shop.core.daten.ProduktBo;
 import de.bund.bva.isyfact.shop.core.mapper.ProduktBoMapper;
 import de.bund.bva.isyfact.shop.persistence.dao.ProduktRepository;
 import de.bund.bva.isyfact.shop.persistence.entity.Produkt;
-import de.bund.bva.isyfact.shop.service.rest.exception.ProduktNotFoundException;
 import org.springframework.stereotype.Service;
 
 /*
@@ -24,13 +23,12 @@ public class AwfProdukteAktualisieren {
     private final ProduktRepository produktDao;
 
     /**
-     * Updates the corresponding Produkt entity in the underyling database
+     * Updates the corresponding Produkt entity in the underlying database
      * with a given Produkt business object.
-     * @param produktBo
-     * @return the updated Produkt business object
-     * @throws ProduktNotFoundException, if no such entity exists
+     * @param produktBo Produkt business object with new attributes to be updated
+     * @return the updated Produkt business object, as in database
      */
-    public ProduktBo updateProduktBo(ProduktBo produktBo) throws ProduktNotFoundException {
+    public ProduktBo updateProduktBo(ProduktBo produktBo) {
         Produkt product = produktDao.save(ProduktBoMapper.toEntity(produktBo));
         return ProduktBoMapper.fromEntity(product);
     }

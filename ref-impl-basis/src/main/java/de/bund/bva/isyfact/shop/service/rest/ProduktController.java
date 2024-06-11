@@ -19,7 +19,7 @@ public class ProduktController {
 
     /**
      * This constructor injects the required dependencies.
-     * @param produktVerwaltung
+     * @param produktVerwaltung Interface for core functionality 'Produkt-Verwaltung'
      */
     public ProduktController(ProduktVerwaltung produktVerwaltung) {
         this.produktVerwaltung = produktVerwaltung;
@@ -28,11 +28,11 @@ public class ProduktController {
     private final ProduktVerwaltung produktVerwaltung;
 
     /**
-     * Searches for a product with a given name.
-     * If no such substring is passed, all products are returned, without any restriction.
+     * Searches for products with a given name (name is not unique).
+     * If no match is found, HttpStatus.NO_CONTENT is returned
      *
-     * @param name
-     * @return product list
+     * @param name name of products to search for
+     * @return list of products found or HttpStatus.NO_CONTENT
      */
     @GetMapping("/produkte")
     @ResponseStatus(HttpStatus.OK)
@@ -51,9 +51,9 @@ public class ProduktController {
      * Searches for the product with a given id.
      * If no such product exists a ProduktNotFoundException is thrown.
      *
-     * @param id
+     * @param id database ID
      * @return the Produkt with the given id
-     * @throws ProduktNotFoundException
+     * @throws ProduktNotFoundException if no such produkt exists
      */
     @GetMapping("/produkte/{id}")
     @ResponseStatus(HttpStatus.OK)

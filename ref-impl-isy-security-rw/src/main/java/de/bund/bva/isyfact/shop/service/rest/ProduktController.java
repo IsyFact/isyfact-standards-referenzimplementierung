@@ -22,7 +22,7 @@ public class ProduktController {
 
     /**
      * This constructor injects the required dependencies.
-     * @param produktVerwaltung
+     * @param produktVerwaltung Interface for core functionality 'Produkt-Verwaltung'
      */
     public ProduktController(ProduktVerwaltung produktVerwaltung) {
         this.produktVerwaltung = produktVerwaltung;
@@ -32,16 +32,23 @@ public class ProduktController {
 
 
     /**
-     * Searches for Produkt business objects with a given name.
-     * If no such name is passed, all Product business objects are returned, without any restriction.
+     * Searches for products with a given name (name is not unique).
+     * If no match is found, HttpStatus.NO_CONTENT is returned
+     * If no such name is passed:
+     * - For users in department (Abteilung) 'Zentrale':
+     *   all Product business objects are returned, without any restriction.
+     * - For all other users:
+     *   ProduktNotFoundException
      *
-     * @param name
-     * @return product list
+     * @param name name of products to search for
+     * @return product list or HttpStatus.NO_CONTENT
+     * @throws ProduktNotFoundException, if no name is given (by users NOT in 'Zentrale')
      */
     @GetMapping("/produkte")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public ResponseEntity<List<ProduktBo>> findAllProduktBo(@RequestParam(required = false) String name) {
+    public ResponseEntity<List<ProduktBo>> findAllProduktBo(@RequestParam(required = false) String name)
+            throws ProduktNotFoundException {
 
         List<ProduktBo> produktBoList = produktVerwaltung.findAllProduktBo(name);
 
@@ -54,7 +61,7 @@ public class ProduktController {
     /**
      * Searches for a Produkt business object with a given id.
      *
-     * @param id
+     * @param id database ID
      * @return the Produkt business object with the given id
      * @throws ProduktNotFoundException, if no such object exists
      */
@@ -70,15 +77,14 @@ public class ProduktController {
     /**
      * Updates the corresponding Produkt entity in the underyling database
      * with a given Produkt business object.
-     * @param produktBo
-     * @return the updated Produkt business object
-     * @throws ProduktNotFoundException, if no such entity exists
+     * @param produktBo Produkt business object with new attributes to be updated
+     * @return the updated Produkt business object, as in database
      */
     @PutMapping("/produkte")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     @Secured("PRIV_Recht_A")
-    public ResponseEntity<ProduktBo> updateProduktBo(@RequestBody ProduktBo produktBo) throws ProduktNotFoundException {
+    public ResponseEntity<ProduktBo> updateProduktBo(@RequestBody ProduktBo produktBo) {
         produktBo = produktVerwaltung.updateProduktBo(produktBo);
         return new ResponseEntity<>(produktBo, HttpStatus.OK);
     }

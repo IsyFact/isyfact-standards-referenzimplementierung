@@ -7,7 +7,7 @@ import org.springframework.context.annotation.Configuration;
 /**
  * The Main class of this project:
  * A REST-Server offering
- * - secured PUT-Endpoint for updating a Produkt
+ * - a secured PUT-Endpoint for updating a Produkt
  *   This is done by calling the Update-Produkt endpoint of RestApplicationRW
  */
 @SpringBootApplication

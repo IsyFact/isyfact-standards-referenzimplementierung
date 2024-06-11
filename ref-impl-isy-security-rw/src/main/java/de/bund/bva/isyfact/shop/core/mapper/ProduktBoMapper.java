@@ -23,7 +23,7 @@ public class ProduktBoMapper {
     }
     /**
      * Returns the corresponding Produkt entity for a given Produkt business object.
-     * @param produktBo
+     * @param produktBo Produkt business object
      * @return the corresponding entity
      */
     public static Produkt toEntity(ProduktBo produktBo) {
@@ -37,8 +37,8 @@ public class ProduktBoMapper {
 
     /**
      * Returns the corresponding list of Produkt business objects for a given list of Produkt entities.
-     * @param produktList
-     * @return the corresponding list of  business objects
+     * @param produktList list of entities
+     * @return the corresponding list of business objects
      */
     public static List<ProduktBo> fromEntityList(List<Produkt> produktList) {
         List<ProduktBo> result = new ArrayList<>();
@@ -50,7 +50,7 @@ public class ProduktBoMapper {
 
     /**
      * Returns the corresponding list of Produkt entities for a given list of Produkt business objects.
-     * @param produktBoList
+     * @param produktBoList list of business objects
      * @return the corresponding list of entities
      */
     public static List<Produkt>  toEntityList(List<ProduktBo> produktBoList) {

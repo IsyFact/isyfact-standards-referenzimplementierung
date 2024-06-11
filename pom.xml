@@ -10,6 +10,7 @@
 
     <packaging>pom</packaging>
 
+    <!-- reference implementations of IsyFact Bausteine in individual modules: -->
     <modules>
         <module>ref-impl-basis</module>
     	<module>ref-impl-isy-security-rw</module>

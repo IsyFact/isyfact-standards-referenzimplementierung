@@ -25,8 +25,8 @@ public class AwfProduktSuchen {
      * Searches for products by a given name.
      * If no such name is passed, all products are returned, without any restriction.
      *
-     * @param name
-     * @return list of products
+     * @param name name of products to search for
+     * @return list of products found
      */
     public List<ProduktBo> findAllProduktBo(String name) {
 
@@ -46,6 +46,6 @@ public class AwfProduktSuchen {
      */
     public ProduktBo findProduktBoById(long id) throws ProduktNotFoundException {
         return ProduktBoMapper.fromEntity(produktDao.findById(id)
-                .orElseThrow(() -> new ProduktNotFoundException()));
+                .orElseThrow(ProduktNotFoundException::new));
     }
 }

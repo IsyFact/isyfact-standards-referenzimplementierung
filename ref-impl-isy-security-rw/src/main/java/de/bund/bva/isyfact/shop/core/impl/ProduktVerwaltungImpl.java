@@ -1,8 +1,9 @@
 package de.bund.bva.isyfact.shop.core.impl;
 
+import de.bund.bva.isyfact.security.core.Security;
 import de.bund.bva.isyfact.shop.core.ProduktVerwaltung;
-import de.bund.bva.isyfact.shop.service.rest.exception.ProduktNotFoundException;
 import de.bund.bva.isyfact.shop.core.daten.ProduktBo;
+import de.bund.bva.isyfact.shop.service.rest.exception.ProduktNotFoundException;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -19,22 +20,52 @@ public class ProduktVerwaltungImpl implements ProduktVerwaltung {
      * @param awfProduktSuchen the Awf call to which we delegate.
      * @param awfProduktAktualisieren the Awf call to which we delegate
      */
-    public ProduktVerwaltungImpl(AwfProdukteSuchen awfProduktSuchen, AwfProdukteAktualisieren awfProduktAktualisieren) {
+    public ProduktVerwaltungImpl(AwfProdukteSuchen awfProduktSuchen,
+                                 AwfProdukteAktualisieren awfProduktAktualisieren,
+                                 Security security) {
         this.awfProduktSuchen = awfProduktSuchen;
         this.awfProdukteAktualisieren = awfProduktAktualisieren;
+        this.security = security;
     }
     private final AwfProdukteSuchen awfProduktSuchen;
     private final AwfProdukteAktualisieren awfProdukteAktualisieren;
+    private final Security security;
 
     /**
-     * Searches for products by a given name.
-     * If no such name is passed, all products are returned, without any restriction.
-     * @param name
-     * @return list of products
+     * Searches for Produkt business objects with a given name.
+     * If no such name is passed:
+     * - For users in department (Abteilung) 'Zentrale':
+     *   all Product business objects are returned, without any restriction.
+     * - For all other users:
+     *   ProduktNotFoundException
+     *
+     * @param name  product name to search for
+     * @return product list
+     * @throws ProduktNotFoundException, if no name is given (by users NOT in 'Zentrale')
      */
     @Override
-    public List<ProduktBo> findAllProduktBo(String name) {
-        return awfProduktSuchen.findAllProduktBo(name);
+    public List<ProduktBo> findAllProduktBo(String name) throws ProduktNotFoundException {
+
+            // Usage of Berechtigungsmanager for a custom attribute check:
+            // use case:
+            // - Only users belonging to department (Abteilung) 'Zentrale' can list all products
+            //   by NOT specifying a product name.
+            // - All other users have to specify a name and get a 'Produkt Not Found' error otherwise.
+            if (name == null || name.isEmpty() || name.isBlank()) {
+
+                // retrieve attribute (optional as in KeyCloak mapper)
+                String abteilung  = String.valueOf(
+                        security.getBerechtigungsmanager().getTokenAttribute("abteilung"));
+
+                // use case:
+                if (abteilung != null && abteilung.equals("Zentrale")) {
+                    return awfProduktSuchen.getAllProduktBo();
+                } else {
+                    throw new ProduktNotFoundException();
+                }
+        } else {
+                return awfProduktSuchen.findAllProduktBo(name);
+            }
     }
 
     /**
@@ -52,12 +83,11 @@ public class ProduktVerwaltungImpl implements ProduktVerwaltung {
     /**
      * Updates the corresponding Produkt entity in the underyling database
      * with a given Produkt business object.
-     * @param produktBo
-     * @return the updated Produkt business object
-     * @throws ProduktNotFoundException, if no such entity exists
+     * @param produktBo Produkt business object with new attributes to be updated
+     * @return the updated Produkt business object, as in database
      */
     @Override
-    public ProduktBo updateProduktBo(ProduktBo produktBo) throws ProduktNotFoundException {
+    public ProduktBo updateProduktBo(ProduktBo produktBo) {
         return awfProdukteAktualisieren.updateProduktBo(produktBo);
     }
 

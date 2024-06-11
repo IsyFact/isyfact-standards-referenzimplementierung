@@ -13,7 +13,11 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 /**
- * Smoketest for checking get-product requests.
+ * Smoketest for checking product requests:
+ * - sends HTTP requests to RestApplication and
+ * - asserts expected response
+ * <p>
+ * Note: ref-impl-basis RestApplication needs to be running!
  */
 public class ProduktControllerApiTest extends ApiTest{
 
@@ -53,7 +57,10 @@ public class ProduktControllerApiTest extends ApiTest{
 
         // when
         Mono<List> response = client.get()
-                .uri("http://localhost:8081/shop/api/v1/produkte")
+                .uri(uriBuilder -> uriBuilder
+                        .path("localhost:8081/shop/api/v1/produkte")
+                        .queryParam("name", "Emmentaler")
+                        .build())
                 .accept(MediaType.APPLICATION_JSON)
                 .retrieve()
                 .bodyToMono(List.class);
@@ -62,17 +69,19 @@ public class ProduktControllerApiTest extends ApiTest{
 
         // then
         assertNotNull(produktBoList);
-        assertEquals(3,produktBoList.size());
+        assertEquals(1,produktBoList.size());
+        assertEquals("[{id=1, name=Emmentaler, beschreibung=Hartkäse}]",
+                produktBoList.toString());
     }
 
     @Test
     public void testPutProduktBoRequest() throws JsonProcessingException {
 
         // given
-        ProduktBo modifiedProduktBo = new ProduktBo(1,"Allgäuer Emmentaler","Hartkäse");
+        ProduktBo modifiedProduktBo = new ProduktBo(4,"alter Gouda","Schnittkäse");
 
-        String clientAId = "client-a";                 // see key cloak ...
-        String clientASecret = "piPYyzamZYat6USdEls15OTOJdAFU60v";           // see key cloak ...
+        String clientAId = "client-a";                                  // see key cloak ...
+        String clientASecret = "piPYyzamZYat6USdEls15OTOJdAFU60v";      // see key cloak ...
 
         String token = initializeTokenForClient(clientAId, clientASecret);
 
@@ -80,7 +89,8 @@ public class ProduktControllerApiTest extends ApiTest{
         ProduktBo result = updateProduktBo(modifiedProduktBo,"http://localhost:8081/shop/api/v1/produkte" , token);
 
         // then
-        assertEquals(1L, result.getId());
+        assertEquals(4L, result.getId());
+        assertEquals("alter Gouda", result.getName());
     }
 
 }

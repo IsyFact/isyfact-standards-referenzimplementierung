@@ -17,7 +17,7 @@ import static org.junit.jupiter.api.Assertions.*;
  * Call of a public resource, not needing authentication:
  * - without prior authentication: OK
  * - with prior authentication: OK
- *
+ * <p>
  * This proves,that IsyFact Security does not conflict with a public resource
  * (if it is configured as public as in {@link OAuth2ServerSecurityConfig().filterChain}).
 **/
@@ -58,7 +58,7 @@ public class PublicResourceTest extends AbstractResourceTest {
      * Call with prior authentication: OK-response expected
      */
     @Test
-    public void testPublicResourceWithAuthoutAuthentication() throws ProduktNotFoundException {
+    public void testPublicResourceWithAuthentication() throws ProduktNotFoundException {
 
 
         // given

@@ -12,7 +12,11 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 /**
- * Smoketest for checking get-product requests.
+ * Smoketest for checking get-product requests:
+ * - sends HTTP requests to RestApplication and
+ * - asserts expected response
+ * <p>
+ * Note: ref-impl-basis RestApplication needs to be running!
  */
 public class ProduktControllerApiTest {
 

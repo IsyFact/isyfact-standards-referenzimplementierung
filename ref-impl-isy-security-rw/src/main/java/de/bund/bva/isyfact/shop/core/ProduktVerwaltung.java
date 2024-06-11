@@ -15,13 +15,18 @@ import java.util.List;
 public interface ProduktVerwaltung {
 
     /**
-     * Searches for products by a given name.
-     * If no such name is passed, all products are returned, without any restriction.
+     * Searches for Produkt business objects with a given name.
+     * If no such name is passed:
+     * - For users in department (Abteilung) 'Zentrale':
+     *   all Product business objects are returned, without any restriction.
+     * - For all other users:
+     *   ProduktNotFoundException
      *
-     * @param name
-     * @return list of products
+     * @param name name of products to search for
+     * @return list of products found
+     * @throws ProduktNotFoundException, if no name is given (by users NOT in 'Zentrale')
      */
-    List<ProduktBo> findAllProduktBo(String name);
+    List<ProduktBo> findAllProduktBo(String name) throws ProduktNotFoundException;
 
     /**
      * Searches for the product with a given id.
@@ -33,11 +38,10 @@ public interface ProduktVerwaltung {
     ProduktBo findProduktBoById(long id) throws ProduktNotFoundException;
 
     /**
-     * Updates the corresponding Produkt entity in the underyling database
+     * Updates the corresponding Produkt entity in the underlying database
      * with a given Produkt business object.
-     * @param produktBo
-     * @return the updated Produkt business object
-     * @throws ProduktNotFoundException, if no such entity exists
+     * @param produktBo Produkt business object with new attributes to be updated
+     * @return the updated Produkt business object, as in database
      */
-    ProduktBo updateProduktBo(ProduktBo produktBo) throws ProduktNotFoundException;
+    ProduktBo updateProduktBo(ProduktBo produktBo);
 }

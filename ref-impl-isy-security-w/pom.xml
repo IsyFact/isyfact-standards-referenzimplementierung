@@ -8,6 +8,11 @@
         <version>0.0.0-SNAPSHOT</version>
     </parent>
 
+    <!--
+    A REST-Server offering
+    - a secured PUT-Endpoint for updating a Produkt
+      This is done by calling the Update-Produkt endpoint of RestApplicationRW
+    -->
     <artifactId>ref-impl-isy-security-w</artifactId>
 
     <dependencies>

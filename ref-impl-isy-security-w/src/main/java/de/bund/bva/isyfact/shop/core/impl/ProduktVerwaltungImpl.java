@@ -3,10 +3,7 @@ package de.bund.bva.isyfact.shop.core.impl;
 import de.bund.bva.isyfact.security.oauth2.client.annotation.Authenticate;
 import de.bund.bva.isyfact.shop.core.ProduktVerwaltung;
 import de.bund.bva.isyfact.shop.core.daten.ProduktBo;
-import de.bund.bva.isyfact.shop.service.rest.exception.ProduktNotFoundException;
 import org.springframework.stereotype.Component;
-
-import java.util.List;
 
 
 /**
@@ -22,12 +19,14 @@ public class ProduktVerwaltungImpl implements ProduktVerwaltung {
     public ProduktVerwaltungImpl (AwfProdukteAktualisieren awfProdukteAktualisieren) {
          this.awfProdukteAktualisieren = awfProdukteAktualisieren;
     }
-    private AwfProdukteAktualisieren awfProdukteAktualisieren;
+    private final AwfProdukteAktualisieren awfProdukteAktualisieren;
 
     /**
-     * updates the properties of the given product.
-     * @param produktBo
-     * @return updated produktBo
+     * Updates the properties of the given product
+     * by self-authenticating as reg-client-a and
+     * calling 'Update Produkt' of RestApplicationRW in module ref-impl-security-rw.
+     * @param produktBo Produkt business object with new attributes to be updated
+     * @return the updated Produkt business object, as in database
      */
     @Override
     @Authenticate("reg-client-a") // has "PRIV_Recht_A"

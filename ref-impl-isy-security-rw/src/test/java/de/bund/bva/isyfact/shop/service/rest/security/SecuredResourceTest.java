@@ -19,7 +19,7 @@ import static org.junit.jupiter.api.Assertions.*;
  * - without prior authentication: AuthenticationCredentialsNotFoundException
  * - with prior authentication & wrong authorization: AccessDeniedException
  * - with prior authentication & proper authorization: OK
- *
+ * <p>
  *  This proves,that a resource annotated with {@link org.springframework.security.access.annotation.Secured}
  *  can only be accessed with authentication & proper authorization.
 **/
@@ -96,7 +96,7 @@ public class SecuredResourceTest extends AbstractResourceTest {
     public void testAccessingSecuredResourceWithCorrectAuthentication() throws ProduktNotFoundException {
 
         // given
-        ProduktBo modifiedProduktBo = new ProduktBo(1,"Allgäuer Emmentaler","Hartkäse");
+        ProduktBo modifiedProduktBo = new ProduktBo(4,"alter Gouda","Schnittkäse");
 
         // an authenticated client having the required role / right
         security.getAuthentifizierungsmanager().orElseThrow()
@@ -110,11 +110,12 @@ public class SecuredResourceTest extends AbstractResourceTest {
 
         // when
         // calling a secured endpoint method, requiring this right
-        long id = produktController.updateProduktBo(modifiedProduktBo).getBody().getId();
+        ProduktBo updateProduktBo = produktController.updateProduktBo(modifiedProduktBo).getBody();
 
         // then
-        // verify the returned id
-        assertEquals(1L, id);
+        // verify the returned updateProduktBo
+        assertEquals(4L, updateProduktBo.getId());
+        assertEquals("alter Gouda", updateProduktBo.getName());
     }
 
 }

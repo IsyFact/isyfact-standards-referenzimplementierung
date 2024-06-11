@@ -6,6 +6,7 @@ import de.bund.bva.isyfact.shop.core.daten.ProduktBo;
 import de.bund.bva.isyfact.shop.persistence.dao.ProduktRepository;
 import org.springframework.stereotype.Service;
 
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 /*
@@ -25,19 +26,24 @@ public class AwfProdukteSuchen {
     private final ProduktRepository produktDao;
 
     /**
-     * Searches for products by a given name.
-     * If no such name is passed, all products are returned, without any restriction.
+     * Lists all products.
      *
-     * @param name
      * @return list of products
      */
-    public List<ProduktBo> findAllProduktBo(String name) {
+    public List<ProduktBo> getAllProduktBo() {
 
-        if (name == null) {
-            return ProduktBoMapper.fromEntityList(produktDao.findAll());
-        } else {
-            return ProduktBoMapper.fromEntityList(produktDao.findByName(name));
-        }
+        return ProduktBoMapper.fromEntityList(produktDao.findAll());
+    }
+
+    /**
+     * Searches for products by a given name.
+     *
+     * @param name name of products to search for
+     * @return list of products found
+     */
+    public List<ProduktBo> findAllProduktBo(@NotNull String name) {
+
+        return ProduktBoMapper.fromEntityList(produktDao.findByName(name));
     }
 
     /**
@@ -49,6 +55,6 @@ public class AwfProdukteSuchen {
      */
     public ProduktBo findProduktBoById(long id) throws ProduktNotFoundException {
         return ProduktBoMapper.fromEntity(produktDao.findById(id)
-                .orElseThrow(() -> new ProduktNotFoundException()));
+                .orElseThrow(ProduktNotFoundException::new));
     }
 }

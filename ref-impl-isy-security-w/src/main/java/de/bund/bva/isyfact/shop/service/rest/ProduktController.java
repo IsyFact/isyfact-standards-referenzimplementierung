@@ -2,13 +2,10 @@ package de.bund.bva.isyfact.shop.service.rest;
 
 import de.bund.bva.isyfact.shop.core.ProduktVerwaltung;
 import de.bund.bva.isyfact.shop.core.daten.ProduktBo;
-import de.bund.bva.isyfact.shop.service.rest.exception.ProduktNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 /**
  * Controller class for the produkte resource.
@@ -20,7 +17,7 @@ public class ProduktController {
 
     /**
      * This constructor injects the required dependencies.
-     * @param produktVerwaltung
+     * @param produktVerwaltung Interface for core functionality 'Produkt-Verwaltung'
      */
     public ProduktController(ProduktVerwaltung produktVerwaltung) {
         this.produktVerwaltung = produktVerwaltung;
@@ -29,15 +26,17 @@ public class ProduktController {
     private final ProduktVerwaltung produktVerwaltung;
 
     /**
-     * updates the properties of the given product.
-     * @param produktBo
-     * @return
+     * Updates the properties of the given product
+     * by self-authenticating as reg-client-a and
+     * calling 'Update Produkt' of RestApplicationRW in module ref-impl-security-rw.
+     * @param produktBo Produkt business object with new attributes to be updated
+     * @return the updated Produkt business object, as in database
      */
     @PutMapping("/produkte")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     @Secured("PRIV_Recht_B")
-    public ResponseEntity<ProduktBo> updateProduktBo(@RequestBody ProduktBo produktBo) throws ProduktNotFoundException {
+    public ResponseEntity<ProduktBo> updateProduktBo(@RequestBody ProduktBo produktBo) {
         produktBo = produktVerwaltung.updateProduktBo(produktBo);
         return new ResponseEntity<>(produktBo, HttpStatus.OK);
     }
