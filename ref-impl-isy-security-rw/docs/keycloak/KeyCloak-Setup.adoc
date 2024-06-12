@@ -89,3 +89,26 @@ Deshalb muss die Exportdatei bereinigt werden: +
 - bis einschließlich schließender geschweifter Klammer.
 
 .. 'Gesäuberte' Exportdatei speichern (evtl. unter neuem Namen, mit Endung: .json)
+
+== IsyFact-spezifische Konfiguration von KeyCloak
+IsyFact Security erwartet einige Informationen an bestimmten Stellen in Access-Token:
+
+Die IsyFact-Rollen (von IsyFact-Anwendungen) werden abgebildet als Realm roles.
+Wie im Konzept und den Nutzungsvorgaben des Bausteins 'Security' beschrieben, werden die IsyFact-Rollen in der jeweiligen IsyFact-Anwendung auf anwendungsspezifische und feingranulare Rechte abgebildet.
+
+- Die an den Benutzer (User / Client) vergebenen Rollen werden im (IsyFact-) Token Claim Name 'isyfact_roles' erwartet.
+Dafür muss in KeyCloak ein Client scope ('isyfact-roles') mit einem role mapper angelegt werden, der die Rollen des Benutzers auf den Token Claim Name 'isyfact_roles' des Access-Tokens abbildet.
+
+Zur Vervollständigung des OpenID Connect Protokolls müssen im ID-Token u. Access-Token bestimmte Informationen hinterlegt werden:
+
+- Die Spring-Security Implementierung eines OIDC-Clients prüft bei Erhalt eines Tokens,
+ob es auf ihn ausgestellt ist: +
+Der Name des Clients, der das Token angefordert hat und auf den es ausgestellt ist,
+muss im Claim 'Audience' des Tokens stehen.
+Dafür muss in KeyCloak für jeden Client ein Client scope mit einem audience mapper angelegt werden,
+der den Namen / ID des (confidential- / service-) Client dort hinterlegt.
+
+Diese Konfigurationen sind bereits in der Importdatei 'ref-impl-isy-security.json' enthalten.
+Es muss nichts weiter gemacht werden, wenn sie in KeyCloak importiert wurde. +
+Wenn jedoch KeyCloak und der IsyFact-Baustein 'Security' in eigenen Anwendungen verwendet wird,
+müssen die oben angegebenen Anpassungen an KeyCloak gemacht werden.

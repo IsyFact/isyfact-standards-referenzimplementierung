@@ -36,3 +36,7 @@ build/
 
 ### Mac OS ###
 .DS_Store
+/ref-impl-isy-security-rw/target/
+/ref-impl-isy-security-w/target/
+/.idea/
+/.idea/

@@ -4,7 +4,7 @@
 
 In dieser Referenzimplementierung wird die Verwendung des IsyFact-Bausteins 'Security' und seiner Komponenten (Authentifizierungsmanager und Berechtigungsmanager), sowie der Annotationen (@Secured und @Authenticate) anhand ausführbarer Java-Tests demonstriert.
 
-Die Referenz-Implementierung beinhaltet zwei Spring-Boot-Anwendungen (ref-impl-isy-security-a und ref-impl-isy-security-b),
+Die Referenz-Implementierung beinhaltet zwei Spring-Boot-Anwendungen (ref-impl-isy-security-rw und ref-impl-isy-security-w),
 deren Endpoints jeweils unter localhost:8081 und localhost:8082 über Test-Klassen aufrufbar sind.
 Wesentliche Voraussetzung für das Funktionieren dieser Anwendungen und der zugehörigen Tests ist eine unter localhost:8989 gestartete KeyCloak-Installation.
 Die Konfiguration von Keycloak und die erforderlichen Schritte zum Import und Export einer solchen Konfiguration sind im Dokument 'Konfiguration-KeyCloak.adoc' beschrieben.
@@ -12,11 +12,11 @@ Die Konfiguration von Keycloak und die erforderlichen Schritte zum Import und Ex
 == Fachlichkeit
 
 Die Fachlichkeit 'Shop' des Architektur-Durchstichs (Produkte) aus 'ref-impl-basis' ist durch die
-REST API der ProduktController-Klasse definiert und beinhaltet lediglich zwei GET Methoden.
-Für die Referenz-Implementierung Security wurden diese GET Methoden beibehalten
-und eine PUT Methode zur Aktualisierung von Produkten wurde ergänzt.
+REST API der ProduktController-Klasse definiert und beinhaltet lediglich zwei GET-Methoden.
+Für die Referenz-Implementierung Security wurden diese GET-Methoden beibehalten
+und eine PUT-Methode zur Aktualisierung von Produkten wurde ergänzt.
 Anders als die beiden GET-Methoden, die für alle Anwender uneingeschränkt aufrufbar sind,
-ist die neu hinzugefügte PUT Methode nur für bestimmte Anwender aufrufbar.
+ist die neu hinzugefügte PUT-Methode nur für bestimmte Anwender aufrufbar.
 
 == Architektur
 
@@ -41,13 +41,15 @@ der Systemgrenze der aufgerufenen Anwendung RW überprüft.
 === Konfigurationsklassen
 Über die Klasse OAuth2ServerSecurityConfig wird definiert,
 welche Resource-Endpoints (abweichend vom Default) ohne JWT zugreifbar sind.
+In der Referenzimplementierung sind die GET-Methoden für Produkte des Shops der Anwendung "RW" ohne Access-Token zugänglich.
 
 Über die Klasse WebClientSecurityConfig wird sichergestellt,
 dass für sämtliche Requests, die zum Aufruf externer Services ausgeführt werden,
-ein entsprechendes Access-Token aus dem Securtiy-Kontext extrahiert und an die aufgerufene Anwendung weitergeleitet wird.
+ein entsprechendes Access-Token aus dem Security-Kontext extrahiert und an die aufgerufene Anwendung weitergeleitet wird.
+Die Anwendung "W" verwendet diesen Mechanismus, um das Access-Token and die Anwendung "RW" weiterzugeben.
 
 === Konfigurationseinstellungen
-Alle Anwendungs-relevanten Konfigurationseinstellungen sind in der application.yml Datei definiert.
+Alle anwendungsrelevanten Konfigurationseinstellungen sind in der application.yml Datei definiert.
 Sie beinhaltet unter anderem client-ids und client-secrets, die in KeyCloak definiert sind.
 
 === Abhängigkeiten
@@ -105,19 +107,21 @@ Für Aufrufe von Nachbarsystemen (Anwendung agiert als Client, der auf geschütz
 
 
 == Tests
-Mit den implementierten Test werden bestimmte Aspekte des Security-Bausteins geprüft
+Mit den implementierten Tests werden bestimmte Aspekte des Security-Bausteins geprüft.
 
 === Testtechnologie
 Wie beim Architektur-Durchstich (Modul 'ref-impl-basis') nutzen wir zwei Arten von Tests
 
-- Api-Tests: in diesen Tests wird mit einem WebClient gearbeitet,
+- Api-Tests zeigen den Aufruf von Außen. +
+In diesen Tests wird mit einem WebClient gearbeitet,
 um Requests zu erzeugen und an einen Server (KeyCloak oder Spring-Boot-Anwendung) zu richten.
 Voraussetzung für diese Tests ist, dass alle verwendeten Server vorab gestartet wurden.
 
-- SpringBoot-Tests: in diesen Tests ist es nicht notwendig,
+- SpringBoot-Tests zeigen den direkten Methodenaufruf von innerhalb einer IsyFact-Anwendung. +
+In diesen Tests ist es nicht notwendig,
 dass die Spring-Boot-Anwendung vorab gestartet wurde. Voraussetzung ist lediglich,
 dass ein entsprechend konfiguriertes Keycloak verfügbar ist.
-Die für die Tests erforderlichen Controller-Klassen werden über Depedency Injection bereit gestellt.
+Die für die Tests erforderlichen Controller-Klassen werden über Dependency Injection bereitgestellt.
 Im Gegensatz zu den Api-Tests können SpringBoot-Tests im Kontext eines Maven-Build-Prozesses
 automatisiert ausgeführt werden.
 
@@ -143,22 +147,27 @@ Der Authentifizierungsmanager bietet verschiedene Arten der programmatischen Aut
 - Als client direkt (Client-Credential-Flow with auth-data as parameters) +
 -> IsyOAuth2Authentifizierungsmanager#authentifiziereClient(...) +
 
-Diese Methoden werden im SecuredResourceTest verwendet.
+Die Verwendung dieser Methoden wird im AuthenticationManagerTest demonstriert.
 
 ==== Testgegenstand Berechtigungsmanager
-Der Berechtigungs-Manager bietet Methoden zur Prüfung, ob der angemeldete Anwender ein bestimmtes Recht besitzt
+Der Berechtigungs-Manager bietet Methoden zum Lesen der Rollen, Rechte und Attribute des angemeldeten Anwenders und zur Prüfung, ob er ein bestimmtes Recht besitzt
 oder nicht:
--> security.getBerechtigungsmanager().hatRecht(...);
+-> security.getBerechtigungsmanager().getRechte(...) +
+-> security.getBerechtigungsmanager().hatRecht(...) +
+-> security.getBerechtigungsmanager().pruefeRecht(...) +
+-> security.getBerechtigungsmanager().getRollen(...) +
+-> security.getBerechtigungsmanager().getTokenAttribute(...)
 
-Diese Methode wird im ebenfalls im SecuredResourceTest verwendet.
+Die Verwendung dieser Methoden wird im BerechtigungsManagerTest demonstriert. +
+Des Weiteren wird in ProduktVerwaltungImpl.findAllProduktBo - welches den use case 'Suche nach Produkten mit Produktname' umsetzt - demonstriert, wie durch Auslesen von Token-Attributen (hier: zusätzliches Anwenderattribut 'Abteilung') eine feingranulare Rechtesteuerung umgesetzt werden kann.
 
 ==== Testgegenstand @Secured
 Mit der Spring-Security Annotation @Security werden die zu schützenden REST-Endpunkte annotiert.
 
-- Im Modul A sind dies die GET Methoden der UmsatzController- und GewinnController-Klassen.
-Hier wird das Recht "PRIV_Recht_A" als notwendig deklariert.
-- Im Modul B ist es die GET Methode der RenditeController-Klasse.
-Hier ist es das Recht "PRIV_Recht_B", das als notwendig deklariert ist.
+In den Anwendungen "RW" und "W" ist dies die UPDATE-Methode der ProduktController-Klasse.
+
+- In Anwendung "RW" wird das Recht "PRIV_Recht_A" als notwendig deklariert.
+- In Anwendung "W" ist es das Recht "PRIV_Recht_B", das als notwendig deklariert ist.
 
 Positiv-Tests und Negativ-Tests für die @Secured Annotation findet man in der Test-Klasse SecuredResourceTest
 
@@ -166,11 +175,13 @@ Positiv-Tests und Negativ-Tests für die @Secured Annotation findet man in der T
 Mit der IsyFact Annotation @Authenticate kann sich ein Service einer Fachanwendung (Task / Batch)
 als ein bestimmter Nutzer authentisieren. Implizit wird damit der Security-Kontext geändert.
 Aus dem neuen Security-Kontext kann dann ein Token extrahiert, an einen aufzurufenden externen geschützten Service
-weitergeleitet und dort gepfüft werden.
+weitergeleitet und dort geprüft werden.
 
 - Im Modul W ist die updateProduktBo-Methode der ProduktVerwaltungImpl-Klasse mit einer solchen @Authenticate Annotation versehen:
-- Der Aufruf der entsprechenden ProduktController Methode im Modul RW erfolgt in der Anwendungsfallklasse AwfProdukteAktualisieren.
-  Der REST Request wird dort erzeugt. Anschließend wird  dort das Ergebnis des REST Aufrufs auch wieder in Empfang genommen.
+- Der Aufruf der entsprechenden ProduktController Methode im Modul RW erfolgt in der
+  Anwendungsfallklasse AwfProdukteAktualisieren.
+  Der REST Request wird dort erzeugt.
+  Anschließend wird dort das Ergebnis des REST Aufrufs auch wieder in Empfang genommen.
 [source, java]
 ----
 @Component
@@ -193,37 +204,45 @@ public class ProduktVerwaltungImpl implements ProduktVerwaltung {
 
 Die Testklassen wurden implementiert
 
-- weniger um die oben genannten Testgegenstände abzusichern
-  die Absicherung der Funktionalitäten diser Gegenstände ist bereits bei deren
-  Entwicklung erfolgt
-- sondern vielmehr um dem Entwickler deren Integration und deren Zusammenspiel
+- weniger um die oben genannten Testgegenstände abzusichern.
+  Die Absicherung der Funktionalitäten dieser Gegenstände ist bereits bei deren
+  Entwicklung erfolgt.
+- Sondern vielmehr um dem Entwickler deren Integration und deren Zusammenspiel
   vor Augen zu führen.
-- entsprechend stark lag sowohl bei Spring-Boot-Tests als auch bei
-  den API Tests der Fokus auf Integrationstests für die Funktionalität der
-  ProduktController-Klassen.
-- auf Unit Tests für sämtliche danach indirekt aufgerufenen
-  Klassen wurde verzichtet. Die Test-Coverage ist trotzdem hinreichend (weil
-  die aufgerufenen Klassen alle tatsächchlich aufgerufen und nicht gemocked werden).
+- Entsprechend stark liegt sowohl bei Spring-Boot-Tests als auch bei
+  den API-Tests der Fokus auf Demonstration der Verwendung und Integration der Funktionalität der
+  jeweiligen Komponente des Bausteins Security als Testgegenstand.
+- Deshalb wurde auf Unit-Tests für sämtliche danach indirekt aufgerufenen
+  Klassen verzichtet. Die Test-Coverage ist trotzdem hinreichend (weil
+  die aufgerufenen Klassen alle tatsächlich aufgerufen und nicht gemocked werden).
+  Unit-Tests des Bausteins Security und der darin enthaltenen Methoden findet sich im
+  dazugehörigen Testbaustein 'isy-security-test'.
 
-Im folgenden geben wir einen kurzen Überblick über dIe implementierten Testklassen.
+Im Folgenden geben wir einen kurzen Überblick über dIe implementierten Testklassen.
 Für alle weiteren Details sollte man sich die Klassen selbst ansehen.
 
 === Spring Boot Tests im Modul RW
 ===== AuthenticationManagerTest
 
-- testAuthenticateAsExplicitTechnUser
-- testAuthenticateAsExplicitClient
-- testAuthenticateAsRegisteredClient
-- testAuthenticateAsRegisteredTechnUser
+- testAuthenticateAsExplicitTechnUser -> authentifiziereSystem (user über confidential client als Parameter)
+- testAuthenticateAsExplicitClient -> authentifiziereClient (Authentifizierungsdaten als Parameter)
+- testAuthenticateAsRegisteredClient -> authentifiziere (Authentifizierungsdaten aus Konfigurationsdatei)
+- testAuthenticateAsRegisteredTechnUser -> authentifiziere (Authentifizierungsdaten aus Konfigurationsdatei)
+
+==== BerechtigungsManagerTest
+
+- testCustomAuthorizationResourceWithoutAuthentication,
+- testCustomAuthorizationResourceWithWrongAuthentication,
+- testCustomAuthorizationResourceWithCorrectAuthentication -> getTokenAttribute (zusätzliches Anwenderattribut 'Abteilung')
 
 ==== PublicResourceTest
-- testPublicResourceWithoutAuthentication
-- testPublicResourceWithAuthoutAuthentication
+- testPublicResourceWithoutAuthentication,
+- testPublicResourceWithAuthentication ->  öffentliche GET-Endpunkte erreichbar ohne und mit Access-Token
 
 ===== SecuredResourceTest
-- testAcessingSecuredResourceWithoutAuthentication
-- testAccessingSecuredResourceWithWrongAuthentication
-- testAccessingSecuredResourceWithCorrectAuthentication
+- testAccessingSecuredResourceWithoutAuthentication,
+- testAccessingSecuredResourceWithWrongAuthentication,
+- testAccessingSecuredResourceWithCorrectAuthentication -> gesicherter PUT-Endpunkt nur mit korrekter Autorisierung erreichbar.
 
 === API Tests im Modul RW
 ==== ProduktControllerApiTest

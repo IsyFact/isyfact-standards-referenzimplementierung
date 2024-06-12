@@ -38,7 +38,7 @@ public class SecuredResourceTest extends AbstractResourceTest {
      * Call without authentication: AuthenticationCredentialsNotFoundException expected
      */
     @Test
-    public void testAcessingSecuredResourceWithoutAuthentication() {
+    public void testAccessingSecuredResourceWithoutAuthentication() {
 
         // given
         ProduktBo modifiedProduktBo = new ProduktBo(1,"Allgäuer Emmentaler","Hartkäse");
