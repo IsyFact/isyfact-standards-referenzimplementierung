@@ -41,8 +41,9 @@ public class ProduktController {
      *   ProduktNotFoundException
      *
      * @param name name of products to search for
-     * @return product list or HttpStatus.NO_CONTENT
-     * @throws ProduktNotFoundException, if no name is given (by users NOT in 'Zentrale')
+     * @return list of ProduktBo found or HttpStatus.NO_CONTENT
+     * @throws ProduktNotFoundException, if no name is given (filtering by name is required for all users NOT in 'Zentrale')
+     *
      */
     @GetMapping("/produkte")
     @ResponseStatus(HttpStatus.OK)

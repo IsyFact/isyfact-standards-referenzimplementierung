@@ -32,7 +32,7 @@ public class ProduktController {
      * If no match is found, HttpStatus.NO_CONTENT is returned
      *
      * @param name name of products to search for
-     * @return list of products found or HttpStatus.NO_CONTENT
+     * @return list of ProduktBo found or HttpStatus.NO_CONTENT
      */
     @GetMapping("/produkte")
     @ResponseStatus(HttpStatus.OK)
@@ -52,8 +52,8 @@ public class ProduktController {
      * If no such product exists a ProduktNotFoundException is thrown.
      *
      * @param id database ID
-     * @return the Produkt with the given id
-     * @throws ProduktNotFoundException if no such produkt exists
+     * @return the ProduktBo with the given id
+     * @throws ProduktNotFoundException if no such product exists
      */
     @GetMapping("/produkte/{id}")
     @ResponseStatus(HttpStatus.OK)
