@@ -1,0 +1,21 @@
+name: Build Maven
+on:
+  pull_request:
+    branches:
+      - master
+      - 'release/**'
+  push:
+    branches:
+      - master
+      - 'release/**'
+
+jobs:
+  Version:
+    uses: IsyFact/isy-github-actions-templates/misc/next_version.yml.yml@v1
+
+  Build:
+    needs: [Version]
+    uses: IsyFact/isy-github-actions-templates/maven/maven_build_template.yml@v1
+    with:
+      version: ${{ needs.Version.outputs.next-version }}
+      checkout-lfs: true
