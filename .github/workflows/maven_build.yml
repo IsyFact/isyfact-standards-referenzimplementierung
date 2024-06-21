@@ -18,4 +18,3 @@ jobs:
     uses: IsyFact/isy-github-actions-templates/.github/workflows/maven_build_template.yml@v1.0.0
     with:
       version: ${{ needs.Version.outputs.next-version }}
-      checkout-lfs: true
