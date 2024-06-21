@@ -7,4 +7,4 @@ on:
 
 jobs:
   DependencyReview:
-    uses: IsyFact/isyfact-standards/.github/workflows/dependency_review_template.yml@main
+    uses: IsyFact/isy-github-actions-templates/.github/workflows/dependency_review_template.yml@v1.0.0
