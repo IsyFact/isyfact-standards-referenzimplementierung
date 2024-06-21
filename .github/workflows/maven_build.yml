@@ -10,14 +10,9 @@ on:
       - 'release/**'
 
 jobs:
-  Version:
-    uses: IsyFact/isy-github-actions-templates/.github/workflows/next_version.yml@v1.0.0
-
   Build:
-    needs: [Version]
     uses: IsyFact/isy-github-actions-templates/.github/workflows/maven_build_template.yml@v1.0.0
     with:
-      version: ${{ needs.Version.outputs.next-version }}
       maven-opts: '-s ./.github/settings.xml'
     secrets:
       GH_PACKAGES_TOKEN: ${{ secrets.GH_PACKAGES_TOKEN }}
