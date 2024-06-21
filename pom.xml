@@ -30,7 +30,7 @@
     </dependencyManagement>
 
     <properties>
-        <isyfact.version>0.0.0-SNAPSHOT</isyfact.version>
+        <isyfact.version>3.1.0-SNAPSHOT</isyfact.version>
 
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
