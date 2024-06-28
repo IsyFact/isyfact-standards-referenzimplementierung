@@ -16,3 +16,4 @@ jobs:
       maven-opts: '-s ./.github/settings.xml'
     secrets:
       GH_PACKAGES_TOKEN: ${{ secrets.GH_PACKAGES_TOKEN }}
+      SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
