@@ -1,0 +1,19 @@
+name: Build Maven
+on:
+  pull_request:
+    branches:
+      - master
+      - 'release/**'
+  push:
+    branches:
+      - master
+      - 'release/**'
+
+jobs:
+  Build:
+    uses: IsyFact/isy-github-actions-templates/.github/workflows/maven_build_template.yml@v1.0.0
+    with:
+      maven-opts: '-s ./.github/settings.xml -Dmaven.test.failure.ignore'
+    secrets:
+      GH_PACKAGES_TOKEN: ${{ secrets.GH_PACKAGES_TOKEN }}
+      SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
