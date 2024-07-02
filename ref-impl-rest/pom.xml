@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>de.bund.bva.isyfact</groupId>
+        <artifactId>isyfact-standards-referenzimplementierung</artifactId>
+        <version>0.0.0-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>ref-impl-rest</artifactId>
+
+    <dependencies>
+        <!-- IsyFact-Bausteine -->
+        <dependency>
+            <groupId>de.bund.bva.isyfact</groupId>
+            <artifactId>isy-persistence</artifactId>
+        </dependency>
+
+        <!-- REST Endpoint generation with OpenAPI:  -->
+        <!-- OpenAPI plugin configuration option: generateApi/ModelTests = true -->
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>RELEASE</version>
+            <scope>compile</scope>
+        </dependency>
+        <!-- A) Java SpringBoot Server -->
+        <dependency>
+            <groupId>io.swagger.core.v3</groupId>
+            <artifactId>swagger-annotations</artifactId>
+            <version>2.2.9</version>
+        </dependency>
+        <!-- B) Java Spring WebClient -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-webflux</artifactId>
+        </dependency>
+        <!-- OpenAPI plugin configuration option: openApiNullable (default: true)
+        <dependency>
+            <groupId>org.openapitools</groupId>
+            <artifactId>jackson-databind-nullable</artifactId>
+            <version>0.2.6</version>
+        </dependency> -->
+        <!-- ApiClient: javax.annotation.Nullable -->
+        <dependency>
+            <groupId>com.google.code.findbugs</groupId>
+            <artifactId>jsr305</artifactId>
+            <version>3.0.2</version>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-api</artifactId>
+            <version>5.10.2</version>
+            <scope>compile</scope>
+        </dependency>
+        <!-- H2 database -->
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+
+        <!-- Spring -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-jpa</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-validation</artifactId>
+        </dependency>
+
+        <!-- Test -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+    </dependencies>
+
+    <build>
+        <plugins>
+
+            <!-- REST Endpoint generation with OpenAPI: -->
+            <!-- see: https://github.com/OpenAPITools/openapi-generator/tree/master/modules/openapi-generator-maven-plugin -->
+            <plugin>
+                <groupId>org.openapitools</groupId>
+                <artifactId>openapi-generator-maven-plugin</artifactId>
+                <version>7.6.0</version>
+                <executions>
+                    <!-- A) Server: Generates a Java SpringBoot Server application using the SpringDoc integration -->
+                    <execution>
+                        <id>generate-servers</id>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <configuration>
+                            <inputSpecRootDirectory>${project.basedir}/src/main/resources/folder-with-api-yamls/servers</inputSpecRootDirectory>
+                            <!-- For direct use by application, no manual copying of code -->
+                            <output>${project.basedir}/target/generated-sources/rest-server</output>
+
+                            <!-- Generates a Java SpringBoot Server application using the SpringDoc integration -->
+                            <!-- see: https://openapi-generator.tech/docs/generators#server-generators -->
+                            <generatorName>spring</generatorName>
+                            <!--library>spring-mvc</library
+                                 Unknown library: spring-mvc
+                                    Available libraries: default: spring-boot (Spring-boot Server application),
+                                                        spring-cloud (Spring-Cloud-Feign client with Spring-Boot auto-configured settings),
+                                                        spring-http-interface (Spring 6 HTTP interfaces (testing))
+                            -->
+                            <!-- <library>default: spring-boot</library> -->
+
+                            <generateModelTests>true</generateModelTests>
+                            <generateApiTests>true</generateApiTests>
+                            <apiPackage>de.bund.bva.isyfact.shop.service.rest.api</apiPackage>
+                            <modelPackage>de.bund.bva.isyfact.shop.service.rest.model</modelPackage>
+                            <configOptions>
+                                <sourceDirectory>src/main/java</sourceDirectory>
+                                <interfaceOnly>true</interfaceOnly>
+                                <!--dateLibrary>default: java8</dateLibrary-->
+                                <openApiNullable>false</openApiNullable>
+                                <!-- # HTTP Error Codes are set by RestControllerAdvices -->
+                                <unhandledException>true</unhandledException> <!-- adds 'throws Exception' to operation methods -->
+                            </configOptions>
+                        </configuration>
+                    </execution>
+                    <!-- B) Client: Generates a Java Spring WebClient-->
+                    <execution>
+                        <id>generate-clients</id>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <configuration>
+                            <!-- single spec file
+                            <inputSpec>${project.basedir}/src/main/resources/folder-with-api-yamls/clients/openapi_refimpl-rest.yaml</inputSpec>
+                            -->
+                            <!-- multiple spec files: creates '_merged_spec.yaml' ignoring servers -->
+                            <mergedFileName>_merged_spec</mergedFileName> <!-- default -->
+                            <inputSpecRootDirectory>${project.basedir}/src/main/resources/folder-with-api-yamls/clients</inputSpecRootDirectory>
+
+                            <!-- For direct use by application, no manual copying of code -->
+                            <output>${project.basedir}/target/generated-sources/rest-client</output>
+
+                            <!-- Generates a Java Spring WebClient -->
+                            <!-- see: https://openapi-generator.tech/docs/generators#client-generators -->
+                            <generatorName>java</generatorName>
+                            <!-- Available libraries: default: okhttp-gson (OkHttp 4.11.0. JSON processing: Gson 2.10.1),
+                                                        jersey2 (Jersey client 2.25.1. JSON processing: Jackson 2.17.1),
+                                                        jersey3 (Jersey client 3.1.1. JSON processing: Jackson 2.17.1),
+                                                        feign (OpenFeign 13.2.1. JSON processing: Jackson 2.17.1 or Gson 2.10.1),
+                                                        retrofit2 (OkHttp 4.11.0. JSON processing: Gson 2.10.1 (Retrofit 2.5.0) or Jackson 2.17.1),
+                                                        resttemplate (Spring RestTemplate 5.3.33 (6.1.5 if useJakartaEe=true). JSON processing: Jackson 2.17.1),
+                                                        webclient (Spring WebClient 5.1.18. JSON processing: Jackson 2.17.1),
+                                                        restclient (Spring RestClient 6.1.6. JSON processing: Jackson 2.17.1),
+                                                        resteasy (Resteasy client 4.7.6. JSON processing: Jackson 2.17.1),
+                                                        vertx (VertX client 3.5.2. JSON processing: Jackson 2.17.1),
+                                                        google-api-client (Google API client 2.2.0. JSON processing: Jackson 2.17.1),
+                                                        rest-assured (est-assured 5.3.2. JSON processing: Gson 2.10.1 or Jackson 2.17.1 - Only for Java 8),
+                                                        native (Java native HttpClient. JSON processing: Jackson 2.17.1 - Only for Java11+),
+                                                        microprofile (Microprofile client 2.0 (default, set desired version via microprofileRestClientVersion=x.x.x).
+                                                                      JSON processing: JSON-B 1.0.2 or Jackson 2.17.1),
+                                                        apache-httpclient (Apache httpclient 5.2.1. JSON processing: Jackson 2.17.1)
+                            -->
+                            <library>webclient</library>
+
+                            <generateModelTests>true</generateModelTests>
+                            <generateApiTests>true</generateApiTests>
+                            <apiPackage>de.bund.bva.isyfact.shop.service.rest.api</apiPackage>
+                            <modelPackage>de.bund.bva.isyfact.shop.service.rest.model</modelPackage>
+                            <configOptions>
+                                <sourceDirectory>src/main/java</sourceDirectory>
+                                <interfaceOnly>true</interfaceOnly>
+                                <openApiNullable>false</openApiNullable>
+                                <!--dateLibrary>default: java8</dateLibrary-->
+                            </configOptions>
+                            <!-- API Server and Base URL being used as basePath in ApiClient
+                            <serverVariableOverrides>host=localhost:8081,basePath=/</serverVariableOverrides> -->
+                        </configuration>
+                    </execution>
+                    <!-- C) Documentation (of server APIs): Generates OpenAPI documentation in AsciiDoc format -->
+                    <execution>
+                        <id>generate-documentation</id>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <configuration>
+                            <inputSpecRootDirectory>${project.basedir}/src/main/resources/folder-with-api-yamls/servers</inputSpecRootDirectory>
+                            <output>${project.basedir}/target/generated-sources/rest-documentation</output>
+
+                            <!-- Generates Generates OpenAPI documentation in AsciiDoc format -->
+                            <!-- see: https://openapi-generator.tech/docs/generators#documentation-generators -->
+                            <generatorName>asciidoc</generatorName>
+                            <configOptions>
+                                <useIntroduction>true</useIntroduction>
+                                <useMethodAndPath>true</useMethodAndPath>
+                                <useTableTitles>true</useTableTitles>
+                            </configOptions>
+
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!-- Disable Integration Tests for the Maven Build Install Phase -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>3.2.5</version>
+                <configuration>
+                    <excludes>
+                        <exclude>**/*ApiTest.java</exclude>
+                    </excludes>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+</project>

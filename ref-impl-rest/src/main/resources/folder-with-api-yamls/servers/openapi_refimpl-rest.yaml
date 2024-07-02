@@ -1,0 +1,197 @@
+# see: https://swagger.io/docs/specification/basic-structure/
+openapi: 3.0.0
+
+info:
+  description: |
+    This is a reference implementation of an IsyFact REST server.  
+    It shows the usage of OpenAPI to generate a REST service and 
+    how to include it in an IsyFact application - all conforming 
+    to best practices in general and IsyFact standards and 
+    requirements specifically.
+  version: "1.0.0"
+  title: IsyFact Standards Reference Implementation REST-OpenAPI
+  termsOfService: 'http://isyfact.de/'
+  contact:
+    email: isyfact@bva.bund.de
+  license:
+    name: Creative Commons Namensnennung 4.0 International
+    url: 'https://creativecommons.org/licenses/by/4.0/legalcode.de'
+
+# Security is being handled by IsyFact Security, if necessary
+# HTTP Error Codes are set by RestControllerAdvices (e.g. de.bund.bva.isyfact.shop.service.rest.advice.ProduktNotFoundAdvice)
+
+# Grouping of operations (defines name of client API class)
+tags:
+  - name: produkt
+    description: Everything about your products
+    # externalDocs: description: Find out more url: 'http://?.?'
+  # - name: ...
+
+# Individual endpoints (paths) in your API, and the HTTP methods (operations) supported by these endpoints
+# IsyFact Standards - REST-Konzept: 3.1. Aufbau der Ressourcen-URIs:
+#   Ressourcen repräsentieren Objekte und werden deshalb als Substantiv beschrieben.
+#   Die Bezeichnung muss möglichst einfach gewählt werden (z. B. der Name der Entität oder die Aufgabe der Ressource).
+#   Repräsentiert die Ressource eine Menge von Objekten, wird der Plural verwendet.
+#   Der hierarchische Aufbau von Ressourcen ist explizit erwünscht.
+#   Beispiele:
+#    /nachrichten, /nachrichten/{id}, /eingehende-nachrichten, /vertraege,
+ #  /kunden/{kundenId}/bestellungen/{bestellungId}/artikel
+# IsyFact Standards - REST-Konzept: 5.6. Versionierung:
+#   Die Version steht immer vor dem Pfad der Ressource und beinhaltet ausschließlich die Major Version.
+#   => Name der generierten API-Klasse = <1. Pfadknoten>Api
+
+paths:
+
+  /produkte:
+    # Create / Update
+    put:
+      tags:
+        - produkt
+      summary: Updates an existing ProduktModel
+      description: |
+        Updates an existing product identified by Id
+        or creates with new ID if not existent. 
+        Returns updated product
+      operationId: updateProdukt
+      requestBody:
+        description: Update an existent product in the store
+        $ref: '#/components/requestBodies/ProduktModel'
+        required: true
+      responses:
+        '200':
+          description: Successful operation
+          $ref: '#/components/responses/ProduktModel'
+          required: true
+    #        '405':
+    #          description: Validation exception
+
+    # Read by name (in request header)
+    get:
+      tags:
+        - produkt
+      summary: Returns a list of ProduktModel
+      description:  |
+        Returns a list of all products with the given name 
+        or 204: No Content, if no match
+      operationId: findAllProdukteByName
+      parameters:
+        - name: X-Request-ProduktName
+          in: header
+          description: Name of the products to return
+          required: false
+          schema:
+            type: string
+        - in: query
+          name: limit
+          schema:
+            type: integer
+          description: The max. numbers of items to return
+
+      responses:
+        '200':
+          description: successful operation
+          $ref: '#/components/responses/ProduktModelListe'
+          required: true
+  #       '204':
+  #         description: No match found
+
+  '/produkte/{produktId}':
+    # Read by ID
+    get:
+      tags:
+        - produkt
+      summary: Find a ProduktModel by ID
+      description: | 
+        Returns a single product identified by ID 
+        or ProduktNotFoundException if not found
+      operationId: getProduktById
+      parameters:
+        - name: produktId
+          in: path
+          description: ID of product to return
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: successful operation
+          $ref: '#/components/responses/ProduktModel'
+          required: true
+#        '400':
+#          description: Invalid ID supplied
+#        '404':
+#          description: product not found
+
+# data structures used in your API:
+components:
+  schemas:
+    # NSE_Produkt
+    ProduktModel:
+      type: object
+      required:
+        - id
+        - name
+        - beschreibung
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+          example: Emmentaler
+        beschreibung:
+          type: string
+          example: Hartkäse
+      xml:
+        name: ProduktModel
+
+    ProduktModelListe:
+      items:
+        $ref: '#/components/schemas/ProduktModel'
+      type: array
+
+  requestBodies:
+    # Produkt model object can be sent as either Json, Xml, or www-form-urlencoded
+    ProduktModel:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ProduktModel'
+        application/xml:
+          schema:
+            $ref: '#/components/schemas/ProduktModel'
+        application/x-www-form-urlencoded:
+          schema:
+            $ref: '#/components/schemas/ProduktModel'
+      description: Produkt model object that needs to be added to the store
+      required: true
+
+  responses:
+    # Produkt model object can be sent as either Json, Xml, or www-form-urlencoded
+    ProduktModel:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ProduktModel'
+        application/xml:
+          schema:
+            $ref: '#/components/schemas/ProduktModel'
+        application/x-www-form-urlencoded:
+          schema:
+            $ref: '#/components/schemas/ProduktModel'
+      description: Resulting Produkt model object sent back
+
+    # List of Produkt model objects can be sent as either Json, Xml or www-form-urlencoded
+    ProduktModelListe:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ProduktModelListe'
+        application/xml:
+          schema:
+            $ref: '#/components/schemas/ProduktModelListe'
+        application/x-www-form-urlencoded:
+          schema:
+            $ref: '#/components/schemas/ProduktModelListe'
+      description: Resulting list of Produkt model object sent back
