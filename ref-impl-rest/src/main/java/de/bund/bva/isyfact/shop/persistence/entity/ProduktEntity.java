@@ -8,7 +8,7 @@ public class ProduktEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private final long id;
+    private long id;
 
     @Column(name = "name")
     private String name;
@@ -20,6 +20,9 @@ public class ProduktEntity {
         this.id = id;
         this.name = name;
         this.beschreibung = beschreibung;
+    }
+
+    public ProduktEntity() {
     }
 
     public long getId() {
