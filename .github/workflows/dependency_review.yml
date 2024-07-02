@@ -1,0 +1,10 @@
+name: Dependency Review
+on:
+  pull_request:
+    branches:
+      - develop
+      - master
+
+jobs:
+  DependencyReview:
+    uses: IsyFact/isy-github-actions-templates/.github/workflows/dependency_review_template.yml@v1.0.0
