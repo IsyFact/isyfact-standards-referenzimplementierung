@@ -6,6 +6,7 @@ import de.bund.bva.isyfact.shop.core.daten.ProduktBo;
 import de.bund.bva.isyfact.shop.service.rest.ProduktController;
 import de.bund.bva.isyfact.shop.service.rest.configuration.OAuth2ServerSecurityConfig;
 import de.bund.bva.isyfact.shop.service.rest.exception.ProduktNotFoundException;
+
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -51,7 +52,7 @@ public class PublicResourceTest extends AbstractResourceTest {
         // then
         // OK-response expected
         assertNotNull(produktBo);
-        assertEquals(1, produktBo.getId()) ;
+        assertEquals(1, produktBo.getId()); ;
     }
 
     /**
@@ -82,7 +83,7 @@ public class PublicResourceTest extends AbstractResourceTest {
         // then
         // OK-response expected
         assertNotNull(produktBo);
-        assertEquals(1, produktBo.getId()) ;
+        assertEquals(1, produktBo.getId()); ;
     }
 
 }

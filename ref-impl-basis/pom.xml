@@ -11,12 +11,6 @@
     <artifactId>ref-impl-basis</artifactId>
 
     <dependencies>
-         <!-- IsyFact-Bausteine -->
-        <dependency>
-            <groupId>de.bund.bva.isyfact</groupId>
-            <artifactId>isy-persistence</artifactId>
-        </dependency>
-
         <!-- H2 database -->
         <dependency>
             <groupId>com.h2database</groupId>

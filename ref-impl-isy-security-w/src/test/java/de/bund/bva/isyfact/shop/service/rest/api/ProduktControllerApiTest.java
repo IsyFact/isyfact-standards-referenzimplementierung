@@ -13,6 +13,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
  * - that we authenticate ourselves as registered client (A) with role-A and PRIV_Recht_A.
  * - and to have a mechanism that extracts the required token from the current security context
  * - and to put this token into the header of the outgoing request.
+ *
+ *  Note: RestApplicationW and RestApplicationRW need to be started manually and will be listening then
+ *  on ports 8081 and 8082.
+ *
  */
 public class ProduktControllerApiTest extends ApiTest {
 

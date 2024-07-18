@@ -7,12 +7,12 @@ import de.bund.bva.isyfact.shop.RestApplicationRW;
 import de.bund.bva.isyfact.shop.core.daten.ProduktBo;
 import de.bund.bva.isyfact.shop.service.rest.ProduktController;
 import de.bund.bva.isyfact.shop.service.rest.exception.ProduktNotFoundException;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
 
-import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Call of a secured resource, needing authentication:
@@ -44,14 +44,14 @@ public class SecuredResourceTest extends AbstractResourceTest {
         ProduktBo modifiedProduktBo = new ProduktBo(1,"Allgäuer Emmentaler","Hartkäse");
 
         // no Authentication
-        assertNull(getAuthentication());
+        Assertions.assertNull(getAuthentication());
 
 
         // when
         // calling a secured endpoint method, requiring special rights
         // then
         // expect exception 'Authentication-Credentials not found'
-        assertThrows(AuthenticationCredentialsNotFoundException.class,
+        Assertions.assertThrows(AuthenticationCredentialsNotFoundException.class,
                 () -> produktController.updateProduktBo(modifiedProduktBo));
     }
 
@@ -73,16 +73,16 @@ public class SecuredResourceTest extends AbstractResourceTest {
                         "user-b", "test");
 
         // SecurityContext contains new token
-        assertNotNull(getAuthentication());
+        Assertions.assertNotNull(getAuthentication());
         // actual rights do NOT include required right
-        assertFalse(security.getBerechtigungsmanager().hatRecht("PRIV_Recht_A"),
+        Assertions.assertFalse(security.getBerechtigungsmanager().hatRecht("PRIV_Recht_A"),
                 "user-b does have privilege 'Recht-A'");
 
         // when
         // calling a secured endpoint method, requiring this right
         // then
         // expect exception 'Access denied'
-        assertThrows(org.springframework.security.access.AccessDeniedException.class,
+        Assertions.assertThrows(org.springframework.security.access.AccessDeniedException.class,
                 () -> produktController.updateProduktBo(modifiedProduktBo));
     }
 
@@ -103,9 +103,9 @@ public class SecuredResourceTest extends AbstractResourceTest {
                 .authentifiziereClient(issuerUriA, clientAId, clientASecret);
 
         // SecurityContext contains new token
-        assertNotNull(getAuthentication());
+        Assertions.assertNotNull(getAuthentication());
         // actual rights DO include required right
-        assertTrue(security.getBerechtigungsmanager().hatRecht("PRIV_Recht_A"),
+        Assertions.assertTrue(security.getBerechtigungsmanager().hatRecht("PRIV_Recht_A"),
                 "client-a is missing privilege 'Recht-A'");
 
         // when
@@ -114,8 +114,8 @@ public class SecuredResourceTest extends AbstractResourceTest {
 
         // then
         // verify the returned updateProduktBo
-        assertEquals(4L, updateProduktBo.getId());
-        assertEquals("alter Gouda", updateProduktBo.getName());
+        Assertions.assertEquals(4L, updateProduktBo.getId());
+        Assertions.assertEquals("alter Gouda", updateProduktBo.getName());
     }
 
 }
