@@ -7,12 +7,15 @@ import de.bund.bva.isyfact.shop.RestApplicationRW;
 import de.bund.bva.isyfact.shop.core.daten.ProduktBo;
 import de.bund.bva.isyfact.shop.service.rest.ProduktController;
 import de.bund.bva.isyfact.shop.service.rest.exception.ProduktNotFoundException;
-import org.junit.jupiter.api.Assertions;
+
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
 
+import java.util.Optional;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Call of a secured resource, needing authentication:
@@ -44,14 +47,14 @@ public class SecuredResourceTest extends AbstractResourceTest {
         ProduktBo modifiedProduktBo = new ProduktBo(1,"Allgäuer Emmentaler","Hartkäse");
 
         // no Authentication
-        Assertions.assertNull(getAuthentication());
+        assertNull(getAuthentication());
 
 
         // when
         // calling a secured endpoint method, requiring special rights
         // then
         // expect exception 'Authentication-Credentials not found'
-        Assertions.assertThrows(AuthenticationCredentialsNotFoundException.class,
+        assertThrows(AuthenticationCredentialsNotFoundException.class,
                 () -> produktController.updateProduktBo(modifiedProduktBo));
     }
 
@@ -68,21 +71,24 @@ public class SecuredResourceTest extends AbstractResourceTest {
         ProduktBo modifiedProduktBo = new ProduktBo(1,"Allgäuer Emmentaler","Hartkäse");
 
         // an authenticated user not having the required role / privilege
-        security.getAuthentifizierungsmanager().orElseThrow()
-                .authentifiziereSystem(issuerUriA, confidentialClientId, confidentialClientSecret,
-                        "user-b", "test");
-
+        Optional<Authentifizierungsmanager> am = security.getAuthentifizierungsmanager();
+        if (am.isPresent()) {
+            am.get() .authentifiziereSystem(issuerUriA, confidentialClientId, confidentialClientSecret,
+                    "user-b", "test");
+        } else {
+            fail("Authenticationmanager is null");
+        }
         // SecurityContext contains new token
-        Assertions.assertNotNull(getAuthentication());
+        assertNotNull(getAuthentication());
         // actual rights do NOT include required right
-        Assertions.assertFalse(security.getBerechtigungsmanager().hatRecht("PRIV_Recht_A"),
+        assertFalse(security.getBerechtigungsmanager().hatRecht("PRIV_Recht_A"),
                 "user-b does have privilege 'Recht-A'");
 
         // when
         // calling a secured endpoint method, requiring this right
         // then
         // expect exception 'Access denied'
-        Assertions.assertThrows(org.springframework.security.access.AccessDeniedException.class,
+        assertThrows(org.springframework.security.access.AccessDeniedException.class,
                 () -> produktController.updateProduktBo(modifiedProduktBo));
     }
 
@@ -99,13 +105,16 @@ public class SecuredResourceTest extends AbstractResourceTest {
         ProduktBo modifiedProduktBo = new ProduktBo(4,"alter Gouda","Schnittkäse");
 
         // an authenticated client having the required role / right
-        security.getAuthentifizierungsmanager().orElseThrow()
-                .authentifiziereClient(issuerUriA, clientAId, clientASecret);
-
+       Optional<Authentifizierungsmanager> am = security.getAuthentifizierungsmanager();
+        if (am.isPresent()) {
+            am.get().authentifiziereClient(issuerUriA, clientAId, clientASecret);
+        } else {
+            fail("Authenticationmanager is null");
+        }
         // SecurityContext contains new token
-        Assertions.assertNotNull(getAuthentication());
+        assertNotNull(getAuthentication());
         // actual rights DO include required right
-        Assertions.assertTrue(security.getBerechtigungsmanager().hatRecht("PRIV_Recht_A"),
+        assertTrue(security.getBerechtigungsmanager().hatRecht("PRIV_Recht_A"),
                 "client-a is missing privilege 'Recht-A'");
 
         // when
@@ -114,8 +123,8 @@ public class SecuredResourceTest extends AbstractResourceTest {
 
         // then
         // verify the returned updateProduktBo
-        Assertions.assertEquals(4L, updateProduktBo.getId());
-        Assertions.assertEquals("alter Gouda", updateProduktBo.getName());
+        assertEquals(4L, updateProduktBo.getId());
+        assertEquals("alter Gouda", updateProduktBo.getName());
     }
 
 }

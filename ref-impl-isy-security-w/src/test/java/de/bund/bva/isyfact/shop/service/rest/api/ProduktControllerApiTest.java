@@ -4,7 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import de.bund.bva.isyfact.shop.core.daten.ProduktBo;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * This Api test is an integration test. It demonstrates that within a batch application,

@@ -9,6 +9,9 @@ target/
 *.iml
 *.ipr
 
+### flattened poms
+*/.flattened-pom.xml
+
 ### Eclipse ###
 .apt_generated
 .classpath
@@ -36,11 +39,4 @@ build/
 /ref-impl-isy-security-rw/target/
 /ref-impl-isy-security-w/target/
 /.idea/
-/.idea/
-/.idea/
-/.idea/
-/ref-impl-isy-security-rw/target/
-/ref-impl-isy-security-rw/target/
-/ref-impl-isy-security-rw/target/classes/
-/ref-impl-isy-security-rw/target/classes/
 /ref-impl-isy-security-rw/target/classes/

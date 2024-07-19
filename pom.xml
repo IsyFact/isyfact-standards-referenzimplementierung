@@ -4,11 +4,11 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <!-- parent>
+    <parent>
         <groupId>de.bund.bva.isyfact</groupId>
         <artifactId>isyfact-standards</artifactId>
         <version>3.0.1</version>
-    </parent -->
+    </parent>
 
     <groupId>de.bund.bva.isyfact</groupId>
     <artifactId>isyfact-standards-referenzimplementierung</artifactId>
@@ -38,6 +38,20 @@
                 <version>${isyfact.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>org.jboss.logging</groupId>
+                <artifactId>jboss-logging-processor</artifactId>
+                <version>2.2.1.Final</version>
+                <scope>provided</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>org.jboss.logging</groupId>
+                <artifactId>jboss-logging-annotations</artifactId>
+                <version>2.2.1.Final</version>
+                <scope>provided</scope>
             </dependency>
         </dependencies>
     </dependencyManagement>

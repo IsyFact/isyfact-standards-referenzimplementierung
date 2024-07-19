@@ -46,19 +46,13 @@
 
     </dependencies>
 
-    <!-- Disable Integration Tests for the Maven Build Install Phase -->
     <build>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>3.2.5</version>
-                <configuration>
-                    <excludes>
-                        <exclude>**/*ApiTest.java</exclude>
-                    </excludes>
-                </configuration>
-            </plugin>
+             </plugin>
         </plugins>
     </build>
 </project>

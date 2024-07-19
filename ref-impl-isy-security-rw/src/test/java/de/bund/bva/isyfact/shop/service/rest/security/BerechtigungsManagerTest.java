@@ -1,6 +1,7 @@
 package de.bund.bva.isyfact.shop.service.rest.security;
 
 import de.bund.bva.isyfact.security.core.Security;
+import de.bund.bva.isyfact.security.oauth2.client.Authentifizierungsmanager;
 import de.bund.bva.isyfact.shop.RestApplicationRW;
 import de.bund.bva.isyfact.shop.core.daten.ProduktBo;
 import de.bund.bva.isyfact.shop.service.rest.ProduktController;
@@ -14,6 +15,7 @@ import org.springframework.security.access.AccessDeniedException;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.List;
+import java.util.Optional;
 
 
 @SpringBootTest(classes= RestApplicationRW.class)
@@ -67,10 +69,13 @@ public class BerechtigungsManagerTest extends AbstractResourceTest {
         // confidential client auth data, as defined in KeyCloak:
 
         // and an authenticated user having the required role / right but without user attribute 'abteilung' = 'Zentrale'
-        security.getAuthentifizierungsmanager().orElseThrow()
-                .authentifiziereSystem(issuerUriA, confidentialClientId, confidentialClientSecret,
-                        "user-b", "test");                      // see key cloak
-
+        Optional<Authentifizierungsmanager> am = security.getAuthentifizierungsmanager();
+        if (am.isPresent()) {
+            am.get().authentifiziereSystem(issuerUriA, confidentialClientId, confidentialClientSecret,
+                    "user-b", "test");
+        } else {
+            fail("Authenticationmanager is null");
+        }
         // SecurityContext contains new token
         assertNotNull(getAuthentication());
 
@@ -96,10 +101,13 @@ public class BerechtigungsManagerTest extends AbstractResourceTest {
         // confidential client auth data, as defined in KeyCloak:
 
         // and an authenticated user having the required role / right and user attribute 'abteilung' = 'Zentrale'
-        security.getAuthentifizierungsmanager().orElseThrow()
-                .authentifiziereSystem(issuerUriA, confidentialClientId, confidentialClientSecret,
-                        "user-a", "test");                      // see key cloak
-
+        Optional<Authentifizierungsmanager> am = security.getAuthentifizierungsmanager();
+        if (am.isPresent()) {
+            am.get().authentifiziereSystem(issuerUriA, confidentialClientId, confidentialClientSecret,
+                    "user-a", "test");
+        } else {
+            fail("Authenticationmanager is null");
+        }
         // SecurityContext contains new token
         assertNotNull(getAuthentication());
 
@@ -115,7 +123,7 @@ public class BerechtigungsManagerTest extends AbstractResourceTest {
         try {
             security.getBerechtigungsmanager().pruefeRecht("PRIV_Recht_A");
         } catch (AccessDeniedException e) {
-            org.assertj.core.api.Assertions.fail("user-a does NOT have privilege 'Recht-A'");
+            fail("user-a does NOT have privilege 'Recht-A'");
         }
 
         // - Actual Isyfact roles DO include 'role-a' (as role-a is assigned to user-a in IAM)
