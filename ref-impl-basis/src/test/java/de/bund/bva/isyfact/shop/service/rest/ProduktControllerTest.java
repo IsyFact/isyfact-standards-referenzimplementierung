@@ -3,6 +3,7 @@ package de.bund.bva.isyfact.shop.service.rest;
 import de.bund.bva.isyfact.shop.RestApplication;
 import de.bund.bva.isyfact.shop.core.daten.ProduktBo;
 import de.bund.bva.isyfact.shop.service.rest.exception.ProduktNotFoundException;
+import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -10,7 +11,6 @@ import org.springframework.http.ResponseEntity;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Regression test for the methods of the ProduktController class

@@ -9,15 +9,14 @@ import reactor.core.publisher.Mono;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Smoketest for checking product requests:
- * - sends HTTP requests to RestApplication and
+ * - sends HTTP requests to RestApplicationRW and
  * - asserts expected response
  * <p>
- * Note: ref-impl-basis RestApplication needs to be running!
+ * Note: RestApplicationRW has to be started manually and will be listening on port 8081
  */
 public class ProduktControllerApiTest extends ApiTest{
 

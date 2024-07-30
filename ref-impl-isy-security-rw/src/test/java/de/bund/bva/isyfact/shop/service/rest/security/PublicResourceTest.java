@@ -1,15 +1,19 @@
 package de.bund.bva.isyfact.shop.service.rest.security;
 
 import de.bund.bva.isyfact.security.core.Security;
+import de.bund.bva.isyfact.security.oauth2.client.Authentifizierungsmanager;
 import de.bund.bva.isyfact.shop.RestApplicationRW;
 import de.bund.bva.isyfact.shop.core.daten.ProduktBo;
 import de.bund.bva.isyfact.shop.service.rest.ProduktController;
 import de.bund.bva.isyfact.shop.service.rest.configuration.OAuth2ServerSecurityConfig;
 import de.bund.bva.isyfact.shop.service.rest.exception.ProduktNotFoundException;
+
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.ResponseEntity;
+
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -51,7 +55,7 @@ public class PublicResourceTest extends AbstractResourceTest {
         // then
         // OK-response expected
         assertNotNull(produktBo);
-        assertEquals(1, produktBo.getId()) ;
+        assertEquals(1, produktBo.getId()); ;
     }
 
     /**
@@ -67,10 +71,13 @@ public class PublicResourceTest extends AbstractResourceTest {
         //String clientSecret = "RCX1o8KF1Iez3d0XvcKPOJjiDIFnpKay";
 
         // and an authenticated user having the required role / right
-        security.getAuthentifizierungsmanager().orElseThrow()
-                .authentifiziereSystem(issuerUriA, confidentialClientId, confidentialClientSecret,
-                        "user-a", "test");                      // see key cloak
-
+        Optional<Authentifizierungsmanager> am = security.getAuthentifizierungsmanager();
+        if (am.isPresent()) {
+            am.get().authentifiziereSystem(issuerUriA, confidentialClientId, confidentialClientSecret,
+                    "user-a", "test");
+        } else {
+            fail("Authenticationmanager is null");
+        }
         // SecurityContext contains new token
         assertNotNull(getAuthentication());
 
@@ -82,7 +89,7 @@ public class PublicResourceTest extends AbstractResourceTest {
         // then
         // OK-response expected
         assertNotNull(produktBo);
-        assertEquals(1, produktBo.getId()) ;
+        assertEquals(1, produktBo.getId()); ;
     }
 
 }

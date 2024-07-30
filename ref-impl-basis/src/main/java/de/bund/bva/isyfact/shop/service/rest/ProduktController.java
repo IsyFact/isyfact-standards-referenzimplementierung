@@ -1,12 +1,17 @@
 package de.bund.bva.isyfact.shop.service.rest;
 
-
 import de.bund.bva.isyfact.shop.core.ProduktVerwaltung;
 import de.bund.bva.isyfact.shop.core.daten.ProduktBo;
 import de.bund.bva.isyfact.shop.service.rest.exception.ProduktNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
@@ -19,7 +24,7 @@ public class ProduktController {
 
     /**
      * This constructor injects the required dependencies.
-     * @param produktVerwaltung Interface for core functionality 'Produkt-Verwaltung'
+     * @param produktVerwaltung Interface for core functionality 'Produkt-Verwaltung'.
      */
     public ProduktController(ProduktVerwaltung produktVerwaltung) {
         this.produktVerwaltung = produktVerwaltung;
@@ -29,7 +34,7 @@ public class ProduktController {
 
     /**
      * Searches for products with a given name (name is not unique).
-     * If no match is found, HttpStatus.NO_CONTENT is returned
+     * If no match is found, HttpStatus.NO_CONTENT is returned.
      *
      * @param name name of products to search for
      * @return list of ProduktBo found or HttpStatus.NO_CONTENT

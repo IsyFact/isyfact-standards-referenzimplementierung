@@ -2,23 +2,29 @@ package de.bund.bva.isyfact.shop.service.rest.api;
 
 import de.bund.bva.isyfact.shop.core.daten.ProduktBo;
 import org.junit.jupiter.api.Test;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.MediaType;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
+
 
 /**
  * Smoketest for checking get-product requests:
  * - sends HTTP requests to RestApplication and
  * - asserts expected response
  * <p>
- * Note: ref-impl-basis RestApplication needs to be running!
+ * Note: RestApplication will automatically be started and listening on a random port!
  */
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class ProduktControllerApiTest {
+
+    @LocalServerPort
+    private int serverPort;
 
     /**
      * Sends get request to the produkte resource
@@ -32,7 +38,7 @@ public class ProduktControllerApiTest {
 
         // when
         Mono<ProduktBo> response = client.get()
-                .uri("http://localhost:8081/shop/api/v1/produkte/1")
+                .uri("http://localhost:"+ serverPort+ "/shop/api/v1/produkte/1")
                 .accept(MediaType.APPLICATION_JSON)
                 .retrieve()
                 .bodyToMono(ProduktBo.class);
@@ -56,7 +62,7 @@ public class ProduktControllerApiTest {
 
         // when
         Mono<List> response = client.get()
-                .uri("http://localhost:8081/shop/api/v1/produkte")
+                .uri("http://localhost:"+ serverPort + "/shop/api/v1/produkte")
                 .accept(MediaType.APPLICATION_JSON)
                 .retrieve()
                 .bodyToMono(List.class);

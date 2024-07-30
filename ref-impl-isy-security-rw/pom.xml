@@ -22,11 +22,6 @@
             <groupId>de.bund.bva.isyfact</groupId>
             <artifactId>isy-security</artifactId>
         </dependency>
-        <!-- - Persistence -->
-        <dependency>
-            <groupId>de.bund.bva.isyfact</groupId>
-            <artifactId>isy-persistence</artifactId>
-        </dependency>
 
         <!-- Spring -->
         <!-- - Security: zur Absicherung von Service-Schnittstellen: @Secured -->

@@ -51,7 +51,7 @@ public class ProduktVerwaltungImpl implements ProduktVerwaltung {
             // - Only users belonging to department (Abteilung) 'Zentrale' can list all products
             //   by NOT specifying a product name.
             // - All other users have to specify a name and get a 'Produkt Not Found' error otherwise.
-            if (name == null || name.isEmpty() || name.isBlank()) {
+            if (name == null || name.isEmpty()) {
 
                 // retrieve attribute (optional as in KeyCloak mapper)
                 String abteilung  = String.valueOf(

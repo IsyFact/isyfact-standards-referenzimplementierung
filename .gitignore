@@ -4,13 +4,13 @@ target/
 !**/src/test/**/target/
 
 ### IntelliJ IDEA ###
-.idea/modules.xml
-.idea/jarRepositories.xml
-.idea/compiler.xml
-.idea/libraries/
+.idea/*
 *.iws
 *.iml
 *.ipr
+
+### flattened poms
+*/.flattened-pom.xml
 
 ### Eclipse ###
 .apt_generated
@@ -39,11 +39,4 @@ build/
 /ref-impl-isy-security-rw/target/
 /ref-impl-isy-security-w/target/
 /.idea/
-/.idea/
-/.idea/
-/.idea/
-/ref-impl-isy-security-rw/target/
-/ref-impl-isy-security-rw/target/
-/ref-impl-isy-security-rw/target/classes/
-/ref-impl-isy-security-rw/target/classes/
 /ref-impl-isy-security-rw/target/classes/
