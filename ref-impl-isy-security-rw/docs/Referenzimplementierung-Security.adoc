@@ -1,4 +1,9 @@
 = Referenzimplementierung des IsyFact-Bausteins 'Security'
+msg systems ag
+3.0, July 29, 2022: AsciiDoc article template
+:toc:
+:icons: font
+:url-quickref: https://docs.asciidoctor.org/asciidoc/latest/syntax-quick-reference/
 
 == Überblick
 
@@ -31,10 +36,19 @@ um den Anwendungsfall "Authentifizierung für externe Service-Aufrufe" zu demons
 
 == Berechtigungskonzept
 Um Produkte über die Anwendung RW zu ändern, muss der Anwender das Recht "PRIV_Recht_A" besitzen.
+
 Um Produkte über die Anwendung W zu ändern, muss der Anwender das Recht "PRIV_Recht_B" haben.
+
 Vor Ausführung des externen Service-Aufrufs, authentifiziert sich die Anwendung W als ein Client, der
 die Rolle A hat. Die Rolle A und das ihr zugehörige Recht "PRIV_Recht_A" werden dann an der
 der Systemgrenze der aufgerufenen Anwendung RW überprüft.
+
+Die Rollen der einzelnen User (oder technischen User bzw. Clients) sind in Keycloak definiert
+und werden von dort abgefragt. Die Installation von Keycloak und die Konfiguration
+des oben beschriebenen Berechtigungskonzepts in Keycloak sind in der Datei KeycloakSetup dokumentiert.
+
+Die Abbildung der Rollen auf die zugeordneten Rechte erfolgt über die rollenrechte.xml Datei,
+die im Resource-Ordner der Anwendung W und RW zu finden ist.
 
 == Implementierungs-Details
 
@@ -239,7 +253,7 @@ Für alle weiteren Details sollte man sich die Klassen selbst ansehen.
 - testPublicResourceWithoutAuthentication,
 - testPublicResourceWithAuthentication ->  öffentliche GET-Endpunkte erreichbar ohne und mit Access-Token
 
-===== SecuredResourceTest
+==== SecuredResourceTest
 - testAccessingSecuredResourceWithoutAuthentication,
 - testAccessingSecuredResourceWithWrongAuthentication,
 - testAccessingSecuredResourceWithCorrectAuthentication -> gesicherter PUT-Endpunkt nur mit korrekter Autorisierung erreichbar.
