@@ -4,7 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import de.bund.bva.isyfact.shop.core.daten.ProduktBo;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * This Api test is an integration test. It demonstrates that within a batch application,
@@ -18,10 +18,10 @@ import static org.junit.jupiter.api.Assertions.*;
  *  on ports 8081 and 8082.
  *
  */
-public class ProduktControllerApiTest extends ApiTest {
+class ProduktControllerApiTest extends ApiTest {
 
     @Test
-    public void testPutProduktBoRequest() throws JsonProcessingException {
+    void testPutProduktBoRequest() throws JsonProcessingException {
 
         // given
         // a client having the required role / right to trigger a task

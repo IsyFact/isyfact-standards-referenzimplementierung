@@ -4,6 +4,7 @@ import de.bund.bva.isyfact.shop.core.daten.ProduktBo;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.MediaType;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
@@ -21,7 +22,7 @@ import static org.junit.jupiter.api.Assertions.*;
  * Note: RestApplication will automatically be started and listening on a random port!
  */
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class ProduktControllerApiTest {
+class ProduktControllerApiTest {
 
     @LocalServerPort
     private int serverPort;
@@ -31,14 +32,14 @@ public class ProduktControllerApiTest {
      * of our isifact-standards-tutorial application, running on localhost:8081.
      */
     @Test
-    public void testGetProduktBoByIdRequest() {
+    void testGetProduktBoByIdRequest() {
 
         // given
         WebClient client = WebClient.create();
 
         // when
         Mono<ProduktBo> response = client.get()
-                .uri("http://localhost:"+ serverPort+ "/shop/api/v1/produkte/1")
+                .uri("http://localhost:" + serverPort + "/shop/api/v1/produkte/1")
                 .accept(MediaType.APPLICATION_JSON)
                 .retrieve()
                 .bodyToMono(ProduktBo.class);
@@ -46,8 +47,10 @@ public class ProduktControllerApiTest {
         ProduktBo produktBo = response.block();
 
         // then
-        assertEquals("{ id: 1, name:'Emmentaler', beschreibung:'Hartkäse' }",
-                produktBo.toString());
+        assertNotNull(produktBo, "ProduktBo should not be null");
+        assertEquals(1, produktBo.getId());
+        assertEquals("Emmentaler", produktBo.getName());
+        assertEquals("Hartkäse", produktBo.getBeschreibung());
     }
 
     /**
@@ -55,23 +58,23 @@ public class ProduktControllerApiTest {
      * of our isifact-standards-tutorial application, running on localhost:8081.
      */
     @Test
-    public void testGetAllProduktBoRequest() {
+    void testGetAllProduktBoRequest() {
 
         // given
         WebClient client = WebClient.create();
 
         // when
-        Mono<List> response = client.get()
-                .uri("http://localhost:"+ serverPort + "/shop/api/v1/produkte")
+        Mono<List<ProduktBo>> response = client.get()
+                .uri("http://localhost:" + serverPort + "/shop/api/v1/produkte")
                 .accept(MediaType.APPLICATION_JSON)
                 .retrieve()
-                .bodyToMono(List.class);
+                .bodyToMono(new ParameterizedTypeReference<List<ProduktBo>>() {});
 
-        List<ProduktBo> produktBoList = (List<ProduktBo>) response.block();
+        List<ProduktBo> produktBoList = response.block();
 
         // then
         assertNotNull(produktBoList);
-        assertEquals(3,produktBoList.size());
+        assertEquals(3, produktBoList.size());
     }
 }
 

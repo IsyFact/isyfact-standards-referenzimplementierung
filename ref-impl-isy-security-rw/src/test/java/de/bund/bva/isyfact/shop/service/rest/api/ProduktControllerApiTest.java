@@ -3,6 +3,7 @@ package de.bund.bva.isyfact.shop.service.rest.api;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import de.bund.bva.isyfact.shop.core.daten.ProduktBo;
 import org.junit.jupiter.api.Test;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.MediaType;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
@@ -18,14 +19,14 @@ import static org.junit.jupiter.api.Assertions.*;
  * <p>
  * Note: RestApplicationRW has to be started manually and will be listening on port 8081
  */
-public class ProduktControllerApiTest extends ApiTest{
+class ProduktControllerApiTest extends ApiTest{
 
     /**
      * Sends get request to the produkte resource
      * of our isifact-standards-tutorial application, running on localhost:8081.
      */
     @Test
-    public void testGetProduktBoByIdRequest() {
+    void testGetProduktBoByIdRequest() {
 
         // given
         WebClient client = WebClient.create();
@@ -40,8 +41,10 @@ public class ProduktControllerApiTest extends ApiTest{
         ProduktBo produktBo = response.block();
 
         // then
-        assertEquals("{ id: 1, name:'Emmentaler', beschreibung:'Hartkäse' }",
-                produktBo.toString());
+        assertNotNull(produktBo, "ProduktBo should not be null");
+        assertEquals(1, produktBo.getId());
+        assertEquals("Emmentaler", produktBo.getName());
+        assertEquals("Hartkäse", produktBo.getBeschreibung());
     }
 
     /**
@@ -49,32 +52,40 @@ public class ProduktControllerApiTest extends ApiTest{
      * of our isifact-standards-tutorial application, running on localhost:8081.
      */
     @Test
-    public void testGetAllProduktBoRequest() {
+    void testGetAllProduktBoRequest() {
 
         // given
         WebClient client = WebClient.create();
 
         // when
-        Mono<List> response = client.get()
+        Mono<List<ProduktBo>> response = client.get()
                 .uri(uriBuilder -> uriBuilder
-                        .path("localhost:8081/shop/api/v1/produkte")
+                        .scheme("http")
+                        .host("localhost")
+                        .port(8081)
+                        .path("/shop/api/v1/produkte")
                         .queryParam("name", "Emmentaler")
                         .build())
                 .accept(MediaType.APPLICATION_JSON)
                 .retrieve()
-                .bodyToMono(List.class);
+                .bodyToMono(new ParameterizedTypeReference<List<ProduktBo>>() {});
 
-        List<ProduktBo> produktBoList = (List<ProduktBo>) response.block();
+        List<ProduktBo> produktBoList = response.block();
 
         // then
         assertNotNull(produktBoList);
-        assertEquals(1,produktBoList.size());
-        assertEquals("[{id=1, name=Emmentaler, beschreibung=Hartkäse}]",
-                produktBoList.toString());
+        assertEquals(1, produktBoList.size());
+
+        ProduktBo expectedProduktBo = new ProduktBo(1, "Emmentaler", "Hartkäse");
+        ProduktBo actualProduktBo = produktBoList.get(0);
+
+        assertEquals(expectedProduktBo.getId(), actualProduktBo.getId());
+        assertEquals(expectedProduktBo.getName(), actualProduktBo.getName());
+        assertEquals(expectedProduktBo.getBeschreibung(), actualProduktBo.getBeschreibung());
     }
 
     @Test
-    public void testPutProduktBoRequest() throws JsonProcessingException {
+    void testPutProduktBoRequest() throws JsonProcessingException {
 
         // given
         ProduktBo modifiedProduktBo = new ProduktBo(4,"alter Gouda","Schnittkäse");

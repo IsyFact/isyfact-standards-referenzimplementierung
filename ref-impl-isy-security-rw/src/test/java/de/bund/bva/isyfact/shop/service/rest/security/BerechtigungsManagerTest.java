@@ -19,7 +19,7 @@ import java.util.Optional;
 
 
 @SpringBootTest(classes= RestApplicationRW.class)
-public class BerechtigungsManagerTest extends AbstractResourceTest {
+class BerechtigungsManagerTest extends AbstractResourceTest {
 
     /**
      * Demonstration of a custom attribute check (for e.g. a fine-grained authorization)
@@ -45,7 +45,7 @@ public class BerechtigungsManagerTest extends AbstractResourceTest {
      * Call without authentication: ProduktNotFoundException expected
      */
     @Test
-    public void testCustomAuthorizationResourceWithoutAuthentication() {
+    void testCustomAuthorizationResourceWithoutAuthentication() {
 
         // given
         // no Authentication = no user attribute 'abteilung'
@@ -63,7 +63,7 @@ public class BerechtigungsManagerTest extends AbstractResourceTest {
      * Call with user NOT in 'Zentrale': ProduktNotFoundException expected
      */
     @Test
-    public void testCustomAuthorizationResourceWithWrongAuthentication() {
+    void testCustomAuthorizationResourceWithWrongAuthentication() {
 
         // given
         // confidential client auth data, as defined in KeyCloak:
@@ -91,11 +91,11 @@ public class BerechtigungsManagerTest extends AbstractResourceTest {
                 () -> produktController.findAllProduktBo(null));
     }
 
-        /**
-         * Call with user in 'Zentrale': OK-response expected
-         */
+    /**
+     * Call with user in 'Zentrale': OK-response expected
+     */
     @Test
-    public void testCustomAuthorizationResourceWithCorrectAuthentication() throws ProduktNotFoundException {
+    void testCustomAuthorizationResourceWithCorrectAuthentication() throws ProduktNotFoundException {
 
         // given
         // confidential client auth data, as defined in KeyCloak:
@@ -131,9 +131,9 @@ public class BerechtigungsManagerTest extends AbstractResourceTest {
                 "user-a does NOT have role 'role-a'");
 
         // token contains user attribute 'abteilung' having value 'Zentrale'
-        assertEquals("Zentrale",
-                security.getBerechtigungsmanager().getTokenAttribute("abteilung").toString(),
-                "user-a does NOT have user attribute 'Abteilung: Zentrale'");
+        String abteilung = (String) security.getBerechtigungsmanager().getTokenAttribute("abteilung");
+        assertNotNull(abteilung, "user-a does NOT have user attribute 'abteilung'");
+        assertEquals("Zentrale", abteilung, "user-a does NOT have user attribute 'Abteilung: Zentrale'");
 
         // when
         // call 'findAllProduktBo' without specifying a product name as search parameter

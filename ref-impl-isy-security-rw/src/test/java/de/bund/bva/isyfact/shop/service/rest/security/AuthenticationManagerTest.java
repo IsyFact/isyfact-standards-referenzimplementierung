@@ -13,7 +13,7 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest(classes= RestApplicationRW.class)
-public class AuthenticationManagerTest extends AbstractResourceTest {
+class AuthenticationManagerTest extends AbstractResourceTest {
 
     /**
      * Demonstration of the different ways of authentication:
@@ -38,7 +38,7 @@ public class AuthenticationManagerTest extends AbstractResourceTest {
      * (testing with {@link Berechtigungsmanager ().getRollen})
      */
     @Test
-    public void testAuthenticateAsExplicitTechnUser() {
+    void testAuthenticateAsExplicitTechnUser() {
 
         // Given:
         // - an explicit techn. user (user-a) with name & password and
@@ -71,7 +71,7 @@ public class AuthenticationManagerTest extends AbstractResourceTest {
      * (testing with {@link Berechtigungsmanager ().pruefeRecht})
      */
     @Test
-    public void testAuthenticateAsExplicitClient() throws Exception {
+    void testAuthenticateAsExplicitClient() throws Exception {
 
         // Given:
         // - an explicit client (clientA) with id & secret and
@@ -102,7 +102,7 @@ public class AuthenticationManagerTest extends AbstractResourceTest {
      * (testing with {@link Berechtigungsmanager ().pruefeRecht})
      */
     @Test
-    public void testAuthenticateAsRegisteredClient() {
+    void testAuthenticateAsRegisteredClient() {
 
         // Given:
         // - an registered client (reg-client-a),
@@ -132,7 +132,7 @@ public class AuthenticationManagerTest extends AbstractResourceTest {
      * (testing with {@link Berechtigungsmanager ().pruefeRecht})
      */
     @Test
-    public void testAuthenticateAsRegisteredTechnUser() {
+    void testAuthenticateAsRegisteredTechnUser() {
 
         // Given:
         // - an registered techn. user (reg-user-a),

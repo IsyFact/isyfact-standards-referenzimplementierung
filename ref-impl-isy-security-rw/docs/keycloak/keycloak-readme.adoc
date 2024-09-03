@@ -1,0 +1,97 @@
+= KeyCloak: Setup und Konfiguration für die Referenzimplementierung 'Security'
+msg systems ag
+3.1, August 15, 2024: AsciiDoc article template
+:toc:
+:icons: font
+:url-quickref: https://docs.asciidoctor.org/asciidoc/latest/syntax-quick-reference/
+
+Die Referenzimplementierung 'Security' benötigt einen externen IAM-Service (IAM: Identity & Access Management),
+der die OIDC-konforme Authentifizierung und Autorisierung der in den Tests verwendeten Nutzer übernimmt.
+Zur Vereinfachung und Verfügbarkeit wird hierfür KeyCloak verwendet.
+
+Dieses Dokument beschreibt die Installation eines lokalen KeyCloak und dessen Konfiguration
+für die Verwendung im IsyFact-Standard Baustein 'Security' allgemein und speziell
+für die Referenzimplementierung 'Security'. +
+Es richtet sich an Architekten und Entwickler von IsyFact-Anwendungen, die verstehen wollen,
+wie sie den IsyFact-Standard Baustein 'Security' in ihrer Anwendung verwenden und einbauen können.
+
+== Voraussetzungen
+Bevor mit der Installation von KeyCloak begonnen wird, sind einige Voraussetzungen zu erfüllen:
+
+- **Java SDK**: KeyCloak benötigt Java 17. Wir empfehlen die Verwendung von `Temurin-17` als JDK.
+- **Language Level**: Stellen Sie sicher, dass das Language Level auf 8 gesetzt ist.
+- **Umgebungsvariablen**: Die `JAVA_HOME`-Umgebungsvariable muss auf den Pfad des JDK gesetzt werden. Zusätzlich muss der Pfad zur `bin`-Direktory des JDK zur `Path`-Umgebungsvariable hinzugefügt werden. Diese Konfiguration ermöglicht es Ihrem System, die notwendigen Java-Binaries korrekt auszuführen.
+
+=== Einrichten der Umgebungsvariablen unter Windows
+
+1. **JAVA_HOME setzen**:
+- Navigieren Sie zu der Systemsteuerung > Umgebungsvariablen für dieses Konto bearbeiten.
+- Erstellen Sie eine neue Systemvariable mit dem Namen `JAVA_HOME` und setzen Sie den Wert auf den Pfad Ihres JDK (z.B., `C:\Program Files\Eclipse Adoptium\jdk-17`).
+
+2. **Path-Variable aktualisieren**:
+- In den Umgebungsvariablen für dieses Konto, wählen Sie die `Path`-Variable und klicken Sie auf `Bearbeiten`.
+- Fügen Sie den Pfad zur `bin`-Direktory des JDK hinzu (z.B., `C:\Program Files\Java\jdk-17\bin`).
+
+Diese Schritte stellen sicher, dass Ihr System korrekt für die Ausführung von KeyCloak vorbereitet ist.
+
+== KeyCloak-Setup
+Dieser Abschnitt richtet sich an Architekten und Entwickler von IsyFact-Anwendungen, die KeyCloak in ihrer Entwicklungsumgebung installieren wollen - entweder, um die Referenzimplementierung 'Security' laufen zu lassen oder zur Einbindung in ihre Anwendung.
+
+=== Download und Installation der KeyCloak-Software
+Die aktuelle Version (und ältere) zum freien Download sowie Guides und Dokumentation findet sich unter https://www.keycloak.org/.
+Zur Erstellung der Referenzimplementierung 'Security' und des Konfigurations-Exports wurde die Version 24.0.3 von KeyCloak verwendet.
+
+Zur Installation von KeyCloak reicht es, die heruntergeladene Datei (*.zip für Windows bzw. *.tar.gz für Linux)
+in ein beliebiges Verzeichnis auszupacken. Darin sollte dann das Installationsverzeichnis 'keycloak-<Version z.B. 24.0.3>' vorhanden sein.
+
+=== Vorbereitung der Konfiguration für die Referenzimplementierung 'Security'
+1. **Erstellen des 'tmp'-Verzeichnisses**:
+- Im KeyCloak-Installationsverzeichnis (z.B., `C:\keycloak-24.0.3`) erstellen Sie ein neues Verzeichnis mit dem Namen `tmp`.
+
+2. **Kopieren der Konfigurationsdatei**:
+- Kopieren Sie die Datei `ref-impl-isy-security.json`, die unter dem Pfad `ref-impl-isy-security-rw/docs/keycloak/ref-impl-isy-security.json` zu finden ist, in das soeben erstellte `tmp`-Verzeichnis.
+
+=== Import der Konfiguration der Referenzimplementierung 'Security'
+Die für die Referenzimplementierung 'Security' notwendige Konfiguration mit den verwendeten Nutzern, Clients und Rollen steht als Importdatei 'ref-impl-isy-security.json' zur Verfügung. Sie kann mit folgender Prozedur importiert werden:
+
+. Bei einem Import über die Kommandozeile darf die KeyCloak-Instanz NICHT laufen!
+
+. Windows-Terminal (z.B. PowerShell, cmd) aufrufen und in das Verzeichnis der KeyCloak-Installation wechseln:
+`cd <KeyCloak-Installationsverzeichnis>`
+
+. Die exportierte Konfigurationsdatei (*.json) aus dem 'tmp'-Verzeichnis importieren:
+`.\bin\kc.bat import --file=.\tmp\ref-impl-isy-security.json` +
+=> Überprüfen Sie die Log-Ausgabe auf mögliche Fehler. Beim Import wird ein eventuell existierendes gleichnamiges Realm überschrieben. Daher sollte ein solches Realm vorher gelöscht werden.
+
+=== Starten und Stoppen der KeyCloak-Software
+Für den nicht-produktiven Einsatz, also zum Ausprobieren, Testen und zur Verwendung in der Anwendungsentwicklung, kann KeyCloak im sogenannten 'Development Mode' gestartet werden. In diesem Modus muss KeyCloak nicht weiter für die Umgebung konfiguriert werden, sondern läuft 'Out of the Box' mit einer integrierten H2-Datenbank.
+
+Die Referenzimplementierung 'Security' erwartet, dass KeyCloak den HTTP-Port 8989 verwendet. Daher wird KeyCloak aus dem Installationsverzeichnis über die Kommandozeile gestartet mit dem Befehl:
+`.\bin\kc.bat start-dev --http-port=8989`
+
+Beim ersten Start von KeyCloak werden finale Installations- und Konfigurationsschritte durchgeführt. Danach kann die Administrations-GUI im Internet-Browser über die URL `http://localhost:8989/` aufgerufen werden. Dort muss beim ersten Start ein Admin-Benutzer für KeyCloak erstellt werden (mit Name und Passwort). Weitere Details finden sich auch im https://www.keycloak.org/getting-started/getting-started-zip['Getting Started Guide'] von keycloak.org.
+
+Zum Stoppen von KeyCloak brechen Sie den laufenden Kommandozeilenprozess mit <Ctrl-C> (Windows) ab. Andernfalls kann es passieren, dass KeyCloak nicht sauber herunterfährt und nicht wieder gestartet werden kann.
+
+== IsyFact-spezifische Konfiguration von KeyCloak
+IsyFact Security erwartet einige Informationen an bestimmten Stellen in Access-Token:
+
+Die IsyFact-Rollen (von IsyFact-Anwendungen) werden abgebildet als Realm roles.
+Wie im Konzept und den Nutzungsvorgaben des Bausteins 'Security' beschrieben, werden die IsyFact-Rollen in der jeweiligen IsyFact-Anwendung auf anwendungsspezifische und feingranulare Rechte abgebildet.
+
+- Die an den Benutzer (User / Client) vergebenen Rollen werden im (IsyFact-) Token Claim Name 'isyfact_roles' erwartet.
+Dafür muss in KeyCloak ein Client scope ('isyfact-roles') mit einem role mapper angelegt werden, der die Rollen des Benutzers auf den Token Claim Name 'isyfact_roles' des Access-Tokens abbildet.
+
+Zur Vervollständigung des OpenID Connect Protokolls müssen im ID-Token u. Access-Token bestimmte Informationen hinterlegt werden:
+
+- Die Spring-Security Implementierung eines OIDC-Clients prüft bei Erhalt eines Tokens,
+ob es auf ihn ausgestellt ist: +
+Der Name des Clients, der das Token angefordert hat und auf den es ausgestellt ist,
+muss im Claim 'Audience' des Tokens stehen.
+Dafür muss in KeyCloak für jeden Client ein Client scope mit einem audience mapper angelegt werden,
+der den Namen / ID des (confidential- / service-) Client dort hinterlegt.
+
+Diese Konfigurationen sind bereits in der Importdatei 'ref-impl-isy-security.json' enthalten.
+Es muss nichts weiter gemacht werden, wenn sie in KeyCloak importiert wurde. +
+Wenn jedoch KeyCloak und der IsyFact-Baustein 'Security' in eigenen Anwendungen verwendet wird,
+müssen die oben angegebenen Anpassungen an KeyCloak gemacht werden.
