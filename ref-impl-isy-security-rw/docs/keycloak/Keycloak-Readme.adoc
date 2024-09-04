@@ -56,7 +56,7 @@ in ein beliebiges Verzeichnis auszupacken. Darin sollte dann das Installationsve
 === Import der Konfiguration der Referenzimplementierung 'Security'
 Die für die Referenzimplementierung 'Security' notwendige Konfiguration mit den verwendeten Nutzern, Clients und Rollen steht als Importdatei 'ref-impl-isy-security.json' zur Verfügung. Sie kann mit folgender Prozedur importiert werden:
 
-. Bei einem Import über die Kommandozeile darf die KeyCloak-Instanz NICHT laufen!
+. Bei einem Import über die Kommandozeile darf die KeyCloak-Instanz NICHT laufen! Siehe <<Starten und Stoppen des KeyCloak-Servers>>
 
 . Windows-Terminal (z.B. PowerShell, cmd) aufrufen und in das Verzeichnis der KeyCloak-Installation wechseln:
 `cd <KeyCloak-Installationsverzeichnis>`
@@ -68,9 +68,9 @@ Die für die Referenzimplementierung 'Security' notwendige Konfiguration mit den
 === Export einer KeyCloak-Konfiguration (realm)
 Die oben erwähnte Importdatei wurde nach folgender Prozedur erstellt (getestet mit KeyCloak Version 24.0.3):
 
-Nachdem die Keycloak Anwendung gestartet wurde, wie hier beschrieben: <<Starten und Stoppen des KeyCloak-Servers>>, kann eine neue KeyCloak-Konfiguration im Keycloak Client im Internet-Browser erstellt werden. Diese Konfiguration kann dann exportiert werden.
+Nachdem die Keycloak Anwendung gestartet wurde, kann die aktuelle KeyCloak-Konfiguration im Keycloak Client `http://localhost:8989/` modifiziert werden. Diese Konfiguration kann dann exportiert werden.
 
-. Bei einem Export über die Kommandozeile darf KeyCloak-Instanz NICHT laufen!
+. Bei einem Export über die Kommandozeile darf KeyCloak-Instanz NICHT laufen! Siehe <<Starten und Stoppen des KeyCloak-Servers>>
 
 . Windows-Terminal aufrufen (z.B. Powershell, cmd) und Wechsel in Verzeichnis der KeyCloak-Installation: +
 `cd <KeyCloak-Installationsverzeichnis>`
@@ -104,6 +104,7 @@ Die Referenzimplementierung 'Security' erwartet, dass KeyCloak den HTTP-Port 898
 Beim ersten Start von KeyCloak werden finale Installations- und Konfigurationsschritte durchgeführt. Danach kann der Keycloak Client im Internet-Browser über die URL `http://localhost:8989/` aufgerufen und die Keycloak Konfiguration angepasst werden. Beim ersten Start werden Sie aufgefordert einen Admin-Benutzer anzulegen (mit Name und Passwort). Weitere Details finden sich auch im https://www.keycloak.org/getting-started/getting-started-zip['Getting Started Guide'] von keycloak.org.
 
 Zum Stoppen von KeyCloak brechen Sie den laufenden Kommandozeilenprozess mit <Ctrl-C> (Windows) ab. Andernfalls kann es passieren, dass KeyCloak nicht sauber herunterfährt und nicht wieder gestartet werden kann.
+Es wurde festgestellt, dass sporadisch das Starten von KeyCloak Fehlermeldungen auftreten, falls eine VPN-Verbindung aktiv ist. Gegenfalls darum bitte die VPN-Verbindung trennen.
 
 == IsyFact-spezifische Konfiguration von KeyCloak
 IsyFact Security erwartet einige Informationen an bestimmten Stellen in Access-Token:
