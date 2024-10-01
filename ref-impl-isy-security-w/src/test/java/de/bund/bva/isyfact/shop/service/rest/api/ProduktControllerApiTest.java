@@ -3,6 +3,9 @@ package de.bund.bva.isyfact.shop.service.rest.api;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import de.bund.bva.isyfact.shop.core.daten.ProduktBo;
 import org.junit.jupiter.api.Test;
+import org.springframework.http.MediaType;
+import org.springframework.web.reactive.function.client.WebClient;
+import reactor.core.publisher.Mono;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -30,19 +33,50 @@ class ProduktControllerApiTest extends ApiTest {
         String clientBSecret = "htXMYwbXuxftL1x5gblwy1ysbDysLnKB";      // see key cloak ...
 
         // and a modified product
-        ProduktBo modifiedProduktBo = new ProduktBo(4,"mittelalter Gouda","Schnittkäse");
+        ProduktBo modifiedProduktBo = new ProduktBo(4,"Gouda","Schnittkäse");
 
         // and a token for this client
         String token = initializeTokenForClient(clientBId, clientBSecret);
 
         // when
-        // triggering the task
-        ProduktBo result = updateProduktBo(modifiedProduktBo,"http://localhost:8082/shop/api/v1/produkte" , token);
+        // sending request and receiving its response
+        WebClient client = WebClient.create();
+
+        // ProduktBo result = updateProduktBo(modifiedProduktBo,"http://localhost:8082/shop/api/v1/produkte" , token);
+
+        Mono<ProduktBo> response = client.put()
+                //.uri("http://localhost:8082/shop/api/v1/produkte")
+                .uri(uriBuilder -> uriBuilder
+                        .scheme("http")
+                        .host("localhost")
+                        .port(8082)
+                        .path("/shop/api/v1/produkte")
+                        .build())
+                .accept(MediaType.APPLICATION_JSON)
+                .body(Mono.just(modifiedProduktBo), ProduktBo.class)
+                .header("Authorization", "Bearer " + token)
+                .retrieve()
+                .bodyToMono(ProduktBo.class);
+        ProduktBo result = response.block();
 
         // then
-        // authentication for the external service, and executing this service works as expected:
-        // it returns the right product
         assertEquals(4L, result.getId());
-        assertEquals("mittelalter Gouda", result.getName());
+        assertEquals("Gouda", result.getName());
     }
+/*
+    protected static ProduktBo updateProduktBo(ProduktBo produktBo, String url, String token) {
+
+        WebClient client = WebClient.create();
+
+        Mono<ProduktBo> response = client.put()
+                .uri(url)
+                .accept(MediaType.APPLICATION_JSON)
+                .body(Mono.just(produktBo), ProduktBo.class)
+                .header("Authorization", "Bearer " + token)
+                .retrieve()
+                .bodyToMono(ProduktBo.class);
+
+        return response.block();
+    }
+ */
 }

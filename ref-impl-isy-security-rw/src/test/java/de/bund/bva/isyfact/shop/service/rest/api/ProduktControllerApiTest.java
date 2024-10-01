@@ -32,8 +32,19 @@ class ProduktControllerApiTest extends ApiTest{
         WebClient client = WebClient.create();
 
         // when
-        Mono<ProduktBo> response = client.get()
+        /* Mono<ProduktBo> response = client.get()
                 .uri("http://localhost:8081/shop/api/v1/produkte/1")
+                .accept(MediaType.APPLICATION_JSON)
+                .retrieve()
+                .bodyToMono(ProduktBo.class);
+         */
+        Mono<ProduktBo> response = client.get()
+                .uri(uriBuilder -> uriBuilder
+                        .scheme("http")
+                        .host("localhost")
+                        .port(8081)
+                        .path("/shop/api/v1/produkte/1")
+                        .build())
                 .accept(MediaType.APPLICATION_JSON)
                 .retrieve()
                 .bodyToMono(ProduktBo.class);
@@ -88,7 +99,7 @@ class ProduktControllerApiTest extends ApiTest{
     void testPutProduktBoRequest() throws JsonProcessingException {
 
         // given
-        ProduktBo modifiedProduktBo = new ProduktBo(4,"alter Gouda","Schnittkäse");
+        ProduktBo modifiedProduktBo = new ProduktBo(4,"Gouda","Schnittkäse");
 
         String clientAId = "client-a";                                  // see key cloak ...
         String clientASecret = "piPYyzamZYat6USdEls15OTOJdAFU60v";      // see key cloak ...
@@ -96,12 +107,50 @@ class ProduktControllerApiTest extends ApiTest{
         String token = initializeTokenForClient(clientAId, clientASecret);
 
         // when
-        ProduktBo result = updateProduktBo(modifiedProduktBo,"http://localhost:8081/shop/api/v1/produkte" , token);
+        // sending request and receiving its response
+
+        // ProduktBo result = updateProduktBo(modifiedProduktBo,"http://localhost:8081/shop/api/v1/produkte" , token);
+
+        WebClient client = WebClient.create();
+
+        Mono<ProduktBo> response = client.put()
+                // .uri("http://localhost:8081/shop/api/v1/produkte")
+                .uri(uriBuilder -> uriBuilder
+                        .scheme("http")
+                        .host("localhost")
+                        .port(8081)
+                        .path("/shop/api/v1/produkte")
+                        .build())
+                .accept(MediaType.APPLICATION_JSON)
+                .header("Authorization", "Bearer " + token)
+                .body(Mono.just(modifiedProduktBo), ProduktBo.class)
+                .retrieve()
+                .bodyToMono(ProduktBo.class);
+
+        ProduktBo result = response.block();
 
         // then
         assertEquals(4L, result.getId());
-        assertEquals("alter Gouda", result.getName());
+        assertEquals("Gouda", result.getName());
     }
+
+/*
+    protected static ProduktBo updateProduktBo(ProduktBo produktBo, String url, String token) {
+
+        WebClient client = WebClient.create();
+
+        Mono<ProduktBo> response = client.put()
+                .uri(url)
+                .accept(MediaType.APPLICATION_JSON)
+                .header("Authorization", "Bearer " + token)
+                .body(Mono.just(produktBo), ProduktBo.class)
+                .retrieve()
+                .bodyToMono(ProduktBo.class);
+
+        return response.block();
+    }
+    */
+
 
 }
 

@@ -39,7 +39,13 @@ class ProduktControllerApiTest {
 
         // when
         Mono<ProduktBo> response = client.get()
-                .uri("http://localhost:" + serverPort + "/shop/api/v1/produkte/1")
+                //.uri("http://localhost:" + serverPort + "/shop/api/v1/produkte/1")
+                .uri(uriBuilder -> uriBuilder
+                        .scheme("http")
+                        .host("localhost")
+                        .port(serverPort)
+                        .path("/shop/api/v1/produkte/1")
+                        .build())
                 .accept(MediaType.APPLICATION_JSON)
                 .retrieve()
                 .bodyToMono(ProduktBo.class);
@@ -65,7 +71,13 @@ class ProduktControllerApiTest {
 
         // when
         Mono<List<ProduktBo>> response = client.get()
-                .uri("http://localhost:" + serverPort + "/shop/api/v1/produkte")
+                // .uri("http://localhost:" + serverPort + "/shop/api/v1/produkte")
+                .uri(uriBuilder -> uriBuilder
+                        .scheme("http")
+                        .host("localhost")
+                        .port(serverPort)
+                        .path("/shop/api/v1/produkte")
+                        .build())
                 .accept(MediaType.APPLICATION_JSON)
                 .retrieve()
                 .bodyToMono(new ParameterizedTypeReference<List<ProduktBo>>() {});
