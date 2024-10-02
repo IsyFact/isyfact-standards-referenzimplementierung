@@ -38,14 +38,11 @@ class ProduktControllerApiTest extends ApiTest {
         // and a token for this client
         String token = initializeTokenForClient(clientBId, clientBSecret);
 
-        // when
-        // sending request and receiving its response
         WebClient client = WebClient.create();
 
-        // ProduktBo result = updateProduktBo(modifiedProduktBo,"http://localhost:8082/shop/api/v1/produkte" , token);
-
+        // when
+        // sending request and receiving its response
         Mono<ProduktBo> response = client.put()
-                //.uri("http://localhost:8082/shop/api/v1/produkte")
                 .uri(uriBuilder -> uriBuilder
                         .scheme("http")
                         .host("localhost")
@@ -57,26 +54,11 @@ class ProduktControllerApiTest extends ApiTest {
                 .header("Authorization", "Bearer " + token)
                 .retrieve()
                 .bodyToMono(ProduktBo.class);
+
         ProduktBo result = response.block();
 
         // then
         assertEquals(4L, result.getId());
         assertEquals("Gouda", result.getName());
     }
-/*
-    protected static ProduktBo updateProduktBo(ProduktBo produktBo, String url, String token) {
-
-        WebClient client = WebClient.create();
-
-        Mono<ProduktBo> response = client.put()
-                .uri(url)
-                .accept(MediaType.APPLICATION_JSON)
-                .body(Mono.just(produktBo), ProduktBo.class)
-                .header("Authorization", "Bearer " + token)
-                .retrieve()
-                .bodyToMono(ProduktBo.class);
-
-        return response.block();
-    }
- */
 }

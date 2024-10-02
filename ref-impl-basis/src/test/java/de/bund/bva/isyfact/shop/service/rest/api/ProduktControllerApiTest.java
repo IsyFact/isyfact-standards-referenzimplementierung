@@ -39,8 +39,7 @@ class ProduktControllerApiTest {
 
         // when
         Mono<ProduktBo> response = client.get()
-                //.uri("http://localhost:" + serverPort + "/shop/api/v1/produkte/1")
-                .uri(uriBuilder -> uriBuilder
+                 .uri(uriBuilder -> uriBuilder
                         .scheme("http")
                         .host("localhost")
                         .port(serverPort)
@@ -71,8 +70,7 @@ class ProduktControllerApiTest {
 
         // when
         Mono<List<ProduktBo>> response = client.get()
-                // .uri("http://localhost:" + serverPort + "/shop/api/v1/produkte")
-                .uri(uriBuilder -> uriBuilder
+git                  .uri(uriBuilder -> uriBuilder
                         .scheme("http")
                         .host("localhost")
                         .port(serverPort)
