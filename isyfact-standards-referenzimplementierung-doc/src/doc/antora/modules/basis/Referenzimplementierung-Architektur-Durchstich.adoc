@@ -1,0 +1,263 @@
+= Referenzimplementierung des IsyFact-Bausteins 'Security'
+msg systems ag
+3.0, July 29, 2022: AsciiDoc article template
+:toc:
+:icons: font
+:url-quickref: https://docs.asciidoctor.org/asciidoc/latest/syntax-quick-reference/
+
+Die oben dargestellte Gliederung folgt einer klassichen Tutorial-Gliederung
+
+* what you build
+* what you need
+* how to implement it
+* how to test it
+
+== Ziele und Anforderungen
+
+=== Allgemeine Ziele
+Mit der Referenz-Implementierung eines IsyFact-Standards-konformen Architektur-Durchstichs
+soll ein Software-Entwickler sehen und verstehen,
+wie eine Anwendung aufgebaut sein muss,
+die in eine IsyFact-Anwendungslandschaft integrierbar ist und funktioniert.
+
+Mit der Referenz-Implementierung  wird angestrebt, sowohl die Fachlichkeit wie auch die Architektur minimal zu halten.
+Nutzungsvorgaben, Namenskonventionen, Strukturierungs-Richtlinien werden eingehalten.
+
+Weiterhin wird angestrebt,
+soweit wie nur möglich die in den IsyFact-Standards verwendeten Maven-Plugins zu nutzen.
+Entsprechendes gilt auch für das IsyFact-Standards verankerte Dependeny-Management:
+Durch Nutzung einer isy-fact-standars-bom sollen nur die Produktversionen von Libraries und Frameworks eingebunden werden,
+die an zentraler Stelle definiert sind.
+
+=== Überblick über die Fachlichkeit
+
+==== Entitäten
+In der Referenz-Implementierung verwenden wir als Entitäten:
+nur das Objekt Antrag mit den Attributen Id, Antragsteller, Antragstatus.
+
+
+===== Use Cases
+Als Use Cases unterstützt die Referenz-Implementierung für den angestrebten keep-it-simple Ansatz
+nur zwei elementare Suchfunktionen:
+
+* Suche nach Antrag anhand der ID
+* Suche nach Anträgen anhand von Attributwerten
+  (matching substring Vergleich für den Vornamen oder Nachnamen des Antragstellers)
+
+=== Überblick über die SW-Architektur
+Die Referenz-Implementierung ist als 3-Schichten Architektur konzipiert.
+
+* Service und Exception Fassade
+* Anwendungskern
+* Persistenzschicht
+
+Diese drei Schichten sind eingebettet in eine Spring-Boot-Anwendung.
+Als Datenbank verwenden wir eine H2-Datenbank.
+Mit jedem Start der Spring-Boot-Anwendung wird die Datenbank neu initialisiert.
+
+== Voraussetzungen
+Vorausgesetzt wird Java-17-Installation und eine IDE, wie z.B. Intellij, mit Maven-Integration.
+
+== Anleitung zur Implementierung
+Als Anleitung zur Implementierung beschreiben wir
+
+* zunächst grundlegende Konfigurationseinstellungen
+* danach für jede der oben genannten Schichten die zugehörigen Klassen und Interfaces.
+
+=== Konfiguration des Build-Managements
+Das Repository der Referenz-Implementierungen beinhaltet Spring-Boot-Anwendungen.
+Jede dieser Anwendungen ist in einem Maven-Modul implementiert.
+Das Maven-Modul für den Architektur-Durchstich ist das 'basis' Modul.
+Wie alle anderen Module hat auch dieses Maven-Modul eine eigene pom.xml Datei,
+die ihrerseits eine Modul-übergreifende pom.xml als parent referenziert.
+
+Aufgabe der Modul-spezifischen pom.xml ist es, die Dependencies für dieses Modul zu definieren,
+
+Aufgabe der Modul-übergreifenden pom.xml, die in der Verzeichnis-Hierarchie eine Ebene höher liegt,
+ist es, die IsyFact Standards-Module und das Dependency-Management für die in der IsyFact genutzten Produkte
+(Libraries und Frameworks) einzubinden.
+
+=== Konfiguration der Anwendung
+Die Konfigruation der Anwendung ist in der 'application.yml' Datei definiert.
+Hier ist der Port definiert,
+an dem die gestartete Spring-Boot-Anwendung die eingehenden Requests entgegennimmt.
+
+Weiterhin findet man in der application.yml' Datei die JPA bzw. SQL Konfiguration der Anwendung.
+Hier wird eine weitere Resource-Datei 'data.sql' referenziert,
+die ein SQL-Skript zum Einspielen der Daten enthält, welches beim Start der Anwendung ausgeführt wird.
+
+=== Java-Klassen und Interfaces
+Die Java-Anwendung folgt einer klassischen 3-Schichten-Architektur.
+
+Das Root-Package des Architektur-Durchstichs ist das Verzeichnis 'de.bund.bva.isyfact.antrag'.
+Dieses Root-Package enthält die Main-Klasse der Anwendung, sowie drei untergeordnete Packages 'service',
+'core' und 'persistence',
+von denen jedes jeweils eines genau einer dieser drei Schichten entspricht.
+
+Im folgenden geben wir eine tabellarische Übersicht über die Klassen der einzelnen Packages, bzw. Schichten.
+
+|====
+|*Klasse* | *Beschreibung* | *Hinweis*
+| de.bund.bva.isyfact.antrag.
+  RestApplication
+| Main-Klasse der Anwendung, die beim Start der Anwendung ausgeführt wird.
+| Das Spring-Boot-Framework erkennt diese Klasse an der Annotation '@SpringBootApplication' |
+
+|====
+
+
+==== Service Fassade
+Eine Service-Fassade sollte Klassen enthalten, deren Methoden im CRUD Lebenszyklus einzelner Resource-Objekte
+benötigt werden.
+Für die Referenz-Implementierung des Architektur-Durchstichs verwenden wir nur ein einziges Resource-Objekt ('antrag').
+Und in der zugehörgen Resource- (bzw. Controller) Klasse bieten wir nur Read-Operationen an.
+
+|====
+|*Klasse* | *Beschreibung* | *Hinweis*
+| de.bund.bva.isyfact.antrag.
+  service.rest.AntragController
+| Controller-Klasse, deren Methoden die eingehenden REST-Requests behandeln.
+| Das Spring-Boot-Framework erkennt diese Klasse an der Annotation '@RestController'.
+
+  Mit der Annotation '@RequestMapping' wird für die Klasse der zugehörige Resource-Pfad definiert.
+
+  Mit Annotationen wie '@PostMapping', '@GetMapping', '@PutMapping'
+  und den hier zu definierenden Methoden-Pfaden werden die in der Resource vorhandenen Resource-Methoden
+  adressiert.
+
+  Mit der Annotation '@ResponseStatus(HttpStatus.OK)' wird definiert, welcher Status-Code nach erfolgreicher
+  Ausführung der jeweiligen Resource-Methode zurück gegeben wird.
+|====
+
+==== Exception Fassade
+Wie man in der Implementierung der AntragController-Klasse sehen kann,
+gibt es dort keinerlei try-catch-Blöcke und somit keinerlei Fehlerbehandlung.
+
+Die Fehlerbehandlung ist ausgelagert in eine Exception-Fassade.
+Die zugehörigen Fehlerbehandlungs-Klassen (bzw. Advice-Klassen) findet man im 'service.rest.advice' Package.
+
+Die fachlichen Exceptions, die von diesen Fehlerbehandlungs-Klassen
+(bzw. Advice-Klassen) verarbeitet werden,
+müssen im 'service.rest.exceptions' Package definiert sein.
+
+|====
+|*Klasse* | *Beschreibung* | *Hinweis*
+| de.bund.bva.isyfact.antrag. service.rest.advice.ErrorMessage
+| Die von den Advice-Klassen erzeugten ErrorMessages enthalten eine Fehlermeldung
+  und den zugehörgen Http-Status-Code
+|
+| de.bund.bva.isyfact.antrag.
+  service.rest.advice.AntragNotFoundAdvice
+| Diese Klasse erzeugt aus einer AntragNotFoundException das zugehörige ErrorMessage-Objekt
+| Das Spring-Boot-Framework erkennt Advice-Klassen anhand der Annotation '@RestControllerAdvice'
+
+| de.bund.bva.isyfact.antrag.
+  service.rest.advice.RuntimeExceptionAdvice
+| Diese Klasse erzeugt aus einer RuntimeException das zugehörige ErrorMessage-Objekt
+| Das Spring-Boot-Framework erkennt Advice-Klassen anhand der Annotation '@RestControllerAdvice'
+|
+|====
+
+==== Anwendungskern
+Die Klassen des Anwendungskerns liegen im Package 'de.bund.bva.isyfact.antrag.core'.
+Dabei sind nur die Interface-Klassen, die in diesem Package liegen, nach außen sichtbar,
+und von den Services der Service-Schicht aufrufbar.
+
+|====
+|*Interface* | *Beschreibung* | *Hinweis*
+| de.bund.bva.isyfact.antrag.
+  core.AntragVerwaltung
+| Enthält find-Methoden zur Suche nach Anträgen.
+
+  Die find-Methoden werden in der Klasse 'AntragVerwaltungImpl' implementiert.
+|
+|====
+
+|====
+|*Klasse* | *Beschreibung* | *Hinweis*
+| de.bund.bva.isyfact.antrag.
+  core.impl.AntragVerwaltungImpl
+| Enthält find-Methoden zur Suche nach Anträgen.
+
+  Die find-Methoden dieser Klasse implementieren die find-Methoden aus dem oben beschriebenen Interface.
+| Alle Impl-Klassen sind mit '@Component' annotiert.
+
+| de.bund.bva.isyfact.antrag.
+  core.impl.AwfAntragSuchen
+| Enthält find-Methoden zur Suche nach Anträgen.
+
+  Die find-Methoden dieser Klasse werden von der 'AntragVerwaltungImpl' Klasse aufgerufen.
+
+  Die find-Methoden dieser Klasse rufen ihrerseits find-Methoden von Repository-Interfaces auf.
+| Alle Awf-Klassen sind mit '@Service' annotiert.
+
+| de.bund.bva.isyfact.antrag.
+  core.daten.AntragBo
+| Instanzen dieser Klasse werden von den find-Methoden der Awf-Klassen und Impl-Klassen
+  an den Aufrufer übergeben.
+|
+| de.bund.bva.isyfact.antrag.
+  core.daten.AntragBoMapper
+| Diese Klasse enthält Konverter-Methoden
+
+  - für die Umwandlung von Antrag-Enitäten in entsprechende Bo-Objekte und
+
+  - für die Umwandlung von Antrag-Bo-Objekten in entsprechende Entitäten
+|
+|====
+
+==== Persistenzschicht
+|====
+|*Interface* | *Beschreibung* | *Hinweis*
+| de.bund.bva.isyfact.antrag.
+  persistenc.dao.AntragRepository
+| Dieses Interface stellt eine Erweiterung des Interfaces JpaRepository<Antrag, Long> dar.
+|
+|====
+|====
+|*Klasse* | *Beschreibung* | *Hinweis*
+| de.bund.bva.isyfact.antrag.
+  persistenc.entity.Antrag
+| Diese Klasse stellt die für die Referenz-Implementierung des Archietektur-Durchstichs zentrale Entität dar.
+| Entitätsklassen sind mit der Annotation '@Entity' markiert.
+
+  Für das Mapping von Tabellennamen auf Entities kann man die Annotation '@Table' verwenden.
+
+  Und für das Mapping von Spaltennamen auf Entity-Attribute die Annotation '@Column'.
+|====
+
+=== Architekturbild
+
+TODO
+
+== Beschreibung der Tests
+Die in der Referenz-Implementierung implementierten Tests sind allesamt Integrationstests.
+Dabei wird die korrekte Funktionsweise der AntragController-Methoden verifiziert.
+Die Integrationstests erfordern keinerlei manuelle Vorbereitung.
+Sie lassen sich automatisiert in einer Build-Pipeline ausführen.
+
+=== Testziel
+Neben einer automatisierbaren Qualitättsicherung,
+die im Rahmen eines professionellen SW-Engineering eine Selbstverständlichkeit sein sollte,
+möchten wir darauf hinweisen, dass vor allem die API-Tests noch einen weiteren Vorteil bieten:
+nämlich dem Entwickler zu illustrieren, wie er die technischen Features eines IsyFact-Bausteins nutzt.
+
+=== Testtechnologien
+Zur Durchführung der Tests werden entweder Spring-Boot-Tests oder Api-Tests ausgeführt.
+Zur Vorbereitung der Api-Tests wird die Anwendung automatisiert hochgefahren und ist über einen
+zufällig intialisierten Port aufrufbar.
+
+=== Testklassen und Testfälle
+Die nachfolgende Tabelle gibt eine Übersicht über die implementierten Testklassen und deren Testfälle.
+Zur weiteren Information sollte ein Entwickler die Kommentare im Java-Code heranziehen.
+|===
+|*Testklasse*|*Testfall*|*Testtechnologie*
+|AntragControllerApiTest|Antrag mit ID suchen|API-Test
+|AntragControllerApiTest|Antrag mit Name des Antragstellers suchen|API-Test
+|||
+|ProduktControllerTest|Antrag mit ID suchen - Positiv-Test|SpringBoot-Test
+|ProduktControllerTest|Antrag mit Name des Antragstellers suchen - Positiv-Test |SpringBoot-Test
+|ProduktControllerTest|Antrag mit ID suchen - Negativ-Test mit AntragNotFoundException|SpringBoot-Test
+|ProduktControllerTest|Antrag mit Name des Antragstellers suchen - Negativ-Test mit leerer Ergebnisliste |SpringBoot-Test
+
+|===
