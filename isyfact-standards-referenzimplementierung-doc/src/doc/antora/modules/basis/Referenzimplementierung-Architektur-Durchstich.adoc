@@ -228,11 +228,21 @@ und von den Services der Service-Schicht aufrufbar.
 
 === Architekturbild
 
-TODO
+Das nachfolgende Klassendiagramm skizziert die Aufruf-Hierachie in der Architektur-Durchstich-Anwendung:
+
+[id="ref-impl-basis-call-hierachy",reftext="{figure-caption} {counter:figures}"]
+image::ref-impl-basis-call-hierarchy.svg[align="center"]
+
+Der AntragController verwendet über das AntragVerwaltung-Interface die AntragVerwaltungImpl-Klasse.
+
+Diese wiederum verwendet die Anwendungsfall-Klasse AwfAntragSuchen.
+
+Und letztere verwendet das Antrag-Repository-Interface, welches eine Erweiterung des JPA-Repository-Interface
+darstellt und Default-Implementierungen von Interface-Methoden enthält.
 
 == Beschreibung der Tests
 Die in der Referenz-Implementierung implementierten Tests sind allesamt Integrationstests.
-Dabei wird die korrekte Funktionsweise der AntragController-Methoden verifiziert.
+Mit ihnen wird die korrekte Funktionsweise der AntragController-Methoden demonstriert und verifiziert.
 Die Integrationstests erfordern keinerlei manuelle Vorbereitung.
 Sie lassen sich automatisiert in einer Build-Pipeline ausführen.
 
