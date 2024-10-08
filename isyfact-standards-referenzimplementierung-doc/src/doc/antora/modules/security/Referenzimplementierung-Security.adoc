@@ -1,6 +1,6 @@
 = Referenzimplementierung des IsyFact-Bausteins 'Security'
 msg systems ag
-3.0, July 29, 2022: AsciiDoc article template
+3.0, October 10, 2024
 :toc:
 :icons: font
 :url-quickref: https://docs.asciidoctor.org/asciidoc/latest/syntax-quick-reference/
@@ -35,7 +35,7 @@ Es werden zwei Anwendungen zur Verfügung gestellt:
 
 * *Security-Service-Provider:* Diese Anwendung bietet die Möglichkeit, alle drei der oben genannten Use Cases auszuführen.
 * *Security-Service-Consumer:* Diese Anwendung bietet die Möglichkeit, die Update-Funktion auszuführen.
-Für diesen Anwendungsfall ruft die Security-Service-Consumer-Anwendung die REST Schnittelle der Security-Service-Provider-Anwendung auf.
+Für diesen Anwendungsfall ruft die Security-Service-Consumer-Anwendung die REST Schnittstelle der Security-Service-Provider-Anwendung auf.
 
 === Berechtigungskonzept
 * Die *Suchfunktionen* des Architektur-Durchstichs sind uneingeschränkt für alle Anwender (ohne jede Prüfung von Rollen und Rechten ausführbar)
@@ -129,7 +129,15 @@ Die Anwendungsfall-Klasse 'AwfAntragAktualisieren'
 
 ==== Architekturbild
 
-TODO
+Das nachfolgende Komponenten-Diagramm skizziert das Zusammenspiel der 'security-service-provider' und
+'security-service-consumer' Anwendungen und die internen und externen Aufruf-Beziehungen
+zwischen ihren fachlichen Klassen.
+
+Mit den blau-gestrichelten Linien wird dargestellt, dass der Aufruf einer REST-API
+Methode über das Http-Protokoll erfolgt.
+
+[id="ref-impl-security-call-hierachy",reftext="{figure-caption} {counter:figures}"]
+image::ref-impl-security-call-hierarchy.svg[align="center"]
 
 == Beschreibung der Tests
 Die in der Referenz-Implementierung implementierten Tests sind allesamt Integrationstests.
@@ -138,7 +146,7 @@ Die Integrationstests erfordern eine manuelle Vorbereitung
 und lassen sich daher nicht (ohne weiteres) automatisiert in einer Build-Pipeline ausführen.
 
 === Testziel
-Neben einer automatisierbaren Qualitättsicherung,
+Neben einer automatisierbaren Qualitätssicherung,
 die im Rahmen eines professionellen SW-Engineering eine Selbstverständlichkeit sein sollte,
 möchten wir darauf hinweisen, dass vor allem die API-Tests noch einen weiteren Vorteil bieten:
 nämlich dem Entwickler zu illustrieren, wie er die technischen Features eines IsyFact-Bausteins nutzt.
@@ -147,9 +155,9 @@ nämlich dem Entwickler zu illustrieren, wie er die technischen Features eines I
 Zur Durchführung der Tests werden entweder Spring-Boot-Tests oder Api-Tests ausgeführt.
 
 Voraussetzung für die Ausführung von Spring-Boot-Tests ist,
-dass die zu verwendende KeyCloak-Instanz (manuell) gestartet wurde.
+dass die zu verwendende Keycloak-Instanz (manuell) gestartet wurde.
 
-Voraussetzung für die Ausführung von Api-Tests ist, dass neben der KeyCloak-Instanz,
+Voraussetzung für die Ausführung von Api-Tests ist, dass neben der Keycloak-Instanz,
 auch die beiden Anwendungen (Security-Service-Provider und Security-Service-Consumer) gestartet sind.
 Nur so nämlich lässt sich über API-Aufrufe auch deren REST-Schnittstelle erreichen.
 
@@ -157,15 +165,15 @@ Nur so nämlich lässt sich über API-Aufrufe auch deren REST-Schnittstelle erre
 Die nachfolgende Tabelle gibt eine Übersicht über die implementierten Testklassen und deren Testfälle.
 Zur weiteren Information sollte ein Entwickler die Kommentare im Java-Code heranziehen.
 
-Entscheidend für die in den von Keycloak gelieferten Tokens (und für die in den Tokens gelieferten Berechtiguingen)
+Entscheidend für die in den von Keycloak gelieferten Tokens (und für die in den Tokens gelieferten Berechtigungen)
 ist weiterhin die in Keycloak persistierte Konfiguration.
-Zum Verständnis der Testfälle empfehlen wir, sich ggf. über den KeyColak-Client diese Konfiguration genauer anzusehen.
+Zum Verständnis der Testfälle empfehlen wir, sich ggf. über den Keycloak-Client diese Konfiguration genauer anzusehen.
 
 ==== Security-Consumer-Tests
 
 |====
 |*Testklasse*|*Testfall*|*Testtechnologie*
-|AntragControllerApiTest|Antrag aktualiseren|API-Test
+|AntragControllerApiTest|Antrag aktualiseren|API-Test, inklusive Aufruf eines externen Service.
 |====
 
 ==== Security-Provider-Tests
@@ -191,9 +199,15 @@ Zum Verständnis der Testfälle empfehlen wir, sich ggf. über den KeyColak-Clie
 |SecuredResourceTest|Aufruf einer geschützten Resource-Methode - mit Token aber falscher Berechtigung|Spring-Boot-Test
 |SecuredResourceTest|Aufruf einer geschützten Resource-Methode - mit Token aber korrekter Berechtigung|Spring-Boot-Test
 |====
-*Anmerkung:* Was die BerechtigungsManagerTests betrifft, so war es das Ziel zu demonstrieren, dass man Resource-Methoden
-nicht nur durch '@Secured' Annotationen schützen kann, sonderen dass es auch möglich ist,
-in einer Resource-Methode Attribute des Users abzufragen und auf erwartete Werte hin abzuprüfen.
-Über die BerechtigungsManagerTests wird dieser Use-Case genauer illustriert.
+*Anmerkung:*
+Mit den AuthenticationManagerTests wird Funktionalität der Methoden des AuthenticationManager-Interfaces überprüft.
 
+Was die BerechtigungsManagerTests betrifft, so war es das Ziel zu demonstrieren,
+wie man mithilfe des BerechtigungsManager-Interfaces in einer Resource-Methode Attribute eines Users ermitteln,
+auf erwartete Werte hin prüfen und anschließend ggf. den Zugriff verweigern kann.
 
+Ziel der PublicResourceTests und SecuredRourceTests war es, die Funktionsweise der '@Secured' Annotation zu prüfen.
+
+Ziel Api-Tests ist es, die REST-Api der beiden Anwendungen technisch und fachlich zu prüfen
+und dabei auch indirket (über eine lange Aufrufkette) sowohl Token-Ermittling und -Weitergabe auf Service-Consumer-Seite,
+wie auch Token-Validierung auf Service-Producer-Seite abzusichern.
