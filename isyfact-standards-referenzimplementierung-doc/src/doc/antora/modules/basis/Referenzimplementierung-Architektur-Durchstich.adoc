@@ -1,32 +1,36 @@
-= Referenzimplementierung des IsyFact-Bausteins 'Security'
+= Referenzimplementierung eines IsyFact-'Architektur-Durchstichs'
 msg systems ag
 3.0, July 29, 2022: AsciiDoc article template
 :toc:
 :icons: font
 :url-quickref: https://docs.asciidoctor.org/asciidoc/latest/syntax-quick-reference/
 
-Die oben dargestellte Gliederung folgt einer klassichen Tutorial-Gliederung
+Die oben dargestellte Gliederung folgt einer klassischen Tutorial-Gliederung
 
 * what you build
 * what you need
 * how to implement it
 * how to test it
 
+====
+*Hinweis:* Die nachfolgende Dokumentation nimmt vorweg, dass in der Implementierung eine Umstellung der Fachlichkeit
+(Produkt -> Antrag) geplant ist.
+====
 == Ziele und Anforderungen
 
 === Allgemeine Ziele
 Mit der Referenz-Implementierung eines IsyFact-Standards-konformen Architektur-Durchstichs
 soll ein Software-Entwickler sehen und verstehen,
 wie eine Anwendung aufgebaut sein muss,
-die in eine IsyFact-Anwendungslandschaft integrierbar ist und funktioniert.
+die in eine IsyFact-Anwendungslandschaft integrierbar ist.
 
 Mit der Referenz-Implementierung  wird angestrebt, sowohl die Fachlichkeit wie auch die Architektur minimal zu halten.
-Nutzungsvorgaben, Namenskonventionen, Strukturierungs-Richtlinien werden eingehalten.
+Nutzungsvorgaben, Namenskonventionen, Strukturierungs-Richtlinien werden berücksichtigt.
 
 Weiterhin wird angestrebt,
 soweit wie nur möglich die in den IsyFact-Standards verwendeten Maven-Plugins zu nutzen.
-Entsprechendes gilt auch für das IsyFact-Standards verankerte Dependeny-Management:
-Durch Nutzung einer isy-fact-standars-bom sollen nur die Produktversionen von Libraries und Frameworks eingebunden werden,
+Entsprechendes gilt auch für das IsyFact-Standards verankerte Dependency-Management:
+Durch Nutzung einer 'isyfact-standards-bom' sollen nur Produktversionen von Libraries und Frameworks eingebunden werden,
 die an zentraler Stelle definiert sind.
 
 === Überblick über die Fachlichkeit
@@ -78,7 +82,7 @@ ist es, die IsyFact Standards-Module und das Dependency-Management für die in d
 (Libraries und Frameworks) einzubinden.
 
 === Konfiguration der Anwendung
-Die Konfigruation der Anwendung ist in der 'application.yml' Datei definiert.
+Die Konfiguration der Anwendung ist in der 'application.yml' Datei definiert.
 Hier ist der Port definiert,
 an dem die gestartete Spring-Boot-Anwendung die eingehenden Requests entgegennimmt.
 
@@ -134,7 +138,7 @@ Wie man in der Implementierung der AntragController-Klasse sehen kann,
 gibt es dort keinerlei try-catch-Blöcke und somit keinerlei Fehlerbehandlung.
 
 Die Fehlerbehandlung ist ausgelagert in eine Exception-Fassade.
-Die zugehörigen Fehlerbehandlungs-Klassen (bzw. Advice-Klassen) findet man im 'service.rest.advice' Package.
+Die zugehörigen Fehlerbehandlungs-Klassen (Advice-Klassen) findet man im 'service.rest.advice' Package.
 
 Die fachlichen Exceptions, die von diesen Fehlerbehandlungs-Klassen
 (bzw. Advice-Klassen) verarbeitet werden,
@@ -229,7 +233,7 @@ und von den Services der Service-Schicht aufrufbar.
 === Architekturbild
 
 
-Das nachfolgende Klassendiagramm skizziert die Aufruf-Hierachie in der Architektur-Durchstich-Anwendung:
+Das nachfolgende Klassendiagramm skizziert die Aufruf-Hierarchie in der Architektur-Durchstich-Anwendung:
 
 [id="ref-impl-basis-call-hierachy",reftext="{figure-caption} {counter:figures}"]
 image::ref-impl-basis-call-hierarchy.svg[align="center"]
@@ -251,7 +255,7 @@ Die Integrationstests erfordern keinerlei manuelle Vorbereitung.
 Sie lassen sich automatisiert in einer Build-Pipeline ausführen.
 
 === Testziel
-Neben einer automatisierbaren Qualitättsicherung,
+Neben einer automatisierbaren Qualitätssicherung,
 die im Rahmen eines professionellen SW-Engineering eine Selbstverständlichkeit sein sollte,
 möchten wir darauf hinweisen, dass vor allem die API-Tests noch einen weiteren Vorteil bieten:
 nämlich dem Entwickler zu illustrieren, wie er die technischen Features eines IsyFact-Bausteins nutzt.
@@ -259,7 +263,7 @@ nämlich dem Entwickler zu illustrieren, wie er die technischen Features eines I
 === Testtechnologien
 Zur Durchführung der Tests werden entweder Spring-Boot-Tests oder Api-Tests ausgeführt.
 Zur Vorbereitung der Api-Tests wird die Anwendung automatisiert hochgefahren und ist über einen
-zufällig intialisierten Port aufrufbar.
+zufällig initialisierten Port aufrufbar.
 
 === Testklassen und Testfälle
 Die nachfolgende Tabelle gibt eine Übersicht über die implementierten Testklassen und deren Testfälle.
