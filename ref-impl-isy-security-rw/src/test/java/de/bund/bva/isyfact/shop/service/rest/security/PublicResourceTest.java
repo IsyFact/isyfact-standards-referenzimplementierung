@@ -67,8 +67,6 @@ class PublicResourceTest extends AbstractResourceTest {
 
         // given
         // confidential client auth data, as defined in KeyCloak:
-        //String clientId = "confidential-client";
-        //String clientSecret = "RCX1o8KF1Iez3d0XvcKPOJjiDIFnpKay";
 
         // and an authenticated user having the required role / right
         Optional<Authentifizierungsmanager> am = security.getAuthentifizierungsmanager();

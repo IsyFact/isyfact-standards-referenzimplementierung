@@ -12,22 +12,21 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * Demonstration of the different ways of authentication:
+ * - as explicit techn. user (Resource-Owner-Password-Credential Flow with auth-data as parameters)
+ * - as explicit client (Client-Credential-Flow with auth-data as parameters)
+ * - as registered client (Client-Credential-Flow with auth-data from application resources)
+ * - as registered techn. user (Resource-Owner-Password-Flow with auth-data from application resources)
+ * <p>
+ *  This shows the different methods of authentication provided by the Authentifizierungsmanager,
+ *  the kinds of credentials and their configuration & storage,
+ *  and proves, that an access token with the correct roles/rights is placed in the SecurityContext.
+ * <p>
+ * Note: Needs a configured IAM running
+ **/
 @SpringBootTest(classes= RestApplicationRW.class)
 class AuthenticationManagerTest extends AbstractResourceTest {
-
-    /**
-     * Demonstration of the different ways of authentication:
-     * - as explicit techn. user (Resource-Owner-Password-Credential Flow with auth-data as parameters)
-     * - as explicit client (Client-Credential-Flow with auth-data as parameters)
-     * - as registered client (Client-Credential-Flow with auth-data from application resources)
-     * - as registered techn. user (Resource-Owner-Password-Flow with auth-data from application resources)
-     * <p>
-     *  This shows the different methods of authentication provided by the Authentifizierungsmanager,
-     *  the kinds of credentials and their configuration & storage,
-     *  and proves, that an access token with the correct roles/rights is placed in the SecurityContext.
-     * <p>
-     * Note: Needs a configured IAM running
-     **/
 
     @Autowired
     private Security security;

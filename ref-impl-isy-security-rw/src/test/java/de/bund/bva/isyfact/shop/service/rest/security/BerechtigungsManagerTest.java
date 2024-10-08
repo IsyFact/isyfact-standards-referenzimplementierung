@@ -14,31 +14,29 @@ import org.springframework.security.access.AccessDeniedException;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import java.util.List;
 import java.util.Optional;
+import java.util.List;
 
-
+/**
+ * Demonstration of a custom attribute check (for e.g. a fine-grained authorization)
+ * Use case: Search for Produkt business objects with a given name.
+ *      * If no such name is passed:
+ *      * - For users in department (Abteilung) 'Zentrale':
+ *      *   all Product business objects are returned, without any restriction.
+ *      * - For all other users:
+ *      *   ProduktNotFoundException
+ * <p>
+ * Note: Needs a configured IAM running
+ **/
 @SpringBootTest(classes= RestApplicationRW.class)
 class BerechtigungsManagerTest extends AbstractResourceTest {
-
-    /**
-     * Demonstration of a custom attribute check (for e.g. a fine-grained authorization)
-     * Use case: Search for Produkt business objects with a given name.
-     *      * If no such name is passed:
-     *      * - For users in department (Abteilung) 'Zentrale':
-     *      *   all Product business objects are returned, without any restriction.
-     *      * - For all other users:
-     *      *   ProduktNotFoundException
-     * <p>
-     * Note: Needs a configured IAM running
-     **/
 
     @Autowired
     private Security security;
 
     @Autowired
     // public resource: ProduktController is configured as public & not secured
-            ProduktController produktController;
+    ProduktController produktController;
 
 
     /**
