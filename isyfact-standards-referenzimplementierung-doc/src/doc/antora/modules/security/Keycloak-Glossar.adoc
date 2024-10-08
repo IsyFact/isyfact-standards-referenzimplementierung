@@ -1,0 +1,173 @@
+= Glossar
+
+== KeyCloak-Begriffe:
+
+=== claim:
+
+- *deutsche Übersetzung:* Anspruch (auf etw.), Behauptung
+
+- *Beschreibung (Verwendung in KeyCloak):* +
+Schlüssel-Wert-Paare, die Informationen über einen Nutzer enthalten - sie lassen sich auch für Metainformationen verwenden.
++
+Attribute des Nutzers (z.B. Name, zugeordnete Rechte, …) u. Autorisierungsinformationen aus bzw. von KeyCloak.
+Als Teil des Tokens, dient es dem Client, gegenüber dem Server seinen Anspruch auf den abgerufenen Dienst zu legitimieren.
+
+- *Definition in keycloak.org:* +
+openid.net: Piece of information asserted [by an authority: the IAM] about an entity [user / client].
++
+Applications use claims to +
+A) request specific information about an entity or +
+B) make access decisions on the resources controlled by the application.
+
+- *Instanzen, Namen in ref-impl-security:* isyfact_roles
+
+=== client:
+
+- *deutsche Übersetzung:* Kunde, Auftraggeber, Klient, Bezieher
+
+- *Beschreibung (Verwendung in KeyCloak):* +
+Anwendung oder Dienst, der Dienste von einem Server ((Backend-)Anwendung) abruft.
++
+In KeyCloak definiert ein Client die Authentifizierungs- und Autorisierungsrichtlinien,
+die auf die jeweilige Anwendung oder den Dienst angewendet werden sollen.
++
+Authentisierung mit ID und (von KeyCloak generiertem) Secret.
+
+- *Definition in keycloak.org:* +
+Clients are entities that can request Keycloak to authenticate a user.
+Most often, clients are applications and services that want to use Keycloak to secure themselves
+and provide a single sign-on solution. +
+Clients can also be entities that just want to request identity information or an access token so that
+they can securely invoke other services on the network that are secured by Keycloak.
+
+- *Instanzen, Namen in ref-impl-security:* client-a, client-b bzw. ClientLeser, ClientSchreiber
+
+=== client scope:
+
+- *deutsche Übersetzung:* Rahmen, Umfang, Tragweite, Anwendungsbereich des Klienten
+
+- *Beschreibung (Verwendung in KeyCloak):* +
+Benannte logische Gruppierung von claims (s.d.) in Listen,
+so daß mehrere zusammengehörige claims unter dem scope-Namen zusammengefasst sind.
+In OIDC sind bereits einige scopes vorgegeben (z.B. profile, email, address, phone),
+es können auch eigene definiert werden.
+
+- *Definition in keycloak.org:* +
+Client scopes are a common set of protocol mappers and roles that are shared between multiple clients.
++
+When a client is registered, you must define protocol mappers and role scope mappings for that client.
+It is often useful to store a client scope, to make creating new clients easier by sharing some common settings.
+This is also useful for requesting some claims or roles to be conditionally based on the value of scope parameter.
+Keycloak provides the concept of a client scope for this.
+
+- *Instanzen, Namen in ref-impl-security:* isyfact-roles
+
+=== confidential client:
+
+- *deutsche Übersetzung:* vertrauenswürdiger Klient
+
+- *Beschreibung (Verwendung in OAuth 2.0):* +
+Computerprogramm, das auf dem Endgerät eines Netzwerks ausgeführt wird und
+für den Benutzer (und in dessen Namen) Dienste von einem Server (Zentralrechner) abruft.
+Dieses Programm und das Endgerät sind in der Lage, die zur Authentisierung verwendeten Daten geheim zu halten.
++
+Authentisierung mit Name u. Passwort des Benutzers, sowie ID u. Secret des confidential client selbst
+
+- *Definition in oauth.net:* +
+Confidential clients are applications that are able to securely authenticate with the authorization server,
+for example being able to keep their registered client secret safe.
+
+- *Instanzen, Namen in ref-impl-security:* confidential-client
+
+=== mapper:
+
+- *deutsche Übersetzung:* Programmteil zur Umwandlung/Abbildung (englisch: "to map to") von Daten zwischen 2 Komponenten
+
+- *Beschreibung (Verwendung in KeyCloak):* +
+Abbildung der in KeyCloak vorhandenen Informationen zu einem Nutzer auf die Struktur u. Elemente des Token (claims u. scopes).
+
+- *Definition in keycloak.org:* +
+protocol mappers: For each client you can tailor what claims and assertions are stored in the OIDC token or SAML assertion.
+You do this per client by creating and configuring protocol mappers.
++
+user role mapping: A user role mapping defines a mapping between a role and a user.
+A user can be associated with zero or more roles. This role mapping information can be encapsulated into tokens and assertions so that applications can decide access permissions on various resources they manage.
+
+- *Instanzen, Namen in ref-impl-security:* audience-mapper-for-client-a, isyfact-role-mapper
+
+=== realm:
+
+- *deutsche Übersetzung:* (König-)Reich, Bereich, Domäne
+
+- *Beschreibung (Verwendung in KeyCloak):* +
+Administrationsbereich, Mandant
++
+Jeweils abgegrenzte Bereiche, für die die anderen in dieser Aufzählung genannten Aspekte einzeln konfiguriert bzw. verwaltet werden können.
++
+Logischer Container für Benutzer, Anwendungen und Dienste.
+Er bietet eine separate und isolierte Umgebung für die Verwaltung von Authentifizierungs- und Autorisierungsrichtlinien.
+
+- *Definition in keycloak.org:* +
+A realm is a space where you manage a set of objects, including users, applications, roles, and groups.
+A user belongs to and logs into a realm. +
+Realms are isolated from one another and can only manage and authenticate the users that they control.
+One Keycloak deployment can define, store, and manage as many realms as there is space for in the database.
+
+- *Instanzen, Namen in ref-impl-security:* ref-impl-isy-security
+
+=== registered client:
+
+- *deutsche Übersetzung:* registrierter Klient
+
+- *Beschreibung (Verwendung in IsyFact)* +
+Clients, deren Authentifizierungsdaten unter einer ID in der Konfiguration
+(application.yml: spring.security.oauth2.client.registration.<oauth2ClientRegistrationId>
+der Anwendung abgelegt ist, statt direkt im Code.
+
+- *Definition in IsyFact:* +
+IsyFact Standards - Bausteine - Security - Nutzungsvorgaben: +
+2.2 Authentifizierungsmanager: void authentifiziere(String oauth2ClientRegistrationId) +
+3.2 Konfigurationsparameter +
+3.6 Authentifizierung eines OAuth 2.0 Clients mit dem Authentifizierungsmanager +
+3.7 Automatische Authentifizierung eines WebClient mit Client Credentials +
+8 Automatische Authentifizierung innerhalb von Methoden (Annotation '@Authenticate')
+
+- *Instanzen, Namen in ref-impl-security:* reg-client-a, reg-client-b, reg-user-a
+
+=== role:
+
+- *deutsche Übersetzung:* Rolle
+
+- *Beschreibung (Verwendung in KeyCloak)* +
+Gruppierung u. Abstraktion von Nutzern einer Anwendung, aufgrund ihrer Aufgaben im Unternehmen.
+Zur Erledigung dieser Aufgabe verwenden sie bestimmte Teile u. Funktionen der Anwendung,
+während sie auf andere keinen Zugriff haben sollten. +
+Durch die Rolle wird einer ganzen Gruppe von Nutzern das Nutzungsrecht gegeben bzw. verweigert.
+Wenn ein Nutzer mehrere Aufgaben hat und so zu mehreren Gruppen gehört, hat er/sie auch mehrere Rollen.
+Beispiele: Mitarbeitende einer Abteilung, Manager, Administratoren, ...
+
+- *Definition in keycloak.org:* +
+Roles identify a type or category of user. +
+Admin, user, manager, and employee are all typical roles that may exist in an organization.
+Applications often assign access and permissions to specific roles rather than individual users
+as dealing with users can be too fine-grained and hard to manage.
+
+- *Instanzen, Namen in ref-impl-security:* role-a, role-b bzw. LESER, SCHREIBER
+
+=== user:
+
+- *deutsche Übersetzung:* Benutzer, Anwender
+
+- *Beschreibung (Verwendung in KeyCloak):* +
+Person, die ein bestimmtes System, eine Software oder einen Dienst nutzt. +
+Besitzer (oder Nutzungsberechtigter) der Ressource (Daten, Service, ...), die verwendet werden soll.
++
+Authentisierung mit Name u. (selbstgewähltem) Passwort
+
+- *Definition in keycloak.org:* +
+Users are entities that are able to log into your system. +
+They can have attributes associated with themselves like email, username, address, phone number, and birthday. +
+They can be assigned group membership and have specific roles assigned to them.
+
+- *Instanzen, Namen in ref-impl-security:* user-a, user-b bzw. UserLeser, UserSchreiber
+
