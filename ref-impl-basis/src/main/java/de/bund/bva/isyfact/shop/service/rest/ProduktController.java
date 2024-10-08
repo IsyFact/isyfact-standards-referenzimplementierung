@@ -5,13 +5,7 @@ import de.bund.bva.isyfact.shop.core.daten.ProduktBo;
 import de.bund.bva.isyfact.shop.service.rest.exception.ProduktNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -41,7 +35,6 @@ public class ProduktController {
      */
     @GetMapping("/produkte")
     @ResponseStatus(HttpStatus.OK)
-    @ResponseBody
     public ResponseEntity<List<ProduktBo>> findAllProduktBo(@RequestParam(required = false) String name) {
 
         List<ProduktBo> produktBoList = produktVerwaltung.findAllProduktBo(name);
@@ -62,7 +55,6 @@ public class ProduktController {
      */
     @GetMapping("/produkte/{id}")
     @ResponseStatus(HttpStatus.OK)
-    @ResponseBody
     public ResponseEntity<ProduktBo> findProduktBoById(@PathVariable("id") long id) throws ProduktNotFoundException {
 
         ProduktBo produktBo = produktVerwaltung.findProduktBoById(id);

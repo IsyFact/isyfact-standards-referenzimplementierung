@@ -28,7 +28,7 @@ import static org.junit.jupiter.api.Assertions.*;
 **/
 
 @SpringBootTest(classes= RestApplicationRW.class)
-public class SecuredResourceTest extends AbstractResourceTest {
+class SecuredResourceTest extends AbstractResourceTest {
 
     @Autowired
     // secured resource: produktController
@@ -41,7 +41,7 @@ public class SecuredResourceTest extends AbstractResourceTest {
      * Call without authentication: AuthenticationCredentialsNotFoundException expected
      */
     @Test
-    public void testAccessingSecuredResourceWithoutAuthentication() {
+    void testAccessingSecuredResourceWithoutAuthentication() {
 
         // given
         ProduktBo modifiedProduktBo = new ProduktBo(1,"Allgäuer Emmentaler","Hartkäse");
@@ -65,7 +65,7 @@ public class SecuredResourceTest extends AbstractResourceTest {
      * (testing with {@link Berechtigungsmanager().hatRecht})
      */
     @Test
-    public void testAccessingSecuredResourceWithWrongAuthentication() {
+    void testAccessingSecuredResourceWithWrongAuthentication() {
 
         // given
         ProduktBo modifiedProduktBo = new ProduktBo(1,"Allgäuer Emmentaler","Hartkäse");
@@ -99,7 +99,7 @@ public class SecuredResourceTest extends AbstractResourceTest {
      * (testing with {@link Berechtigungsmanager().hatRecht})
      */
     @Test
-    public void testAccessingSecuredResourceWithCorrectAuthentication() throws ProduktNotFoundException {
+    void testAccessingSecuredResourceWithCorrectAuthentication() throws ProduktNotFoundException {
 
         // given
         ProduktBo modifiedProduktBo = new ProduktBo(4,"alter Gouda","Schnittkäse");
