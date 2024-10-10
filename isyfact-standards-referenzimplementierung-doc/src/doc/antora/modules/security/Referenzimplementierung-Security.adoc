@@ -16,7 +16,7 @@ Es wird angestrebt, die Fachlichkeit minimal zu halten.
 
 Darüberhinaus war es das Ziel, die Anzahl der miteinander kommunizierenden Anwendungen, die nötig sind,
 um die technischen Features des Security-Bausteins zu demonstrieren,
-und die Anzahl der Klassen und Methoden dieser Anwendungen möglichst klein zu halten.
+sowie die Anzahl der Klassen und Methoden dieser Anwendungen möglichst klein zu halten.
 
 Nutzungsvorgaben, Namenskonventionen, Strukturierungs-Richtlinien werden eingehalten.
 
@@ -112,7 +112,7 @@ Die Security-Service-Provider-Anwendung und die Security-Service-Consumer-Anwend
 * spring-boot-starter-oauth2-resource-server
 
 Daran lässt sich erkennen, dass sich die beiden Anwendungen in ihrer untersten Schicht unterscheiden.
-Im Security-Service-Provider haben wir hier eine Datenbank ist, im Security-Service-Consumer
+Im Security-Service-Provider haben wir hier eine Datenbank, im Security-Service-Consumer
 dagegen einen 'resource-server'.
 
 === Konfiguration der Anwendungen
@@ -123,6 +123,12 @@ Was den Security-Baustein betrifft, so beinhalten diese Dateien vor allem
 *client-ids* und *client-secrets*. Diese Properties werden in den Anwendungen verwendet
 und sind in KeyCloak definiert. Mit den *application.yml* Dateien werden diese
 Definitionen repliziert.
+
+Weiterhin existiert in beiden Anwendungen eine *rollenrechte.xml* Datei.
+Diese Datei wird vom IsyFactBaustein 'Security' ausgewertet,
+um beim Zugriff auf geschützte Resourcen zu prüfen, ob ein User mit seinen Rollen,
+die er mit seinem Acess-Token mitbringt, auch die in der '@Secured' Annotation
+spezifizierten Rechte hat.
 
 === Java-Klassen und Interfaces
 Der innere Aufbau von Security-Service-Provider und Security-Service-Consumer entspricht
@@ -186,10 +192,10 @@ aussieht:
 
 sondern vor allem, an welchen Stellen, der Aufruf der REST-Api einer anderen Anwendung erfolgt:
 
- * Api-Test-Klasse -> Security-Consumer-Controller-Klasse
- * Security-Consumer-Adapter-Klasse -> Security-Provider-Controller-Klasse
+ * Api-Test-Klasse -> Security-Service-Consumer-Controller-Klasse
+ * Security-Service-Consumer-Adapter-Klasse -> Security-Service-Provider-Controller-Klasse
  * '@Authenticate'-Annotation -> Keycloak-Api und
- * '@Secured'-Annotation -> Keyclaok-Api
+ * '@Secured'-Annotation -> Keycloak-Api
 
 == Beschreibung der Tests
 Die in der Referenz-Implementierung implementierten Api-Tests sind allesamt Integrationstests.
@@ -219,14 +225,14 @@ Die nachfolgenden Tabellen geben eine Übersicht über die implementierten Testk
 Zur weiteren Information sollte ein Entwickler die Kommentare im Java-Code heranziehen und
 sich über den Keycloak-Client die in Keycloak persistierte Konfiguration ansehen.
 
-==== Security-Consumer-Tests
-
+==== Security-Service-Consumer-Tests
+c
 |====
 |*Testklasse*|*Testfall*|*Testtechnologie*
 |AntragControllerApiTest|Antrag aktualiseren|API-Test
 |====
 
-==== Security-Provider-Tests
+==== Security-Service-Provider-Tests
 |====
 |*Testklasse*|*Testfall*|*Testtechnologie*
 |AntragControllerApiTest|Antrag aktualiseren|API-Test
