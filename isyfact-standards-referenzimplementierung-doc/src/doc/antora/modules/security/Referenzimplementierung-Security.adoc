@@ -1,0 +1,296 @@
+= Referenzimplementierung des IsyFact-Bausteins 'Security'
+msg systems ag
+3.0, October 10, 2024
+:toc:
+:icons: font
+:url-quickref: https://docs.asciidoctor.org/asciidoc/latest/syntax-quick-reference/
+
+====
+*Hinweis:* Die nachfolgende Dokumentation beinhaltet Änderungen in der Fachlichkeit,
+die in der Implementierung noch nicht umgesetzt sind.
+
+Für die Implementierung ist geplant, die fachliche Domäne 'shop' durch einen Behördenkontext zu ersetzen.
+Die fachliche Entität 'Produkt' wird dann durch die fachliche Entität 'Antrag' ersetzt.
+
+Weiterhin nimmt die Dokumentation für die Maven-Module zwei geplante Umbenennungen vorweg:
+
+* Das Modul 'ref-impl-isy-security-rw' soll umbenannt werden in 'security-service-provider'
+* Das Modul 'ref-impl-isy-security-w' soll umbenannt werden in 'security-service-consumer'
+====
+
+== Ziele und Anforderungen
+Ziel der Referenzimplementierung 'Security' ist es,
+mit Erweiterung der Referenzimplementierung 'Architektur-Durchstich'
+die Funktionsweise und Verwendung des IsyFact-Bausteins 'Security' zu demonstrieren.
+
+=== Allgemeine Ziele
+Wie bei der Referenz-Implementierung zum Architektur-Durchstich steht das Keept-it-Simple-Prinzip im Vordergrund.
+Es wird angestrebt, die Fachlichkeit minimal zu halten.
+
+Darüberhinaus war es das Ziel, die Anzahl der miteinander kommunizierenden Anwendungen, die nötig sind,
+um die technischen Features des Security-Bausteins zu demonstrieren,
+sowie die Anzahl der Klassen und Methoden dieser Anwendungen möglichst klein zu halten.
+
+Nutzungsvorgaben, Namenskonventionen, Strukturierungs-Richtlinien werden eingehalten.
+
+=== Überblick über die Fachlichkeit
+
+==== Entitäten
+Wie bei der Referenzimplementierung 'Architektur-Durchstich' haben wir hier weiterhin nur das Objekt Antrag
+mit den Attributen Id, Antragsteller, Antragstatus.
+
+==== Use Cases
+Die Menge der Use Cases wurde um einen Anwendungsfall zur Aktualisierung von Anträgen erweitert,
+sodass insgesamt die folgenden Anwendungsfälle zur Verfügung stehen:
+
+* Suche nach Antrag anhand der ID
+* Suche nach Anträgen anhand von Attributwerten
+  (matching substring Vergleich für den Vornamen oder Nachnamen des Antragstellers)
+* Aktualisierung eines Antrags (Update-Funktion)
+
+=== Überblick über die SW-Architektur inklusive Berechtigungskonzept
+Es werden zwei Anwendungen zur Verfügung gestellt:
+
+* *Security-Service-Provider:* Diese Anwendung bietet die Möglichkeit, alle drei der oben genannten Use Cases auszuführen.
+* *Security-Service-Consumer:* Diese Anwendung bietet nur die Möglichkeit, die Update-Funktion auszuführen.
+Für diesen Anwendungsfall ruft die Security-Service-Consumer-Anwendung die REST Schnittstelle der Security-Service-Provider-Anwendung auf.
+
+Die Anwendungen arbeiten mit dem folgenden Berechtigungskonzept
+
+* Im *Security-Service-Provider* sind wie im Architektur-Durchstich
+ - die *Suchfunktionen*
+   weiterhin uneingeschränkt für alle Anwender (ohne jede Prüfung von Rollen und Rechten ausführbar)
+ - während zur Ausführung der *Update-Funktion*, die im Architektur-Durchstich noch nicht vorhanden war,
+   gefordert wird, dass der Anwender das Recht "PRIV_Recht_A" besitzt,
+* Im *Security-Service-Consumer* hingegen
+  - gibt es *keinerlei Suchfunktionen*.
+  - sondern nur eine *Update-Funktion*, für die gefordert wird, dass der Anwender das Recht "PRIV_Recht_B" besitzt.
+
+*Hinweis:* Diese Konstellation bedeutet, dass im Security-Service-Consumer
+für Aufruf der Update-Funktion des Security-Service-Providers eine Re-Authentifizierung notwendig ist,
+die dem Aufrufer eine Identität mit den erforderlichen Rollen und Rechten inklusive "PRIV_Recht_A" mitgibt.
+Das Berechtigungskonzept wurde bewusst so gewählt, sodass ohne das technische Feature einer Re-Authentifizierung
+die erfolgreiche Ausführung einer Update-Funktion im Service-Consumer nicht darstellbar ist.
+
+==== Technische Features
+Die Referenz-Implementierung 'Security' soll zeigen,
+
+* wie man die Funktionalität der BerechtigungsManager- und AuthentifizierungsManger-Interfaces
+  des IsyFact-Bausteins Security nutzt
+* wie man die '@Secured'-Annotation nutzt, um Resource-Methoden zu schützen
+* wie man die '@Authenticate'-Annotation nutzt, um eine Re-Authentifizierung durchzuführen und
+* was zu tun ist, damit für externe Service-Calls die ausgehenden Requests ein zum aktuellen Security-Context
+  passendes Token mit beinhalten.
+
+== Voraussetzungen
+Wie in der Referenz-Implementierung 'Architektur-Durchstich' ist neben einem Java-17-JDK, einem Git-Client
+und eine Maven-Installation (mit Version 3.9.1 oder höher) notwendig.
+
+Für die Referenz-Implementierung 'Security' ist außerdem eine Installation (und Konfiguration) von Keycloak notwendig.
+Die erforderliche Vorgehensweise zu Keycloak ist hier (TODO) dokumentiert.
+
+Die Verwendung einer IDE mit Git und Maven-Integration ist sehr empfehlenswert, aber nicht notwendig.
+
+*Hinweis:*
+Keycloak übernimmt für den IsyFact-Security-Baustein die Rolle eines IAM Systems.
+Es besitzt eine eigene Datenbank.
+Diese Datenbank enthält (nach Einspielen einer Konfigurations-Datei)
+die für die Referenzimplementierung relevanten User, deren Rollen und die zugehörigen Rechte.
+Für jeden dieser User kann Keycloak Tokens liefern, die nur für eine bestimmte Zeit gültig sind und
+die genau die Rollen und Rechte dieses Users wiederspiegeln. Diese Tokens sind signiert.
+Somit können die Anwendungen einer Anwendungslandschaft an ihrer Systemgrenze die Tokens prüfen und auswerten.
+
+== Anleitung zur Implementierung
+
+=== Konfiguration des Build-Managements
+Die Security-Service-Provider-Anwendung und die Security-Service-Consumer-Anwendung haben beide ihre eigene pom.xml
+
+*Die folgenden Artefakte werden von beiden Anwendungen als Dependencies verlangt:*
+
+* isy-security
+* spring-boot-starter-security
+* spring-boot-starter-web
+* spring-boot-starter-webflux
+* spring-boot-starter-validation
+* spring-boot-starter-test
+* spring-boot-starter-oauth2-client
+
+*Security-Service-Provider-Anwendung spezifische Dependencies gibt es zu:*
+
+* spring-boot-starter-data-jpa
+* h2
+
+*Security-Service-Consumer-Anwendung spezifische Dependencies gibt es zu:*
+
+* spring-boot-starter-oauth2-resource-server
+
+Daran lässt sich erkennen, dass sich die beiden Anwendungen in ihrer untersten Schicht unterscheiden.
+Im Security-Service-Provider haben wir hier eine Datenbank, im Security-Service-Consumer
+dagegen einen 'resource-server'.
+
+=== Konfiguration der Anwendungen
+Alle anwendungsrelevanten Konfigurationseinstellungen sind in
+Anwendungs-spezifischen *application.yml* Dateien definiert.
+
+Was den Security-Baustein betrifft, so beinhalten diese Dateien vor allem
+*client-ids* und *client-secrets*. Diese Properties werden in den Anwendungen verwendet
+und sind in KeyCloak definiert. Mit den *application.yml* Dateien werden diese
+Definitionen repliziert.
+
+Weiterhin existiert in beiden Anwendungen eine *rollenrechte.xml* Datei.
+Diese Datei wird vom IsyFactBaustein 'Security' ausgewertet,
+um beim Zugriff auf geschützte Resourcen zu prüfen, ob ein User mit seinen Rollen,
+die er mit seinem Acess-Token mitbringt, auch die in der '@Secured' Annotation
+spezifizierten Rechte hat.
+
+=== Java-Klassen und Interfaces
+Der innere Aufbau von Security-Service-Provider und Security-Service-Consumer entspricht
+der 3-Schichten-Architektur des Architektur-Durchstichs, wobei im Security-Service-Consumer keine
+Persistenzschicht, sonderen stattdessen eine Adapterklasse zum Aufruf der REST-Schnittstelle des
+Security-Service-Providers implementiert ist.
+
+
+In der folgenden tabellarischen Aufstellung gehen wir nicht mehr auf die Klassen und Interfaces ein,
+die im Architektur-Durchstich bereits beschrieben sind, sondern wir beschreiben nur noch
+die Klassen, die für den Aspekt 'Security' eine besondere Rolle spielen.
+
+==== Konfigurationsklassen
+|====
+|*Klasse* | *Beschreibung* | *Hinweis*
+| de.bund.bva.isyfact.antrag.
+  service.rest.configuration.WebClientSecurityConfig
+| Über diese Konfigurationsklasse wird sichergestellt, dass für sämtliche Requests, die zum Aufruf externer Services ausgeführt werden,
+ein entsprechendes Access-Token aus dem Security-Kontext extrahiert und an die aufgerufene Anwendung weitergeleitet wird.
+| Das Spring-Boot-Framework erkennt Konfigurationsklassen an der Annotation '@Configuration'.
+
+| de.bund.bva.isyfact.antrag.
+  service.rest.configuration.OAuth2ServerSecurityConfig
+| Über diese Konfigurationsklasse wird definiert,
+welche Resource-Methoden (abweichend vom Default) ohne JWT aufrufbar sind.
+| Das Spring-Boot-Framework erkennt Konfigurationsklassen an der Annotation '@Configuration'.
+|====
+
+==== Adapterklasse
+Die Anwendungsfall-Klasse 'AwfAntragAktualisieren'
+|====
+|*Klasse* | *Beschreibung* | *Hinweis*
+| de.bund.bva.isyfact.antrag.
+  core.impl.AwfAntragAktualisieren
+| Hier wird die REST-Schnittstelle der Security-Service-Provider-Anwendung aufgerufen
+  und das aktuelle AntragBo-Objekt an diese REST-Schnittstelle übergeben .
+| Dieses Verhalten haben wir im Kontext der Security-Service-Consumer-Anwendung.
+
+| de.bund.bva.isyfact.antrag.
+  core.impl.AwfAntragAktualisieren
+| Hier wird die des übergebenen Antrag-Bo-Objekts bewerkstelligt.
+| Dieses Verhalten haben wir im Kontext der Security-Service-Provider-Anwendung.
+|====
+
+==== Architekturbild
+
+Das nachfolgende Komponenten-Diagramm skizziert das Zusammenspiel der 'security-service-provider' und
+'security-service-consumer' Anwendungen und die internen und externen Aufruf-Beziehungen
+zwischen ihren fachlichen Klassen.
+
+Mit den blau-gestrichelten Linien wird dargestellt, dass der Aufruf einer REST-API
+Methode über das Http-Protokoll erfolgt.
+
+[id="ref-impl-security-call-hierachy",reftext="{figure-caption} {counter:figures}"]
+image::ref-impl-security-call-hierarchy.svg[align="center"]
+
+Das Bild soll nicht nur zeigen, wie innerhalb einer jeden Anwendung die Aufruf-Hierarchie
+aussieht:
+
+ * Controller-Klasse -> Impl-Klasse -> Awf-Klasse -> ...
+
+sondern vor allem, an welchen Stellen, der Aufruf der REST-Api einer anderen Anwendung erfolgt:
+
+ * Api-Test-Klasse -> Security-Service-Consumer-Controller-Klasse
+ * Security-Service-Consumer-Adapter-Klasse -> Security-Service-Provider-Controller-Klasse
+ * '@Authenticate'-Annotation -> Keycloak-Api und
+ * '@Secured'-Annotation -> Keycloak-Api
+
+== Beschreibung der Tests
+Die in der Referenz-Implementierung implementierten Api-Tests sind allesamt Integrationstests.
+Hier wird die korrekte Funktionsweise der AntragController-Methoden verifiziert.
+
+Die Spring-Boot-Tests dagegen konzentrieren sich eher auf die Prüfung
+der technischen Features des IsyFact-Security-Bausteins.
+
+=== Testziel
+Neben einer automatisierbaren Qualitätssicherung,
+die im Rahmen eines professionellen SW-Engineering eine Selbstverständlichkeit sein sollte,
+möchten wir darauf hinweisen, dass vor allem die API-Tests noch einen weiteren Vorteil bieten:
+nämlich dem Entwickler zu illustrieren, wie er die technischen Features eines IsyFact-Bausteins nutzt.
+
+=== Testtechnologien
+Zur Durchführung der Tests werden entweder Spring-Boot-Tests oder Api-Tests ausgeführt.
+
+Voraussetzung für die Ausführung von Spring-Boot-Tests ist,
+dass die zu verwendende Keycloak-Instanz (manuell) gestartet wurde.
+
+Voraussetzung für die Ausführung von Api-Tests ist, dass neben der Keycloak-Instanz,
+auch die beiden Anwendungen (Security-Service-Provider und Security-Service-Consumer) gestartet sind.
+Nur so nämlich lässt sich über API-Aufrufe auch deren REST-Schnittstelle erreichen.
+
+=== Testklassen und Testfälle
+Die nachfolgenden Tabellen geben eine Übersicht über die implementierten Testklassen und deren Testfälle.
+Zur weiteren Information sollte ein Entwickler die Kommentare im Java-Code heranziehen und
+sich über den Keycloak-Client die in Keycloak persistierte Konfiguration ansehen.
+
+==== Security-Service-Consumer-Tests
+c
+|====
+|*Testklasse*|*Testfall*|*Testtechnologie*
+|AntragControllerApiTest|Antrag aktualiseren|API-Test
+|====
+
+==== Security-Service-Provider-Tests
+|====
+|*Testklasse*|*Testfall*|*Testtechnologie*
+|AntragControllerApiTest|Antrag aktualiseren|API-Test
+|AntragControllerApiTest|Antrag mit ID suchen|API-Test
+|AntragControllerApiTest|Antrag mit Name des Antragstellers suchen|API-Test
+|
+|====
+
+Mit den AuthenticationManagerTests wird die Funktionalität der Methoden des AuthenticationManager-Interfaces überprüft.
+|====
+|*Testklasse*|*Testfall*|*Testtechnologie*
+|AuthenticationManagerTest|Authentifizierung als expliziter technischer User|Spring-Boot-Test
+|AuthenticationManagerTest|Authentifizierung als expliziter Client|Spring-Boot-Test
+|AuthenticationManagerTest|Authentifizierung als registrierter technischer User|Spring-Boot-Test
+|AuthenticationManagerTest|Authentifizierung als registrierter Client|Spring-Boot-Test
+|
+|====
+
+Was die BerechtigungsManagerTests betrifft, so war es das Ziel, zu demonstrieren,
+wie man mithilfe des BerechtigungsManager-Interfaces in einer Resource-Methode Attribute eines Users ermitteln,
+auf erwartete Werte hin prüfen und anschließend ggf. den Zugriff verweigern kann.
+|====
+|*Testklasse*|*Testfall*|*Testtechnologie*
+|BerechtigungsManagerTest|Antrag mit Name des Antragstellers suchen - als User ohne Abteilungszuordnung |Spring-Boot-Test
+|BerechtigungsManagerTest|Antrag mit Name des Antragstellers suchen - als User mit Abteilung: nicht Zentrale |Spring-Boot-Test
+|BerechtigungsManagerTest|Antrag mit Name des Antragstellers suchen - als User mit Abteilung: Zentrale |Spring-Boot-Test
+|
+|====
+
+Ziel der PublicResourceTests war es, die Funktionsweise der '@Secured' Annotation zu prüfen.
+|====
+|*Testklasse*|*Testfall*|*Testtechnologie*
+|PublicResourceTest|Aufruf einer nicht geschützten Resource-Methode - ohne Token |Spring-Boot-Test
+|PublicResourceTest|Aufruf einer nicht geschützten Resource-Methode - mit Token |Spring-Boot-Test
+|
+|====
+
+Die SecuredResourceTests verfolgen das gleiche Ziel: Auch hier soll die Funktionsweise der '@Secured'
+Annotation geprüft werden.
+|====
+|*Testklasse*|*Testfall*|*Testtechnologie*
+|SecuredResourceTest|Aufruf einer geschützten Resource-Methode - ohne Token |Spring-Boot-Test
+|SecuredResourceTest|Aufruf einer geschützten Resource-Methode - mit Token aber falscher Berechtigung|Spring-Boot-Test
+|SecuredResourceTest|Aufruf einer geschützten Resource-Methode - mit Token aber korrekter Berechtigung|Spring-Boot-Test
+|====
+
+
+
