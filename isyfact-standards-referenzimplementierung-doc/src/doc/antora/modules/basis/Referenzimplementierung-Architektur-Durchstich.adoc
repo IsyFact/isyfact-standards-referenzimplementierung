@@ -16,8 +16,12 @@ Die oben dargestellte Gliederung folgt einer klassischen Tutorial-Gliederung
 *Hinweis:* Die nachfolgende Dokumentation beinhaltet Änderungen in der Fachlichkeit,
 die in der Implementierung noch nicht umgesetzt sind.
 
-Für die Implementierung ist geplant, die fachliche Domäne 'shop' durch einen Behördenkontext' zu ersetzen.
-Die fachliche Entität 'Produkt' wird dann durch die fachliche Entität ersetzt.
+Für die Implementierung ist geplant, die fachliche Domäne 'shop' durch einen Behördenkontext
+zu ersetzen. Die fachliche Entität 'Produkt' wird dann durch die fachliche Entität 'Antrag' ersetzt.
+
+Weiterhin nimmt die Dokumentation eine geplante Maven-Modul-Umbenennung vorweg:
+
+* Das Modul 'ref-impl-basis' soll umbenannt werden in 'basis'
 
 ====
 == Ziele und Anforderungen
