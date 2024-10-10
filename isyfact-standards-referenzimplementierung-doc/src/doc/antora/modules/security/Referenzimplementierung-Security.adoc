@@ -5,6 +5,19 @@ msg systems ag
 :icons: font
 :url-quickref: https://docs.asciidoctor.org/asciidoc/latest/syntax-quick-reference/
 
+====
+*Hinweis:* Die nachfolgende Dokumentation beinhaltet Änderungen in der Fachlichkeit,
+die in der Implementierung noch nicht umgesetzt sind.
+
+Für die Implementierung ist geplant, die fachliche Domäne 'shop' durch einen Behördenkontext' zu ersetzen.
+Die fachliche Entität 'Produkt' wird dann durch die fachliche Entität 'Antrag' ersetzt.
+
+Weiterhin nimmt die Dokumentation zwei für die Maven-Module geplante Umbenennungen vorweg:
+
+* Das Modul 'ref-impl-isy-security-rw' soll umbenannt werden in 'security-service-provider'
+* Das Modul 'ref-impl-isy-security-w' soll umbenannt werden in 'security-service-consumer'
+====
+
 == Ziele und Anforderungen
 Ziel der Referenzimplementierung 'Security' ist es,
 mit Erweiterung der Referenzimplementierung 'Architektur-Durchstich'
