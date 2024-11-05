@@ -1,6 +1,7 @@
 package de.bund.bva.isyfact.shop.service.rest.security;
 
 import de.bund.bva.isyfact.security.core.Security;
+import de.bund.bva.isyfact.security.oauth2.client.Authentifizierungsmanager;
 import de.bund.bva.isyfact.shop.RestApplicationRW;
 import de.bund.bva.isyfact.shop.core.daten.ProduktBo;
 import de.bund.bva.isyfact.shop.service.rest.ProduktController;
@@ -11,38 +12,38 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
 
-import java.util.List;
-
 import static org.junit.jupiter.api.Assertions.*;
 
-@SpringBootTest(classes= RestApplicationRW.class)
-public class BerechtigungsManagerTest extends AbstractResourceTest {
+import java.util.Optional;
+import java.util.List;
 
-    /**
-     * Demonstration of a custom attribute check (for e.g. a fine-grained authorization)
-     * Use case: Search for Produkt business objects with a given name.
-     *      * If no such name is passed:
-     *      * - For users in department (Abteilung) 'Zentrale':
-     *      *   all Product business objects are returned, without any restriction.
-     *      * - For all other users:
-     *      *   ProduktNotFoundException
-     * <p>
-     * Note: Needs a configured IAM running
-     **/
+/**
+ * Demonstration of a custom attribute check (for e.g. a fine-grained authorization)
+ * Use case: Search for Produkt business objects with a given name.
+ *      * If no such name is passed:
+ *      * - For users in department (Abteilung) 'Zentrale':
+ *      *   all Product business objects are returned, without any restriction.
+ *      * - For all other users:
+ *      *   ProduktNotFoundException
+ * <p>
+ * Note: Needs a configured IAM running
+ **/
+@SpringBootTest(classes= RestApplicationRW.class)
+class BerechtigungsManagerTest extends AbstractResourceTest {
 
     @Autowired
     private Security security;
 
     @Autowired
     // public resource: ProduktController is configured as public & not secured
-            ProduktController produktController;
+    ProduktController produktController;
 
 
     /**
      * Call without authentication: ProduktNotFoundException expected
      */
     @Test
-    public void testCustomAuthorizationResourceWithoutAuthentication() {
+    void testCustomAuthorizationResourceWithoutAuthentication() {
 
         // given
         // no Authentication = no user attribute 'abteilung'
@@ -60,16 +61,19 @@ public class BerechtigungsManagerTest extends AbstractResourceTest {
      * Call with user NOT in 'Zentrale': ProduktNotFoundException expected
      */
     @Test
-    public void testCustomAuthorizationResourceWithWrongAuthentication() {
+    void testCustomAuthorizationResourceWithWrongAuthentication() {
 
         // given
         // confidential client auth data, as defined in KeyCloak:
 
         // and an authenticated user having the required role / right but without user attribute 'abteilung' = 'Zentrale'
-        security.getAuthentifizierungsmanager().orElseThrow()
-                .authentifiziereSystem(issuerUriA, confidentialClientId, confidentialClientSecret,
-                        "user-b", "test");                      // see key cloak
-
+        Optional<Authentifizierungsmanager> am = security.getAuthentifizierungsmanager();
+        if (am.isPresent()) {
+            am.get().authentifiziereSystem(issuerUriA, confidentialClientId, confidentialClientSecret,
+                    "user-b", "test");
+        } else {
+            fail("Authenticationmanager is null");
+        }
         // SecurityContext contains new token
         assertNotNull(getAuthentication());
 
@@ -85,20 +89,23 @@ public class BerechtigungsManagerTest extends AbstractResourceTest {
                 () -> produktController.findAllProduktBo(null));
     }
 
-        /**
-         * Call with user in 'Zentrale': OK-response expected
-         */
+    /**
+     * Call with user in 'Zentrale': OK-response expected
+     */
     @Test
-    public void testCustomAuthorizationResourceWithCorrectAuthentication() throws ProduktNotFoundException {
+    void testCustomAuthorizationResourceWithCorrectAuthentication() throws ProduktNotFoundException {
 
         // given
         // confidential client auth data, as defined in KeyCloak:
 
         // and an authenticated user having the required role / right and user attribute 'abteilung' = 'Zentrale'
-        security.getAuthentifizierungsmanager().orElseThrow()
-                .authentifiziereSystem(issuerUriA, confidentialClientId, confidentialClientSecret,
-                        "user-a", "test");                      // see key cloak
-
+        Optional<Authentifizierungsmanager> am = security.getAuthentifizierungsmanager();
+        if (am.isPresent()) {
+            am.get().authentifiziereSystem(issuerUriA, confidentialClientId, confidentialClientSecret,
+                    "user-a", "test");
+        } else {
+            fail("Authenticationmanager is null");
+        }
         // SecurityContext contains new token
         assertNotNull(getAuthentication());
 
@@ -122,9 +129,9 @@ public class BerechtigungsManagerTest extends AbstractResourceTest {
                 "user-a does NOT have role 'role-a'");
 
         // token contains user attribute 'abteilung' having value 'Zentrale'
-        assertEquals("Zentrale",
-                security.getBerechtigungsmanager().getTokenAttribute("abteilung").toString(),
-                "user-a does NOT have user attribute 'Abteilung: Zentrale'");
+        String abteilung = (String) security.getBerechtigungsmanager().getTokenAttribute("abteilung");
+        assertNotNull(abteilung, "user-a does NOT have user attribute 'abteilung'");
+        assertEquals("Zentrale", abteilung, "user-a does NOT have user attribute 'Abteilung: Zentrale'");
 
         // when
         // call 'findAllProduktBo' without specifying a product name as search parameter

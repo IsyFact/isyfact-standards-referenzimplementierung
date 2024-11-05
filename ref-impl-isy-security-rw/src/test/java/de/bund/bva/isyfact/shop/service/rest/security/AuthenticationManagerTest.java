@@ -8,24 +8,25 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.util.Optional;
+
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * Demonstration of the different ways of authentication:
+ * - as explicit techn. user (Resource-Owner-Password-Credential Flow with auth-data as parameters)
+ * - as explicit client (Client-Credential-Flow with auth-data as parameters)
+ * - as registered client (Client-Credential-Flow with auth-data from application resources)
+ * - as registered techn. user (Resource-Owner-Password-Flow with auth-data from application resources)
+ * <p>
+ *  This shows the different methods of authentication provided by the Authentifizierungsmanager,
+ *  the kinds of credentials and their configuration & storage,
+ *  and proves, that an access token with the correct roles/rights is placed in the SecurityContext.
+ * <p>
+ * Note: Needs a configured IAM running
+ **/
 @SpringBootTest(classes= RestApplicationRW.class)
-public class AuthenticationManagerTest extends AbstractResourceTest {
-
-    /**
-     * Demonstration of the different ways of authentication:
-     * - as explicit techn. user (Resource-Owner-Password-Credential Flow with auth-data as parameters)
-     * - as explicit client (Client-Credential-Flow with auth-data as parameters)
-     * - as registered client (Client-Credential-Flow with auth-data from application resources)
-     * - as registered techn. user (Resource-Owner-Password-Flow with auth-data from application resources)
-     * <p>
-     *  This shows the different methods of authentication provided by the Authentifizierungsmanager,
-     *  the kinds of credentials and their configuration & storage,
-     *  and proves, that an access token with the correct roles/rights is placed in the SecurityContext.
-     * <p>
-     * Note: Needs a configured IAM running
-     **/
+class AuthenticationManagerTest extends AbstractResourceTest {
 
     @Autowired
     private Security security;
@@ -36,7 +37,7 @@ public class AuthenticationManagerTest extends AbstractResourceTest {
      * (testing with {@link Berechtigungsmanager ().getRollen})
      */
     @Test
-    public void testAuthenticateAsExplicitTechnUser() {
+    void testAuthenticateAsExplicitTechnUser() {
 
         // Given:
         // - an explicit techn. user (user-a) with name & password and
@@ -46,9 +47,13 @@ public class AuthenticationManagerTest extends AbstractResourceTest {
 
         // When:
         // Authenticate at IAM
-        security.getAuthentifizierungsmanager().orElseThrow()
-                .authentifiziereSystem(issuerUriA, confidentialClientId, confidentialClientSecret,
-                        "user-a", "test");
+        Optional<Authentifizierungsmanager> am = security.getAuthentifizierungsmanager();
+        if (am.isPresent()) {
+            am.get().authentifiziereSystem(issuerUriA, confidentialClientId, confidentialClientSecret,
+                    "user-a", "test");
+        } else {
+            fail("Authenticationmanager is null");
+        }
 
         // Then:
         // - SecurityContext contains new token
@@ -65,7 +70,7 @@ public class AuthenticationManagerTest extends AbstractResourceTest {
      * (testing with {@link Berechtigungsmanager ().pruefeRecht})
      */
     @Test
-    public void testAuthenticateAsExplicitClient() {
+    void testAuthenticateAsExplicitClient() throws Exception {
 
         // Given:
         // - an explicit client (clientA) with id & secret and
@@ -74,9 +79,13 @@ public class AuthenticationManagerTest extends AbstractResourceTest {
 
         // When:
         // Authenticate at IAM
-        security.getAuthentifizierungsmanager().orElseThrow()
-                .authentifiziereClient(issuerUriA, clientAId, clientASecret);
-
+       Optional<Authentifizierungsmanager> am = security.getAuthentifizierungsmanager();
+        if (am.isPresent()) {
+            am.get().authentifiziereClient(issuerUriA, clientAId, clientASecret);
+        } else {
+            fail("Authenticationmanager is null");
+        }
+        security.getAuthentifizierungsmanager();
         // Then:
         // - SecurityContext contains new token
         assertNotNull(getAuthentication());
@@ -92,7 +101,7 @@ public class AuthenticationManagerTest extends AbstractResourceTest {
      * (testing with {@link Berechtigungsmanager ().pruefeRecht})
      */
     @Test
-    public void testAuthenticateAsRegisteredClient() {
+    void testAuthenticateAsRegisteredClient() {
 
         // Given:
         // - an registered client (reg-client-a),
@@ -101,8 +110,12 @@ public class AuthenticationManagerTest extends AbstractResourceTest {
 
         // When:
         // Authenticate at IAM
-        security.getAuthentifizierungsmanager().orElseThrow()
-                .authentifiziere("reg-client-a");
+        Optional<Authentifizierungsmanager> am = security.getAuthentifizierungsmanager();
+        if (am.isPresent()) {
+            am.get().authentifiziere("reg-client-a");
+        } else {
+            fail("Authenticationmanager is null");
+        }
 
         // Then:
         // - SecurityContext contains new token
@@ -118,7 +131,7 @@ public class AuthenticationManagerTest extends AbstractResourceTest {
      * (testing with {@link Berechtigungsmanager ().pruefeRecht})
      */
     @Test
-    public void testAuthenticateAsRegisteredTechnUser() {
+    void testAuthenticateAsRegisteredTechnUser() {
 
         // Given:
         // - an registered techn. user (reg-user-a),
@@ -127,9 +140,12 @@ public class AuthenticationManagerTest extends AbstractResourceTest {
 
         // When:
         // Authenticate at IAM
-        security.getAuthentifizierungsmanager().orElseThrow()
-                .authentifiziere("reg-user-a");
-
+        Optional<Authentifizierungsmanager> am = security.getAuthentifizierungsmanager();
+        if (am.isPresent()) {
+            am.get().authentifiziere("reg-user-a");
+        } else {
+            fail("Authenticationmanager is null");
+        }
         // Then:
         // - SecurityContext contains new token
         assertNotNull(getAuthentication());

@@ -3,15 +3,13 @@ package de.bund.bva.isyfact.shop.service.rest.api;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import de.bund.bva.isyfact.shop.core.daten.ProduktBo;
-import org.springframework.http.MediaType;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class ApiTest {
 
@@ -66,20 +64,5 @@ public class ApiTest {
         assertNotNull(token);
 
         return token;
-    }
-
-    protected static ProduktBo updateProduktBo(ProduktBo produktBo, String url, String token) {
-
-        WebClient client = WebClient.create();
-
-        Mono<ProduktBo> response = client.put()
-                .uri(url)
-                .accept(MediaType.APPLICATION_JSON)
-                .body(Mono.just(produktBo), ProduktBo.class)
-                .header("Authorization", "Bearer " + token)
-                .retrieve()
-                .bodyToMono(ProduktBo.class);
-
-        return response.block();
     }
 }

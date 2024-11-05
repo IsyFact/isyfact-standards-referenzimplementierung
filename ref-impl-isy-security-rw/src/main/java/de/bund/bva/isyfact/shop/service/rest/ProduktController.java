@@ -47,7 +47,6 @@ public class ProduktController {
      */
     @GetMapping("/produkte")
     @ResponseStatus(HttpStatus.OK)
-    @ResponseBody
     public ResponseEntity<List<ProduktBo>> findAllProduktBo(@RequestParam(required = false) String name)
             throws ProduktNotFoundException {
 
@@ -68,7 +67,6 @@ public class ProduktController {
      */
     @GetMapping("/produkte/{id}")
     @ResponseStatus(HttpStatus.OK)
-    @ResponseBody
     public ResponseEntity<ProduktBo> findProduktBoById(@PathVariable("id") long id) throws ProduktNotFoundException {
 
         ProduktBo produktBo = produktVerwaltung.findProduktBoById(id);
@@ -83,7 +81,6 @@ public class ProduktController {
      */
     @PutMapping("/produkte")
     @ResponseStatus(HttpStatus.OK)
-    @ResponseBody
     @Secured("PRIV_Recht_A")
     public ResponseEntity<ProduktBo> updateProduktBo(@RequestBody ProduktBo produktBo) {
         produktBo = produktVerwaltung.updateProduktBo(produktBo);

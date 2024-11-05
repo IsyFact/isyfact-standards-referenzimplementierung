@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
+
 /**
  * Controller class for the produkte resource.
  * - PUT for updating a Produkt is secured with "PRIV_Recht_B"
@@ -34,7 +35,6 @@ public class ProduktController {
      */
     @PutMapping("/produkte")
     @ResponseStatus(HttpStatus.OK)
-    @ResponseBody
     @Secured("PRIV_Recht_B")
     public ResponseEntity<ProduktBo> updateProduktBo(@RequestBody ProduktBo produktBo) {
         produktBo = produktVerwaltung.updateProduktBo(produktBo);

@@ -7,10 +7,13 @@ import de.bund.bva.isyfact.shop.RestApplicationRW;
 import de.bund.bva.isyfact.shop.core.daten.ProduktBo;
 import de.bund.bva.isyfact.shop.service.rest.ProduktController;
 import de.bund.bva.isyfact.shop.service.rest.exception.ProduktNotFoundException;
+
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
+
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -25,7 +28,7 @@ import static org.junit.jupiter.api.Assertions.*;
 **/
 
 @SpringBootTest(classes= RestApplicationRW.class)
-public class SecuredResourceTest extends AbstractResourceTest {
+class SecuredResourceTest extends AbstractResourceTest {
 
     @Autowired
     // secured resource: produktController
@@ -38,7 +41,7 @@ public class SecuredResourceTest extends AbstractResourceTest {
      * Call without authentication: AuthenticationCredentialsNotFoundException expected
      */
     @Test
-    public void testAccessingSecuredResourceWithoutAuthentication() {
+    void testAccessingSecuredResourceWithoutAuthentication() {
 
         // given
         ProduktBo modifiedProduktBo = new ProduktBo(1,"Allgäuer Emmentaler","Hartkäse");
@@ -62,16 +65,19 @@ public class SecuredResourceTest extends AbstractResourceTest {
      * (testing with {@link Berechtigungsmanager().hatRecht})
      */
     @Test
-    public void testAccessingSecuredResourceWithWrongAuthentication() {
+    void testAccessingSecuredResourceWithWrongAuthentication() {
 
         // given
         ProduktBo modifiedProduktBo = new ProduktBo(1,"Allgäuer Emmentaler","Hartkäse");
 
         // an authenticated user not having the required role / privilege
-        security.getAuthentifizierungsmanager().orElseThrow()
-                .authentifiziereSystem(issuerUriA, confidentialClientId, confidentialClientSecret,
-                        "user-b", "test");
-
+        Optional<Authentifizierungsmanager> am = security.getAuthentifizierungsmanager();
+        if (am.isPresent()) {
+            am.get() .authentifiziereSystem(issuerUriA, confidentialClientId, confidentialClientSecret,
+                    "user-b", "test");
+        } else {
+            fail("Authenticationmanager is null");
+        }
         // SecurityContext contains new token
         assertNotNull(getAuthentication());
         // actual rights do NOT include required right
@@ -93,15 +99,18 @@ public class SecuredResourceTest extends AbstractResourceTest {
      * (testing with {@link Berechtigungsmanager().hatRecht})
      */
     @Test
-    public void testAccessingSecuredResourceWithCorrectAuthentication() throws ProduktNotFoundException {
+    void testAccessingSecuredResourceWithCorrectAuthentication() throws ProduktNotFoundException {
 
         // given
         ProduktBo modifiedProduktBo = new ProduktBo(4,"alter Gouda","Schnittkäse");
 
         // an authenticated client having the required role / right
-        security.getAuthentifizierungsmanager().orElseThrow()
-                .authentifiziereClient(issuerUriA, clientAId, clientASecret);
-
+       Optional<Authentifizierungsmanager> am = security.getAuthentifizierungsmanager();
+        if (am.isPresent()) {
+            am.get().authentifiziereClient(issuerUriA, clientAId, clientASecret);
+        } else {
+            fail("Authenticationmanager is null");
+        }
         // SecurityContext contains new token
         assertNotNull(getAuthentication());
         // actual rights DO include required right

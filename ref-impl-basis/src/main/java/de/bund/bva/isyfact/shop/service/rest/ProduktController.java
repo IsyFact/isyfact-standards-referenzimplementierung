@@ -1,6 +1,5 @@
 package de.bund.bva.isyfact.shop.service.rest;
 
-
 import de.bund.bva.isyfact.shop.core.ProduktVerwaltung;
 import de.bund.bva.isyfact.shop.core.daten.ProduktBo;
 import de.bund.bva.isyfact.shop.service.rest.exception.ProduktNotFoundException;
@@ -19,7 +18,7 @@ public class ProduktController {
 
     /**
      * This constructor injects the required dependencies.
-     * @param produktVerwaltung Interface for core functionality 'Produkt-Verwaltung'
+     * @param produktVerwaltung Interface for core functionality 'Produkt-Verwaltung'.
      */
     public ProduktController(ProduktVerwaltung produktVerwaltung) {
         this.produktVerwaltung = produktVerwaltung;
@@ -29,14 +28,13 @@ public class ProduktController {
 
     /**
      * Searches for products with a given name (name is not unique).
-     * If no match is found, HttpStatus.NO_CONTENT is returned
+     * If no match is found, HttpStatus.NO_CONTENT is returned.
      *
      * @param name name of products to search for
      * @return list of ProduktBo found or HttpStatus.NO_CONTENT
      */
     @GetMapping("/produkte")
     @ResponseStatus(HttpStatus.OK)
-    @ResponseBody
     public ResponseEntity<List<ProduktBo>> findAllProduktBo(@RequestParam(required = false) String name) {
 
         List<ProduktBo> produktBoList = produktVerwaltung.findAllProduktBo(name);
@@ -57,7 +55,6 @@ public class ProduktController {
      */
     @GetMapping("/produkte/{id}")
     @ResponseStatus(HttpStatus.OK)
-    @ResponseBody
     public ResponseEntity<ProduktBo> findProduktBoById(@PathVariable("id") long id) throws ProduktNotFoundException {
 
         ProduktBo produktBo = produktVerwaltung.findProduktBoById(id);

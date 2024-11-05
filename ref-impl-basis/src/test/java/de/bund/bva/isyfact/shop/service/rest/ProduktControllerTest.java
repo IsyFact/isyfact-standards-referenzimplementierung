@@ -3,6 +3,7 @@ package de.bund.bva.isyfact.shop.service.rest;
 import de.bund.bva.isyfact.shop.RestApplication;
 import de.bund.bva.isyfact.shop.core.daten.ProduktBo;
 import de.bund.bva.isyfact.shop.service.rest.exception.ProduktNotFoundException;
+import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -10,13 +11,12 @@ import org.springframework.http.ResponseEntity;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Regression test for the methods of the ProduktController class
  */
 @SpringBootTest(classes= RestApplication.class)
-public class ProduktControllerTest {
+class ProduktControllerTest {
 
     @Autowired
     ProduktController produktController;
@@ -26,7 +26,7 @@ public class ProduktControllerTest {
      * @throws ProduktNotFoundException if no produktBo exists
      */
     @Test
-    public void testFindProduktBoById() throws ProduktNotFoundException {
+    void testFindProduktBoById() throws ProduktNotFoundException {
 
         for (long i = 1; i <= 3; i++) {
 
@@ -44,7 +44,7 @@ public class ProduktControllerTest {
      * Negative test for the findProduktBoById method.
     */
     @Test
-    public void testCannotFindProduktBoById()  {
+    void testCannotFindProduktBoById()  {
 
         // given
         long idOutOfBounds = 777;
@@ -59,7 +59,7 @@ public class ProduktControllerTest {
      * Positive test for the findAllProduktBo method.
      */
     @Test
-    public void testFindAllProduktBo()  {
+    void testFindAllProduktBo()  {
 
         // given
         String name = "Pellegrino";
@@ -77,7 +77,7 @@ public class ProduktControllerTest {
      * Negative test for the findAllProduktBo method.
      */
     @Test
-    public void testCannotFindAllProduktBo()  {
+    void testCannotFindAllProduktBo()  {
 
         // given
         String name = "Parmesan";
