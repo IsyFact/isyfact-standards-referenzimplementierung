@@ -1,8 +1,6 @@
-= Glossar
+= Keycloak Glossar
 
-== KeyCloak-Begriffe:
-
-=== claim:
+== claim:
 
 - *deutsche Übersetzung:* Anspruch (auf etw.), Behauptung
 
@@ -21,7 +19,7 @@ B) make access decisions on the resources controlled by the application.
 
 - *Instanzen, Namen in ref-impl-security:* isyfact_roles
 
-=== client:
+== client:
 
 - *deutsche Übersetzung:* Kunde, Auftraggeber, Klient, Bezieher
 
@@ -42,7 +40,7 @@ they can securely invoke other services on the network that are secured by Keycl
 
 - *Instanzen, Namen in ref-impl-security:* client-a, client-b bzw. ClientLeser, ClientSchreiber
 
-=== client scope:
+== client scope:
 
 - *deutsche Übersetzung:* Rahmen, Umfang, Tragweite, Anwendungsbereich des Klienten
 
@@ -62,7 +60,7 @@ Keycloak provides the concept of a client scope for this.
 
 - *Instanzen, Namen in ref-impl-security:* isyfact-roles
 
-=== confidential client:
+== confidential client:
 
 - *deutsche Übersetzung:* vertrauenswürdiger Klient
 
@@ -79,7 +77,7 @@ for example being able to keep their registered client secret safe.
 
 - *Instanzen, Namen in ref-impl-security:* confidential-client
 
-=== mapper:
+== mapper:
 
 - *deutsche Übersetzung:* Programmteil zur Umwandlung/Abbildung (englisch: "to map to") von Daten zwischen 2 Komponenten
 
@@ -95,7 +93,7 @@ A user can be associated with zero or more roles. This role mapping information 
 
 - *Instanzen, Namen in ref-impl-security:* audience-mapper-for-client-a, isyfact-role-mapper
 
-=== realm:
+== realm:
 
 - *deutsche Übersetzung:* (König-)Reich, Bereich, Domäne
 
@@ -115,7 +113,7 @@ One Keycloak deployment can define, store, and manage as many realms as there is
 
 - *Instanzen, Namen in ref-impl-security:* ref-impl-isy-security
 
-=== registered client:
+== registered client:
 
 - *deutsche Übersetzung:* registrierter Klient
 
@@ -134,7 +132,7 @@ IsyFact Standards - Bausteine - Security - Nutzungsvorgaben: +
 
 - *Instanzen, Namen in ref-impl-security:* reg-client-a, reg-client-b, reg-user-a
 
-=== role:
+== role:
 
 - *deutsche Übersetzung:* Rolle
 
@@ -154,7 +152,7 @@ as dealing with users can be too fine-grained and hard to manage.
 
 - *Instanzen, Namen in ref-impl-security:* role-a, role-b bzw. LESER, SCHREIBER
 
-=== user:
+== user:
 
 - *deutsche Übersetzung:* Benutzer, Anwender
 

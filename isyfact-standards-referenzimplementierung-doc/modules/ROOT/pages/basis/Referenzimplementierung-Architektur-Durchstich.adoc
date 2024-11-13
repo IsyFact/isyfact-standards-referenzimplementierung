@@ -157,7 +157,7 @@ möchten wir mit dem nachfolgenden Klassendiagramm die Aufruf-Hierarchie
 in der Architektur-Durchstich-Anwendung skizzieren:
 
 [id="ref-impl-basis-call-hierachy",reftext="{figure-caption} {counter:figures}"]
-image::ref-impl-basis-call-hierarchy.svg[align="center"]
+image::basis/ref-impl-basis-call-hierarchy.svg[align="center"]
 
 * Der AntragController verwendet über das AntragVerwaltung-Interface die AntragVerwaltungImpl-Klasse.
 

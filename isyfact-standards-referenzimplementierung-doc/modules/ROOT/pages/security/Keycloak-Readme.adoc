@@ -1,4 +1,4 @@
-= KeyCloak: Setup und Konfiguration für die Referenzimplementierung 'Security'
+= Keycloak Setup
 msg systems ag
 3.1, August 15, 2024: AsciiDoc article template
 :toc:
