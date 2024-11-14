@@ -1,6 +1,6 @@
 Referenz-Implementierungen
 
-* xref:basis/Referenzimplementierung-Architektur-Durchstich.adoc[]
-* xref:security/Referenzimplementierung-Security.adoc[]
+* xref:basis/Referenzimplementierung-Architektur-Durchstich.adoc[Architektur-Durchstich]
+* xref:security/Referenzimplementierung-Security.adoc[Nutzung des Isy-Security Bausteins]
 ** xref:security/Keycloak-Glossar.adoc[]
-** xref:security/Keycloak-Readme.adoc[]
+** xref:security/Keycloak-Setup.adoc[]

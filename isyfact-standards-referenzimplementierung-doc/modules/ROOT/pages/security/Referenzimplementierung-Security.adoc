@@ -1,9 +1,4 @@
 = Referenzimplementierung des IsyFact-Bausteins 'Security'
-msg systems ag
-3.0, October 10, 2024
-:toc:
-:icons: font
-:url-quickref: https://docs.asciidoctor.org/asciidoc/latest/syntax-quick-reference/
 
 ====
 *Hinweis:* Die nachfolgende Dokumentation beinhaltet Änderungen in der Fachlichkeit,
@@ -87,7 +82,7 @@ Wie in der Referenz-Implementierung 'Architektur-Durchstich' ist neben einem Jav
 und eine Maven-Installation (mit Version 3.9.1 oder höher) notwendig.
 
 Für die Referenz-Implementierung 'Security' ist außerdem eine Installation (und Konfiguration) von Keycloak notwendig.
-Die erforderliche Vorgehensweise zu Keycloak ist xref:security/Keycloak-Readme.adoc[hier]  dokumentiert.
+Die erforderliche Vorgehensweise zu Keycloak ist xref:security/Keycloak-Setup.adoc[hier]  dokumentiert.
 
 Die Verwendung einer IDE mit Git und Maven-Integration ist sehr empfehlenswert, aber nicht notwendig.
 

@@ -1,16 +1,4 @@
 = Referenzimplementierung eines IsyFact-'Architektur-Durchstichs'
-msg systems ag
-3.0, July 29, 2022: AsciiDoc article template
-:toc:
-:icons: font
-:url-quickref: https://docs.asciidoctor.org/asciidoc/latest/syntax-quick-reference/
-
-Die oben dargestellte Gliederung folgt einer klassischen Tutorial-Gliederung
-
-* what you build
-* what you need
-* how to implement it
-* how to test it
 
 ====
 *Hinweis:* Die nachfolgende Dokumentation beinhaltet Änderungen in der Fachlichkeit,

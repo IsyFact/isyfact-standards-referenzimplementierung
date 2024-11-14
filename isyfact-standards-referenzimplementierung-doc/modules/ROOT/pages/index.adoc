@@ -1,26 +1,30 @@
-= Referenz-Implementierungen
+= Einstieg
 
-== Ziele
+=== Ziele
 
-Mit der Bereitstellung von Refernez-Implementierungen werden folgende Ziele verfolgt:
+Mit der Bereitstellung von Referenz-Implementierungen werden folgende Ziele verfolgt:
 
-=== Leichter Einstieg in die IF für Entwickler und Architekten
-
+* *Leichter Einstieg in die IF für Entwickler und Architekten:*
 Nutzer der IF sollen einen leichten Einstieg in die Factory erhalten und die Integration und Nutzung der Bausteine in praktischer Form erleben können.
 
 
-=== Leichte Erweiterbarkeit der Menge der Referenz-Implementierungen
-
+* *Erweiterbarkeit der Menge der Referenz-Implementierungen:*
 Entwicklern von IsyFact-Standard-Bausteinen sollen dabei unterstützt werden,
-beliebige neue Bausteine und Szenarien zu deren Nutzung auf Basis
-eines bereits existierenden Architektur-Durchstichs zu implementieren.
-
-Die Nutzungsmöglichkeiten neuer APIs werden über Integrationstests demonstriert,
+Szenarien zur Nutzung bereits existierender oder neuer Bausteine auf Basis
+der Referenzimplementierung eines Architektur-Durchstichs zu implementieren.
+Die Nutzung neuer APIs soll über Integrationstests demonstriert werden,
 für die es ebenfalls bereits Beispiel-Implementierungen gibt.
 
-== Aktuell verfügbar
+=== Aktueller Stand
 
 Die aktuell verfügbaren Referenz-Implementierungen sind hier dokumentiert:
 
 * xref:basis/Referenzimplementierung-Architektur-Durchstich.adoc[]
 * xref:security/Referenzimplementierung-Security.adoc[]
+
+Die Dokumentation folgt jeweils dem bewährten Muster:
+
+* what you build
+* what you need
+* how to implement it
+* how to test it
