@@ -1,5 +1,7 @@
 = Einstieg
 
+include::glossary:licence:partial$licence.adoc[]
+
 == Ziele
 
 Mit der Bereitstellung von Referenz-Implementierungen werden folgende Ziele verfolgt:
