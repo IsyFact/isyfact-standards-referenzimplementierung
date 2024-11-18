@@ -165,7 +165,6 @@ Im folgenden geben wir eine tabellarische Übersicht über die Klassen der einze
   RestApplication
 | Main-Klasse der Anwendung, die beim Start der Anwendung ausgeführt wird.
 | Das Spring-Boot-Framework erkennt diese Klasse an der Annotation '@SpringBootApplication' |
-
 |====
 
 
