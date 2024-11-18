@@ -1,5 +1,7 @@
 = Referenzimplementierung eines IsyFact-'Architektur-Durchstichs'
 
+include::glossary:licence:partial$licence.adoc[]
+
 ====
 *Hinweis:* Die nachfolgende Dokumentation beinhaltet Änderungen in der Fachlichkeit,
 die in der Implementierung noch nicht umgesetzt sind.
@@ -10,8 +12,8 @@ zu ersetzen. Die fachliche Entität 'Produkt' wird dann durch die fachliche Enti
 Weiterhin nimmt die Dokumentation eine geplante Maven-Modul-Umbenennung vorweg:
 
 * Das Modul 'ref-impl-basis' soll umbenannt werden in 'basis'
-
 ====
+
 == Ziele und Anforderungen
 
 === Allgemeine Ziele
@@ -42,7 +44,7 @@ nur zwei elementare Suchfunktionen:
 
 * Suche nach Antrag anhand der ID
 * Suche nach Anträgen anhand von Attributwerten
-  (matching substring Vergleich für den Vornamen oder Nachnamen des Antragstellers)
+(matching substring Vergleich für den Vornamen oder Nachnamen des Antragstellers)
 
 === Überblick über die SW-Architektur
 Die Referenz-Implementierung ist als 3-Schichten Architektur konzipiert.
@@ -61,9 +63,9 @@ Vorausgesetzt wird:
 
 * eine JDK-17-Installation (eine JRE-17-Installation reicht nicht)
 * eine Installation eines Git-Clients (z.B. Git-Bash),
-  um auf das Repository mit den Referenz-Implementierungen
-  https://github.com/IsyFact/isyfact-standards-referenzimplementierung/
-  zugreifen zu können
+um auf das Repository mit den Referenz-Implementierungen
+https://github.com/IsyFact/isyfact-standards-referenzimplementierung/
+zugreifen zu können
 * und eine Maven-Installation (Version 3.9.6 oder höher)
 
 Eine IDE mit Git- und Maven-Integration (Eclipse oder Intellij) ist nicht zwingend,
@@ -73,7 +75,7 @@ aber hilfreich.
 Als Anleitung zur Implementierung beschreiben wir
 
 * zunächst grundlegende Konfigurationseinstellungen
-  (zum einen für den Maven Build, zum anderen für die Architektur-Durchstichs-Anwendung)
+(zum einen für den Maven Build, zum anderen für die Architektur-Durchstichs-Anwendung)
 * danach die Klassen und Interfaces für jede der oben genannten Schichten.
 
 === Konfiguration des Build-Managements
@@ -152,8 +154,8 @@ image::basis/ref-impl-basis-call-hierarchy.svg[align="center"]
 * Diese wiederum verwendet die Anwendungsfall-Klasse AwfAntragSuchen.
 
 * Und letztere verwendet das Antrag-Repository-Interface,
-  welches eine Erweiterung des JPA-Repository-Interface darstellt
-  und Default-Implementierungen von Interface-Methoden enthält.
+welches eine Erweiterung des JPA-Repository-Interface darstellt
+und Default-Implementierungen von Interface-Methoden enthält.
 
 ==== Die Klassen im Detail
 
@@ -162,9 +164,9 @@ Im folgenden geben wir eine tabellarische Übersicht über die Klassen der einze
 |====
 |*Klasse* | *Beschreibung* | *Hinweis*
 | de.bund.bva.isyfact.antrag.
-  RestApplication
+RestApplication
 | Main-Klasse der Anwendung, die beim Start der Anwendung ausgeführt wird.
-| Das Spring-Boot-Framework erkennt diese Klasse an der Annotation '@SpringBootApplication' |
+| Das Spring-Boot-Framework erkennt diese Klasse an der Annotation '@SpringBootApplication'
 |====
 
 
@@ -177,7 +179,7 @@ nur GET-Methoden zur Verfügung.
 |====
 |*Klasse* | *Beschreibung* | *Hinweis*
 | de.bund.bva.isyfact.antrag.
-  service.rest.AntragController
+service.rest.AntragController
 | Controller-Klasse, deren Methoden die eingehenden REST-Requests behandeln.
 | Das Spring-Boot-Framework erkennt Controller-Klassen an der Annotation '@RestController'.
 
@@ -207,20 +209,19 @@ müssen im 'service.rest.exceptions' Package definiert sein.
 
 |====
 |*Klasse* | *Beschreibung* | *Hinweis*
-| de.bund.bva.isyfact.antrag. service.rest.advice.ErrorMessage
-| Die von den Advice-Klassen erzeugten ErrorMessages enthalten eine Fehlermeldung
-  und den zugehörgen Http-Status-Code
-|
 | de.bund.bva.isyfact.antrag.
-  service.rest.advice.AntragNotFoundAdvice
+service.rest.advice.ErrorMessage
+| Die von den Advice-Klassen erzeugten ErrorMessages enthalten eine Fehlermeldung
+und den zugehörgen Http-Status-Code
+| /
+| de.bund.bva.isyfact.antrag.
+service.rest.advice.AntragNotFoundAdvice
 | Diese Klasse erzeugt aus einer AntragNotFoundException das zugehörige ErrorMessage-Objekt
 | Das Spring-Boot-Framework erkennt Advice-Klassen anhand der Annotation '@RestControllerAdvice'
-
 | de.bund.bva.isyfact.antrag.
-  service.rest.advice.RuntimeExceptionAdvice
+service.rest.advice.RuntimeExceptionAdvice
 | Diese Klasse erzeugt aus einer RuntimeException das zugehörige ErrorMessage-Objekt
 | Das Spring-Boot-Framework erkennt Advice-Klassen anhand der Annotation '@RestControllerAdvice'
-|
 |====
 
 ==== Interfaces und Klassen des Anwendungskerns
@@ -232,11 +233,11 @@ der entsprechenden Java-Interfaces erfolgen.
 |====
 |*Interface* | *Beschreibung* | *Hinweis*
 | de.bund.bva.isyfact.antrag.
-  core.AntragVerwaltung
+core.AntragVerwaltung
 | Enthält find-Methoden zur Suche nach Anträgen.
 
   Die find-Methoden werden in der Klasse 'AntragVerwaltungImpl' implementiert.
-|
+| /
 |*Klasse* | *Beschreibung* | *Hinweis*
 | de.bund.bva.isyfact.antrag.
   core.impl.AntragVerwaltungImpl
@@ -246,7 +247,7 @@ der entsprechenden Java-Interfaces erfolgen.
 | Alle Impl-Klassen sind mit '@Component' annotiert.
 
 | de.bund.bva.isyfact.antrag.
-  core.impl.AwfAntragSuchen
+core.impl.AwfAntragSuchen
 | Enthält find-Methoden zur Suche nach Anträgen.
 
   Die find-Methoden dieser Klasse werden von der 'AntragVerwaltungImpl' Klasse aufgerufen.
@@ -255,35 +256,34 @@ der entsprechenden Java-Interfaces erfolgen.
 | Alle Awf-Klassen sind mit '@Service' annotiert.
 
 | de.bund.bva.isyfact.antrag.
-  core.daten.AntragBo
+core.daten.AntragBo
 | Anwendungskern und Service-Fassade arbeiten beide mit Business-Objekten
-  und tauschen ausschließlich Business-Objekte untereinander aus.
+und tauschen ausschließlich Business-Objekte untereinander aus.
 
   Die Persistenzschicht hingegen arbeitet mit Entitäten.
   Das bedeutet, dass für den Datenaustausch zwischen Persistenzschicht und Anwendungskern
   Entitäten und Business-Objekte ineinander umgewandelt werden müssen.
-
-|
+| /
 | de.bund.bva.isyfact.antrag.
   core.daten.AntragBoMapper
 | Diese Klasse enthält Konverter-Methoden
 
-  - für die Umwandlung von Antrag-Entitäten in entsprechende Bo-Objekte und
+- für die Umwandlung von Antrag-Entitäten in entsprechende Bo-Objekte und
 
-  - für die Umwandlung von Antrag-Bo-Objekten in entsprechende Entitäten
-|
+- für die Umwandlung von Antrag-Bo-Objekten in entsprechende Entitäten
+| /
 |====
 
 ==== Interfaces und Klassen der Persistenzschicht
 |====
 |*Interface* | *Beschreibung* | *Hinweis*
 | de.bund.bva.isyfact.antrag.
-  persistenc.dao.AntragRepository
+persistenc.dao.AntragRepository
 | Dieses Interface stellt eine Erweiterung des Interfaces JpaRepository<Antrag, Long> dar.
 |
 |*Klasse* | *Beschreibung* | *Hinweis*
 | de.bund.bva.isyfact.antrag.
-  persistenc.entity.Antrag
+persistenc.entity.Antrag
 | Diese Klasse stellt die für die Referenz-Implementierung des Architektur-Durchstichs zentrale Entität dar.
 | Entitätsklassen sind mit der Annotation '@Entity' markiert.
 

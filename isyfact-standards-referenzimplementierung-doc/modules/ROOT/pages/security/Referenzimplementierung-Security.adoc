@@ -1,5 +1,7 @@
 = Referenzimplementierung des IsyFact-Bausteins 'Security'
 
+include::glossary:licence:partial$licence.adoc[]
+
 ====
 *Hinweis:* Die nachfolgende Dokumentation beinhaltet Änderungen in der Fachlichkeit,
 die in der Implementierung noch nicht umgesetzt sind.

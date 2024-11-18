@@ -1,9 +1,6 @@
 = Keycloak Setup
-msg systems ag
-3.1, August 15, 2024: AsciiDoc article template
-:toc:
-:icons: font
-:url-quickref: https://docs.asciidoctor.org/asciidoc/latest/syntax-quick-reference/
+
+include::glossary:licence:partial$licence.adoc[]
 
 Die Referenzimplementierung 'Security' benötigt einen externen IAM-Service (IAM: Identity & Access Management),
 der die OIDC-konforme Authentifizierung und Autorisierung der in den Tests verwendeten Nutzer übernimmt.

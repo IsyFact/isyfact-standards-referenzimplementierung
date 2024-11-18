@@ -1,5 +1,7 @@
 = Keycloak Glossar
 
+include::glossary:licence:partial$licence.adoc[]
+
 == claim:
 
 - *deutsche Übersetzung:* Anspruch (auf etw.), Behauptung
