@@ -84,7 +84,7 @@ Wie in der Referenz-Implementierung 'Architektur-Durchstich' ist neben einem Jav
 und eine Maven-Installation (mit Version 3.9.1 oder höher) notwendig.
 
 Für die Referenz-Implementierung 'Security' ist außerdem eine Installation (und Konfiguration) von Keycloak notwendig.
-Die erforderliche Vorgehensweise zu Keycloak ist xref:security/Keycloak-Setup.adoc[hier]  dokumentiert.
+Die erforderliche Vorgehensweise zu Keycloak ist unter xref:security/Keycloak-Setup.adoc[]  dokumentiert.
 
 Die Verwendung einer IDE mit Git und Maven-Integration ist sehr empfehlenswert, aber nicht notwendig.
 
@@ -193,10 +193,10 @@ Mit den blau-gestrichelten Linien wird dargestellt, dass der Aufruf einer REST-A
 Methode über das Http-Protokoll erfolgt.
 
 [id="ref-impl-security-call-hierachy",reftext="{figure-caption} {counter:figures}"]
+."Klassen und Aufrufbeziehungen der Referenzimplementierung 'Security'"
 image::security/ref-impl-security-call-hierarchy.svg[align="center"]
 
-Das Bild soll nicht nur zeigen, wie innerhalb einer jeden Anwendung die Aufruf-Hierarchie
-aussieht:
+Das Bild soll nicht nur zeigen, wie innerhalb einer jeden Anwendung die Aufruf-Hierarchie aussieht:
 
  * Controller-Klasse -> Impl-Klasse -> Awf-Klasse -> ...
 

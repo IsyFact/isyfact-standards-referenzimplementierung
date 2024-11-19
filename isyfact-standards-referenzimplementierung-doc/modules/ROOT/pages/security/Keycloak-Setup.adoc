@@ -48,7 +48,7 @@ in ein beliebiges Verzeichnis auszupacken. Darin sollte dann das Installationsve
 - Im KeyCloak-Installationsverzeichnis (z.B., `C:\keycloak-24.0.3`) erstellen Sie ein neues Verzeichnis z.B. mit dem Namen `tmp`.
 
 2. **Kopieren der Konfigurationsdatei**:
-- Kopieren Sie die Datei `ref-impl-isy-security.json`, die unter dem Pfad `ref-impl-isy-security-rw/docs/keycloak/ref-impl-isy-security.json` zu finden ist, in das soeben erstellte `tmp`-Verzeichnis.
+- Kopieren Sie die Datei `ref-impl-isy-security.json`, die unter dem Pfad `isyfact-standards-referenzimplementierung-doc/resources/security/ref-impl-isy-security.json` zu finden ist, in das soeben erstellte `tmp`-Verzeichnis.
 
 === Import der Konfiguration der Referenzimplementierung 'Security'
 Die für die Referenzimplementierung 'Security' notwendige Konfiguration mit den verwendeten Nutzern, Clients und Rollen steht als Importdatei 'ref-impl-isy-security.json' zur Verfügung. Sie kann mit folgender Prozedur importiert werden:

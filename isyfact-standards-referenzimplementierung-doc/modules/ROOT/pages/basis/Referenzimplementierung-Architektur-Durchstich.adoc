@@ -147,8 +147,8 @@ möchten wir mit dem nachfolgenden Klassendiagramm die Aufruf-Hierarchie
 in der Architektur-Durchstich-Anwendung skizzieren:
 
 [id="ref-impl-basis-call-hierachy",reftext="{figure-caption} {counter:figures}"]
+.Klassen und Aufrufbeziehungen der Referenzimplementierung 'Architektur-Durchstich'
 image::basis/ref-impl-basis-call-hierarchy.svg[align="center"]
-
 * Der AntragController verwendet über das AntragVerwaltung-Interface die AntragVerwaltungImpl-Klasse.
 
 * Diese wiederum verwendet die Anwendungsfall-Klasse AwfAntragSuchen.
@@ -280,7 +280,7 @@ und tauschen ausschließlich Business-Objekte untereinander aus.
 | de.bund.bva.isyfact.antrag.
 persistenc.dao.AntragRepository
 | Dieses Interface stellt eine Erweiterung des Interfaces JpaRepository<Antrag, Long> dar.
-|
+| /
 |*Klasse* | *Beschreibung* | *Hinweis*
 | de.bund.bva.isyfact.antrag.
 persistenc.entity.Antrag
