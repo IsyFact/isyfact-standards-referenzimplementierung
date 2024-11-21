@@ -84,7 +84,7 @@ Wie in der Referenz-Implementierung 'Architektur-Durchstich' ist neben einem Jav
 und eine Maven-Installation (mit Version 3.9.1 oder höher) notwendig.
 
 Für die Referenz-Implementierung 'Security' ist außerdem eine Installation (und Konfiguration) von Keycloak notwendig.
-Die erforderliche Vorgehensweise zu Keycloak ist unter xref:security/Keycloak-Setup.adoc[]  dokumentiert.
+Die erforderliche Vorgehensweise zu Keycloak ist unter xref:security/Keycloak-Setup.adoc[] dokumentiert.
 
 Die Verwendung einer IDE mit Git und Maven-Integration ist sehr empfehlenswert, aber nicht notwendig.
 
@@ -196,16 +196,16 @@ Methode über das Http-Protokoll erfolgt.
 ."Klassen und Aufrufbeziehungen der Referenzimplementierung 'Security'"
 image::security/ref-impl-security-call-hierarchy.svg[align="center"]
 
-Das Bild soll nicht nur zeigen, wie innerhalb einer jeden Anwendung die Aufruf-Hierarchie aussieht:
+Das Bild zeigt,
 
- * Controller-Klasse -> Impl-Klasse -> Awf-Klasse -> ...
+ * zum einen (mit durchgezogenen gezeichneten Pfeilen) Anwendungs-interne Aufruf-Beziehungen
+ ** Controller-Klasse -> Impl-Klasse -> Awf-Klasse -> Repository-Interface
 
-sondern vor allem, an welchen Stellen, der Aufruf der REST-Api einer anderen Anwendung erfolgt:
-
- * Api-Test-Klasse -> Security-Service-Consumer-Controller-Klasse
- * Security-Service-Consumer-Adapter-Klasse -> Security-Service-Provider-Controller-Klasse
- * '@Authenticate'-Annotation -> Keycloak-Api und
- * '@Secured'-Annotation -> Keycloak-Api
+ * zum anderen (mit gestrichelten Pfeilen) die Anwendungs-übergreifenden Service-Aufrufe:
+ ** Api-Test-Klasse -> Security-Service-Consumer-Controller-Klasse
+ ** Security-Service-Consumer-Adapter-Klasse -> Security-Service-Provider-Controller-Klasse
+ ** '@Authenticate'-Annotation -> Keycloak-Api und
+ ** '@Secured'-Annotation -> Keycloak-Api
 
 == Beschreibung der Tests
 Die in der Referenz-Implementierung implementierten Api-Tests sind allesamt Integrationstests.

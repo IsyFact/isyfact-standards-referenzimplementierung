@@ -43,8 +43,7 @@ Als Use Cases unterstützt die Referenz-Implementierung für den angestrebten ke
 nur zwei elementare Suchfunktionen:
 
 * Suche nach Antrag anhand der ID
-* Suche nach Anträgen anhand von Attributwerten
-(matching substring Vergleich für den Vornamen oder Nachnamen des Antragstellers)
+* Suche nach Anträgen anhand von Attributwerten (matching substring Vergleich für den Vornamen oder Nachnamen des Antragstellenden)
 
 === Überblick über die SW-Architektur
 Die Referenz-Implementierung ist als 3-Schichten Architektur konzipiert.
@@ -62,10 +61,7 @@ mit Beispieldaten (für Anträge) neu initialisiert.
 Vorausgesetzt wird:
 
 * eine JDK-17-Installation (eine JRE-17-Installation reicht nicht)
-* eine Installation eines Git-Clients (z.B. Git-Bash),
-um auf das Repository mit den Referenz-Implementierungen
-https://github.com/IsyFact/isyfact-standards-referenzimplementierung/
-zugreifen zu können
+* eine Installation eines Git-Clients (zum Beispiel Git-Bash), um auf das Repository der Referenz-Implementierungen [https://github.com/IsyFact/isyfact-standards-referenzimplementierung] zugreifen zu können
 * und eine Maven-Installation (Version 3.9.6 oder höher)
 
 Eine IDE mit Git- und Maven-Integration (Eclipse oder Intellij) ist nicht zwingend,
@@ -266,11 +262,7 @@ und tauschen ausschließlich Business-Objekte untereinander aus.
 | /
 | de.bund.bva.isyfact.antrag.
   core.daten.AntragBoMapper
-| Diese Klasse enthält Konverter-Methoden
-
-- für die Umwandlung von Antrag-Entitäten in entsprechende Bo-Objekte und
-
-- für die Umwandlung von Antrag-Bo-Objekten in entsprechende Entitäten
+| Diese Klasse enthält Konverter-Methoden für die Umwandlung von Antrag-Entitäten in entsprechende Bo-Objekte und umgekehrt.
 | /
 |====
 
