@@ -10,7 +10,7 @@ Mit der Bereitstellung von Referenzimplementierungen werden folgende Ziele verfo
 Nutzende der IsyFact sollen einen leichten Einstieg in die Factory erhalten und die Integration und Nutzung der Bausteine in praktischer Form erleben können.
 
 * *Erweiterbarkeit der Menge der Referenzimplementierungen:*
-Bei der Entwicklung oder Weiterentwicklung von IsyFact-Standard-Bausteinen sollen die Beteiligten dabei unterstützt werden, gitSzenarien zur Nutzung dieser Bausteine auf Basis der Referenzimplementierung eines Architektur-Durchstichs zu implementieren.
+Bei der Entwicklung oder Weiterentwicklung von IsyFact-Standard-Bausteinen sollen die Beteiligten dabei unterstützt werden, Szenarien zur Nutzung dieser Bausteine auf Basis der Referenzimplementierung eines Architektur-Durchstichs zu implementieren.
 Die Nutzung neuer APIs soll über Integrationstests demonstriert werden, für die es ebenfalls bereits Beispielimplementierungen gibt.
 
 == Aktueller Stand

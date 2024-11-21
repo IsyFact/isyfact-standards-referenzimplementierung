@@ -52,7 +52,7 @@ Mit jedem Start der Spring-Boot-Anwendung wird diese Datenbank (über ein SQL-Sk
 Vorausgesetzt wird:
 
 * eine JDK-17-Installation (eine JRE-17-Installation reicht nicht)
-* eine Installation eines Git-Clients (zum Beispiel Git-Bash), um auf das Repository der Referenz-Implementierungen [https://github.com/IsyFact/isyfact-standards-referenzimplementierung] zugreifen zu können
+* eine Installation eines Git-Clients (zum Beispiel Git-Bash), um auf das https://github.com/IsyFact/isyfact-standards-referenzimplementierung[Repository der Referenz-Implementierungen] zugreifen zu können
 * und eine Maven-Installation (Version 3.9.6 oder höher)
 
 Eine IDE mit Git- und Maven-Integration (Eclipse oder Intellij) ist nicht zwingend, aber hilfreich.

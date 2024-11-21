@@ -227,7 +227,7 @@ Mit den AuthenticationManagerTests wird die Funktionalität der Methoden des Aut
 |AuthenticationManagerTest|Authentifizierung als registrierter Client|Spring-Boot-Test
 |====
 
-Was die BerechtigungsManagerTests betrifft, so war es das Ziel, zu demonstrieren, wie mithilfe des BerechtigungsManager-Interfaces in einer Resource-Methode Attribute eines Users ermittelt, auf erwartete Werte hin geprüft werden und bei Bedarf anschließend der Zugriff verweigern kann.
+Was die BerechtigungsManagerTests betrifft, so war es das Ziel, zu demonstrieren, wie mithilfe des BerechtigungsManager-Interfaces in einer Resource-Methode Attribute eines Users ermittelt, auf erwartete Werte hin geprüft und bei Bedarf anschließend der Zugriff verweigert werden kann.
 |====
 |*Testklasse*|*Testfall*|*Testtechnologie*
 |BerechtigungsManagerTest|Antrag mit Name des Antragstellers suchen - als User ohne Abteilungszuordnung |Spring-Boot-Test
@@ -242,8 +242,7 @@ Ziel der PublicResourceTests war es, die Funktionsweise der '@Secured' Annotatio
 |PublicResourceTest|Aufruf einer nicht geschützten Resource-Methode - mit Token |Spring-Boot-Test
 |====
 
-Die SecuredResourceTests verfolgen das gleiche Ziel: Auch hier soll die Funktionsweise der '@Secured'
-Annotation geprüft werden.
+Die SecuredResourceTests verfolgen das gleiche Ziel: Auch hier soll die Funktionsweise der '@Secured' Annotation geprüft werden.
 |====
 |*Testklasse*|*Testfall*|*Testtechnologie*
 |SecuredResourceTest|Aufruf einer geschützten Resource-Methode - ohne Token |Spring-Boot-Test
