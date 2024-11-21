@@ -1,0 +1,28 @@
+= Einstieg
+
+include::glossary:licence:partial$licence.adoc[]
+
+== Ziele
+
+Mit der Bereitstellung von Referenzimplementierungen werden folgende Ziele verfolgt:
+
+* *Leichter Einstieg in die IsyFact:*
+Nutzende der IsyFact sollen einen leichten Einstieg in die Factory erhalten und die Integration und Nutzung der Bausteine in praktischer Form erleben können.
+
+* *Erweiterbarkeit der Menge der Referenzimplementierungen:*
+Bei der Entwicklung oder Weiterentwicklung von IsyFact-Standard-Bausteinen sollen die Beteiligten dabei unterstützt werden, Szenarien zur Nutzung dieser Bausteine auf Basis der Referenzimplementierung eines Architektur-Durchstichs zu implementieren.
+Die Nutzung neuer APIs soll über Integrationstests demonstriert werden, für die es ebenfalls bereits Beispielimplementierungen gibt.
+
+== Aktueller Stand
+
+Die aktuell verfügbaren Referenzimplementierungen sind hier dokumentiert:
+
+* xref:basis/Referenzimplementierung-Architektur-Durchstich.adoc[]
+* xref:security/Referenzimplementierung-Security.adoc[]
+
+Die Dokumentation folgt jeweils dem bewährten Muster:
+
+* What you build
+* What you need
+* How to implement it
+* How to test it

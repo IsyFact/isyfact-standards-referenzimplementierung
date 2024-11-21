@@ -1,0 +1,7 @@
+name: isyfact-standards-referenzimplementierung
+title: Referenzimplementierung
+version: '4.0.x'
+display_version: '4.0 (DEV)'
+start_page: index.adoc
+nav:
+- modules/ROOT/nav.adoc
