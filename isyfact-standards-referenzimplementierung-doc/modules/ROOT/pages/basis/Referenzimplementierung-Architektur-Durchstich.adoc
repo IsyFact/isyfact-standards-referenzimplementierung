@@ -105,13 +105,12 @@ Darüber hinaus referenziert die *Modul-übergreifende* Parent-'pom.xml' selbst 
   <version>3.0.1</version>
 </parent>
 ----
-Auf diese Weise werden die IsyFact-Standards-Bausteine und sämtliche Maven-Plugins eingebunden, die im Build-Prozess verwendet bzw. ausgeführt werden sollen.
+Auf diese Weise werden die IsyFact-Standards-Bausteine und sämtliche Maven-Plugins eingebunden, die im Build-Prozess verwendet beziehungsweise ausgeführt werden sollen.
 
 === Konfiguration der Anwendung
 Die Konfiguration der Anwendung ist in der 'application.yml' Datei definiert.
 
-Hier ist zum einen der Port definiert,
-an dem die gestartete Spring-Boot-Anwendung die eingehenden Requests entgegennimmt.
+Hier ist zum einen der Port definiert, an dem die gestartete Spring-Boot-Anwendung die eingehenden Requests entgegennimmt.
 Zum anderen findet man hier auch Persistenz-Konfiguration der Anwendung.
 In der Persistenz-Konfiguration wird festgelegt, wie das Datenbank-Schema einzuspielen ist, und welches SQL-Skript für die initiale Befüllung der Datenbank-Tabellen ausgeführt werden soll.
 
@@ -137,7 +136,7 @@ und Default-Implementierungen von Interface-Methoden enthält.
 
 ==== Die Klassen im Detail
 
-Im folgenden geben wir eine tabellarische Übersicht über die Klassen der einzelnen Packages, bzw. Schichten.
+Im folgenden geben wir eine tabellarische Übersicht über die Klassen der einzelnen Packages, beziehungsweise Schichten.
 
 |====
 |*Klasse* | *Beschreibung* | *Hinweis*
@@ -151,7 +150,7 @@ RestApplication
 ==== Klassen der Service Fassade
 In der Fachlichkeit des Architektur-Durchstichs gibt es nur eine Entität.
 Dem entsprechend gibt es in der Service-Fassade des Architektur-Durchstichs
-nur eine einzige Resource- bzw. Controller-Klasse. Und diese stellt, der Einfachheit halber,
+nur eine einzige Resource- beziehungsweise Controller-Klasse. Und diese stellt, der Einfachheit halber,
 nur GET-Methoden zur Verfügung.
 
 |====
@@ -161,26 +160,26 @@ service.rest.AntragController
 | Controller-Klasse, deren Methoden die eingehenden REST-Requests behandeln.
 | Das Spring-Boot-Framework erkennt Controller-Klassen an der Annotation '@RestController'.
 
-  Mit der Annotation '@RequestMapping' wird der zur Resource- bzw. Controller Klasse gehörige Resource-Pfad definiert.
+  Mit der Annotation '@RequestMapping' wird der zur Resource- beziehungsweise Controller Klasse gehörige Resource-Pfad definiert.
 
   Mit Annotationen wie '@PostMapping', '@GetMapping', '@PutMapping'
-  und den hier zu definierenden Methoden-Pfaden werden die in der Resource- bzw.
+  und den hier zu definierenden Methoden-Pfaden werden die in der Resource- beziehungsweise
   Controller-Klasse (AntragController) definierten Resource-Methoden in der REST-Api aufrufbar gemacht.
 
   Mit der Annotation '@ResponseStatus' wird definiert, welcher Status-Code nach
   Ausführung der hier aufgerufenen Resource-Methode zurück gegeben wird.
-  Da in Resource- bzw. Controller-Klassen keinerlei Feherlbehandung stattfindet,
+  Da in Resource- beziehungsweise Controller-Klassen keinerlei Feherlbehandung stattfindet,
   liefern die Resource-Methoden von Resourcen der Service-Fassade ausschließlich HttpStatus.OK zurück.
 |====
 
 ==== Klassen der Exception Fassade
-Wie man in der Implementierung der AntragController-Klasse sehen kann, gibt es dort keinerlei try-catch-Blöcke und somit keinerlei Fehlerbehandlung.
+Wie in der Implementierung der AntragController-Klasse zu sehen ist, gibt es dort keinerlei try-catch-Blöcke und somit keinerlei Fehlerbehandlung.
 
 Die Fehlerbehandlung ist ausgelagert in eine Exception-Fassade.
-Die zugehörigen Fehlerbehandlungs-Klassen (Advice-Klassen) findet man im 'service.rest.advice' Package.
+Die zugehörigen Fehlerbehandlungs-Klassen (Advice-Klassen) befinden sich im 'service.rest.advice' Package.
 Aufgabe der Advice-Klassen ist es, fachliche Exceptions in entsprechende ErrorMessage-Objekte umzuwandeln.
 
-Die fachlichen Exceptions, die von diesen Fehlerbehandlungs-Klassen (bzw. Advice-Klassen) verarbeitet werden, müssen im 'service.rest.exceptions' Package definiert sein.
+Die fachlichen Exceptions, die von diesen Fehlerbehandlungs-Klassen (beziehungsweise Advice-Klassen) verarbeitet werden, müssen im 'service.rest.exceptions' Package definiert sein.
 
 |====
 |*Klasse* | *Beschreibung* | *Hinweis*
@@ -256,7 +255,7 @@ persistenc.entity.Antrag
 | Diese Klasse stellt die für die Referenz-Implementierung des Architektur-Durchstichs zentrale Entität dar.
 | Entitätsklassen sind mit der Annotation '@Entity' markiert.
 
-  Für das Mapping von Tabellennamen auf Entities kann man die Annotation '@Table' verwenden.
+  Für das Mapping von Tabellennamen auf Entities kann die Annotation '@Table' verwendet werden.
 
   Und für das Mapping von Spaltennamen auf Entity-Attribute die Annotation '@Column'.
 |====

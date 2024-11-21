@@ -10,7 +10,7 @@ include::glossary:licence:partial$licence.adoc[]
 Schlüssel-Wert-Paare, die Informationen über einen Nutzer enthalten.
 Sie lassen sich auch für Metainformationen verwenden.
 +
-Attribute des Nutzers (zum Beispiel Name, zugeordnete Rechte, …) und Autorisierungsinformationen aus bzw. von KeyCloak.
+Attribute des Nutzers (zum Beispiel Name, zugeordnete Rechte, …) und Autorisierungsinformationen aus beziehungsweise von KeyCloak.
 Als Teil des Tokens, dient es dem Client, gegenüber dem Server seinen Anspruch auf den abgerufenen Dienst zu legitimieren.
 
 * *Definition in keycloak.org:* +
@@ -29,8 +29,7 @@ B) make access decisions on the resources controlled by the application.
 * *Beschreibung (Verwendung in KeyCloak):* +
 Anwendung oder Dienst, der Dienste von einem Server ((Backend-)Anwendung) abruft.
 +
-In KeyCloak definiert ein Client die Authentifizierungs* und Autorisierungsrichtlinien,
-die auf die jeweilige Anwendung oder den Dienst angewendet werden sollen.
+In KeyCloak definiert ein Client die Authentifizierungs- und Autorisierungsrichtlinien, die auf die jeweilige Anwendung oder den Dienst angewendet werden sollen.
 +
 Authentisierung mit ID und (von KeyCloak generiertem) Secret.
 
@@ -39,7 +38,7 @@ Clients are entities that can request Keycloak to authenticate a user.
 Most often, clients are applications and services that want to use Keycloak to secure themselves and provide a single sign-on solution. +
 Clients can also be entities that just want to request identity information or an access token so that they can securely invoke other services on the network that are secured by Keycloak.
 
-* *Instanzen, Namen in ref-impl-security:* client-a, client-b bzw. ClientLeser, ClientSchreiber
+* *Instanzen, Namen in ref-impl-security:* client-a, client-b beziehungsweise ClientLeser, ClientSchreiber
 
 == client scope:
 
@@ -102,10 +101,10 @@ This role mapping information can be encapsulated into tokens and assertions so 
 * *Beschreibung (Verwendung in KeyCloak):* +
 Administrationsbereich, Mandant
 +
-Jeweils abgegrenzte Bereiche, für die die anderen in dieser Aufzählung genannten Aspekte einzeln konfiguriert bzw. verwaltet werden können.
+Jeweils abgegrenzte Bereiche, für die die anderen in dieser Aufzählung genannten Aspekte einzeln konfiguriert beziehungsweise verwaltet werden können.
 +
 Logischer Container für Benutzer, Anwendungen und Dienste.
-Er bietet eine separate und isolierte Umgebung für die Verwaltung von Authentifizierungs* und Autorisierungsrichtlinien.
+Er bietet eine separate und isolierte Umgebung für die Verwaltung von Authentifizierungs- und Autorisierungsrichtlinien.
 
 * *Definition in keycloak.org:* +
 A realm is a space where you manage a set of objects, including users, applications, roles, and groups.
@@ -125,7 +124,7 @@ Clients, deren Authentifizierungsdaten unter einer ID in der Konfiguration
 der Anwendung abgelegt sind.
 
 * *Definition in IsyFact:* +
-Maßgeblich sind folgedende Abschnitte der IsyFact Standards - Bausteine - Security - Nutzungsvorgaben: +
+Maßgeblich sind folgende Abschnitte der IsyFact Standards - Bausteine - Security - Nutzungsvorgaben: +
 2.2 Authentifizierungsmanager +
 3.2 Konfigurationsparameter +
 3.6 Authentifizierung eines OAuth 2.0 Clients mit dem Authentifizierungsmanager +
@@ -141,7 +140,7 @@ Maßgeblich sind folgedende Abschnitte der IsyFact Standards - Bausteine - Secur
 * *Beschreibung (Verwendung in KeyCloak)* +
 Gruppierung und Abstraktion von Nutzern einer Anwendung, aufgrund ihrer Aufgaben im Unternehmen.
 Zur Erledigung dieser Aufgabe verwenden sie bestimmte Teile und Funktionen der Anwendung, während sie auf andere keinen Zugriff haben sollten. +
-Durch die Rolle wird einer ganzen Gruppe von Nutzern das Nutzungsrecht gegeben bzw. verweigert.
+Durch die Rolle wird einer ganzen Gruppe von Nutzern das Nutzungsrecht gegeben beziehungsweise verweigert.
 Wenn ein Nutzer mehrere Aufgaben hat und so zu mehreren Gruppen gehört, hat er/sie auch mehrere Rollen.
 Beispiele: Mitarbeitende einer Abteilung, Manager, Administratoren, ...
 
@@ -151,7 +150,7 @@ Admin, user, manager, and employee are all typical roles that may exist in an or
 Applications often assign access and permissions to specific roles rather than individual users
 as dealing with users can be too fine-grained and hard to manage.
 
-* *Instanzen, Namen in ref-impl-security:* role-a, role-b bzw. LESER, SCHREIBER
+* *Instanzen, Namen in ref-impl-security:* role-a, role-b beziehungsweise LESER, SCHREIBER
 
 == user:
 
@@ -168,5 +167,5 @@ Users are entities that are able to log into your system. +
 They can have attributes associated with themselves like email, username, address, phone number, and birthday. +
 They can be assigned group membership and have specific roles assigned to them.
 
-* *Instanzen, Namen in ref-impl-security:* user-a, user-b bzw. UserLeser, UserSchreiber
+* *Instanzen, Namen in ref-impl-security:* user-a, user-b beziehungsweise UserLeser, UserSchreiber
 

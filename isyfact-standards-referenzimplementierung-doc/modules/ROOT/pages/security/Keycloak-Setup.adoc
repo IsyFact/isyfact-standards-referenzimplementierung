@@ -40,7 +40,7 @@ Dieser Abschnitt richtet sich an Architekten und Entwickler von IsyFact-Anwendun
 Die aktuelle Version (und ältere) zum freien Download sowie Guides und Dokumentation findet sich unter https://www.keycloak.org/.
 Zur Erstellung der Referenzimplementierung 'Security' und des Konfigurations-Exports wurde die Version 24.0.3 von KeyCloak verwendet.
 
-Zur Installation von KeyCloak reicht es, die heruntergeladene Datei (*.zip für Windows bzw. *.tar.gz für Linux)
+Zur Installation von KeyCloak reicht es, die heruntergeladene Datei (*.zip für Windows beziehungsweise *.tar.gz für Linux)
 in ein beliebiges Verzeichnis auszupacken. 
 Darin sollte dann das Installationsverzeichnis 'keycloak-<Version zum Beispiel 24.0.3>' vorhanden sein.
 

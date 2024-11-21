@@ -65,12 +65,10 @@ Das Berechtigungskonzept wurde bewusst so gewählt, sodass ohne das technische F
 ==== Technische Features
 Die Referenz-Implementierung 'Security' soll zeigen,
 
-* wie man die Funktionalität der BerechtigungsManager- und AuthentifizierungsManger-Interfaces
-  des IsyFact-Bausteins Security nutzt
-* wie man die '@Secured'-Annotation nutzt, um Resource-Methoden zu schützen
-* wie man die '@Authenticate'-Annotation nutzt, um eine Re-Authentifizierung durchzuführen und
-* was zu tun ist, damit für externe Service-Calls die ausgehenden Requests ein zum aktuellen Security-Context
-  passendes Token mit beinhalten.
+* wie die Funktionalität der BerechtigungsManager- und AuthentifizierungsManger-Interfaces des IsyFact-Bausteins Security genutzt werden kann
+* wie die '@Secured'-Annotation verwendet werden kann, um Resource-Methoden zu schützen
+* wie die '@Authenticate'-Annotation verwendet werden kann, um eine Re-Authentifizierung durchzuführen und
+* was zu tun ist, damit für externe Service-Calls die ausgehenden Requests ein zum aktuellen Security-Context  passendes Token mit beinhalten.
 
 == Voraussetzungen
 Wie in der Referenz-Implementierung 'Architektur-Durchstich' ist neben einem Java-17-JDK, einem Git-Client und eine Maven-Installation (mit Version 3.9.1 oder höher) notwendig.
@@ -177,7 +175,6 @@ Das Bild zeigt,
 
  * zum einen (mit durchgezogenen gezeichneten Pfeilen) Anwendungs-interne Aufruf-Beziehungen
  ** Controller-Klasse -> Impl-Klasse -> Awf-Klasse -> Repository-Interface
-
  * zum anderen (mit gestrichelten Pfeilen) die Anwendungs-übergreifenden Service-Aufrufe:
  ** Api-Test-Klasse -> Security-Service-Consumer-Controller-Klasse
  ** Security-Service-Consumer-Adapter-Klasse -> Security-Service-Provider-Controller-Klasse
@@ -230,7 +227,7 @@ Mit den AuthenticationManagerTests wird die Funktionalität der Methoden des Aut
 |AuthenticationManagerTest|Authentifizierung als registrierter Client|Spring-Boot-Test
 |====
 
-Was die BerechtigungsManagerTests betrifft, so war es das Ziel, zu demonstrieren, wie man mithilfe des BerechtigungsManager-Interfaces in einer Resource-Methode Attribute eines Users ermitteln, auf erwartete Werte hin prüfen und anschließend ggf. den Zugriff verweigern kann.
+Was die BerechtigungsManagerTests betrifft, so war es das Ziel, zu demonstrieren, wie mithilfe des BerechtigungsManager-Interfaces in einer Resource-Methode Attribute eines Users ermittelt, auf erwartete Werte hin geprüft werden und bei Bedarf anschließend der Zugriff verweigern kann.
 |====
 |*Testklasse*|*Testfall*|*Testtechnologie*
 |BerechtigungsManagerTest|Antrag mit Name des Antragstellers suchen - als User ohne Abteilungszuordnung |Spring-Boot-Test
