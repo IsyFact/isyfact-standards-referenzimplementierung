@@ -3,11 +3,9 @@
 include::glossary:licence:partial$licence.adoc[]
 
 ====
-*Hinweis:* Die nachfolgende Dokumentation beinhaltet Änderungen in der Fachlichkeit,
-die in der Implementierung noch nicht umgesetzt sind.
+*Hinweis:* Die nachfolgende Dokumentation beinhaltet Änderungen in der Fachlichkeit, die in der Implementierung noch nicht umgesetzt sind.
 
-Für die Implementierung ist geplant, die fachliche Domäne 'shop' durch einen Behördenkontext
-zu ersetzen. Die fachliche Entität 'Produkt' wird dann durch die fachliche Entität 'Antrag' ersetzt.
+Für die Implementierung ist geplant, die fachliche Domäne 'shop' durch einen Behördenkontext zu ersetzen. Die fachliche Entität 'Produkt' wird dann durch die fachliche Entität 'Antrag' ersetzt.
 
 Weiterhin nimmt die Dokumentation eine geplante Maven-Modul-Umbenennung vorweg:
 
@@ -17,26 +15,20 @@ Weiterhin nimmt die Dokumentation eine geplante Maven-Modul-Umbenennung vorweg:
 == Ziele und Anforderungen
 
 === Allgemeine Ziele
-Mit der Referenz-Implementierung eines IsyFact-Standards-konformen Architektur-Durchstichs
-soll ein Software-Entwickler sehen und verstehen,
-wie eine Anwendung aufgebaut sein muss,
-die in eine IsyFact-Anwendungslandschaft integrierbar ist.
+Mit der Referenz-Implementierung eines IsyFact-Standards-konformen Architektur-Durchstichs soll ein Software-Entwickler sehen und verstehen, wie eine Anwendung aufgebaut sein muss, die in eine IsyFact-Anwendungslandschaft integrierbar ist.
 
 Mit der Referenz-Implementierung  wird angestrebt, sowohl die Fachlichkeit wie auch die Architektur minimal zu halten.
 Nutzungsvorgaben, Namenskonventionen, Strukturierungs-Richtlinien werden berücksichtigt.
 
-Weiterhin wird angestrebt,
-soweit wie nur möglich die in den IsyFact-Standards verwendeten Maven-Plugins zu nutzen.
+Weiterhin wird angestrebt, soweit wie nur möglich die in den IsyFact-Standards verwendeten Maven-Plugins zu nutzen.
 Entsprechendes gilt auch für das IsyFact-Standards verankerte Dependency-Management:
-Hier sollen nur Produktversionen von Libraries und Frameworks eingebunden werden,
-wie sie an zentraler Stelle definiert sind.
+Hier sollen nur Produktversionen von Libraries und Frameworks eingebunden werden, wie sie an zentraler Stelle definiert sind.
 
 === Überblick über die Fachlichkeit
 
 ==== Entitäten
 In der Referenz-Implementierung verwenden wir als Entitäten:
 nur das Objekt Antrag mit den Attributen Id, Antragsteller, Antragstatus.
-
 
 ===== Use Cases
 Als Use Cases unterstützt die Referenz-Implementierung für den angestrebten keep-it-simple Ansatz
@@ -46,7 +38,7 @@ nur zwei elementare Suchfunktionen:
 * Suche nach Anträgen anhand von Attributwerten (matching substring Vergleich für den Vornamen oder Nachnamen des Antragstellenden)
 
 === Überblick über die SW-Architektur
-Die Referenz-Implementierung ist als 3-Schichten Architektur konzipiert.
+Die Referenz-Implementierung ist als 3-Schichten Architektur konzipiert:
 
 * Service und Exception Fassade
 * Anwendungskern
@@ -54,8 +46,7 @@ Die Referenz-Implementierung ist als 3-Schichten Architektur konzipiert.
 
 Diese drei Schichten sind eingebettet in eine Spring-Boot-Anwendung.
 Als Datenbank verwenden wir eine In-Memory-Datenbank (H2).
-Mit jedem Start der Spring-Boot-Anwendung wird diese Datenbank (über ein SQL-Skript)
-mit Beispieldaten (für Anträge) neu initialisiert.
+Mit jedem Start der Spring-Boot-Anwendung wird diese Datenbank (über ein SQL-Skript) mit Beispieldaten (für Anträge) neu initialisiert.
 
 == Voraussetzungen
 Vorausgesetzt wird:
@@ -64,8 +55,7 @@ Vorausgesetzt wird:
 * eine Installation eines Git-Clients (zum Beispiel Git-Bash), um auf das Repository der Referenz-Implementierungen [https://github.com/IsyFact/isyfact-standards-referenzimplementierung] zugreifen zu können
 * und eine Maven-Installation (Version 3.9.6 oder höher)
 
-Eine IDE mit Git- und Maven-Integration (Eclipse oder Intellij) ist nicht zwingend,
-aber hilfreich.
+Eine IDE mit Git- und Maven-Integration (Eclipse oder Intellij) ist nicht zwingend, aber hilfreich.
 
 == Anleitung zur Implementierung
 Als Anleitung zur Implementierung beschreiben wir
@@ -78,17 +68,14 @@ Als Anleitung zur Implementierung beschreiben wir
 Das Repository der Referenz-Implementierungen beinhaltet mehrere Spring-Boot-Anwendungen.
 Jede dieser Anwendungen ist als eigenständiges Maven-Modul implementiert.
 
-Das Maven-Modul für den Architektur-Durchstich ist Muster-Grundlage und Basis für alle weiteren Module
-der Referenz-Implementierung und hat daher den Namen 'basis'.
+Das Maven-Modul für den Architektur-Durchstich ist Muster-Grundlage und Basis für alle weiteren Module der Referenz-Implementierung und hat daher den Namen 'basis'.
 
-Alle Maven-Module der Referenz-Implementierung haben eine eigene 'pom.xml'-Datei,
-die ihrerseits wieder auf eine Modul-übergreifende Parent-'pom.xml'-Datei referenziert.
+Alle Maven-Module der Referenz-Implementierung haben eine eigene 'pom.xml'-Datei, die ihrerseits wieder auf eine Modul-übergreifende Parent-'pom.xml'-Datei referenziert.
 
 Aufgabe der *Modul-spezifischen* pom.xml ist es, die Dependencies für dieses Modul zu definieren.
 
-Zu den Aufgaben der *Modul-übergreifenden* Parent-'pom.xml', die in der Verzeichnis-Hierarchie eine Ebene höher liegt,
-gehört, das Dependency-Management für die in den IsyFact Standards genutzten Produkte
-(Libraries und Frameworks) einzubinden. Dazu wird auf die Artefakte 'isyfact-standards-bom' und 'isyfact-products-bom' referenziert:
+Zu den Aufgaben der *Modul-übergreifenden* Parent-'pom.xml', die in der Verzeichnis-Hierarchie eine Ebene höher liegt, gehört, das Dependency-Management für die in den IsyFact Standards genutzten Produkte (Libraries und Frameworks) einzubinden.
+Dazu wird auf die Artefakte 'isyfact-standards-bom' und 'isyfact-products-bom' referenziert:
 ----
  <dependencyManagement>
         <dependencies>
@@ -118,8 +105,7 @@ Darüber hinaus referenziert die *Modul-übergreifende* Parent-'pom.xml' selbst 
   <version>3.0.1</version>
 </parent>
 ----
-Auf diese Weise werden die IsyFact-Standards-Bausteine und sämtliche Maven-Plugins eingebunden,
-die im Build-Prozess verwendet bzw. ausgeführt werden sollen.
+Auf diese Weise werden die IsyFact-Standards-Bausteine und sämtliche Maven-Plugins eingebunden, die im Build-Prozess verwendet bzw. ausgeführt werden sollen.
 
 === Konfiguration der Anwendung
 Die Konfiguration der Anwendung ist in der 'application.yml' Datei definiert.
@@ -127,20 +113,16 @@ Die Konfiguration der Anwendung ist in der 'application.yml' Datei definiert.
 Hier ist zum einen der Port definiert,
 an dem die gestartete Spring-Boot-Anwendung die eingehenden Requests entgegennimmt.
 Zum anderen findet man hier auch Persistenz-Konfiguration der Anwendung.
-In der Persistenz-Konfiguration wird festgelegt, wie das Datenbank-Schema einzuspielen ist,
-und welches SQL-Skript für die initiale Befüllung der Datenbank-Tabellen ausgeführt werden soll.
+In der Persistenz-Konfiguration wird festgelegt, wie das Datenbank-Schema einzuspielen ist, und welches SQL-Skript für die initiale Befüllung der Datenbank-Tabellen ausgeführt werden soll.
 
 
 === Java-Klassen und Interfaces
 
 Das Root-Package des Architektur-Durchstich-Moduls 'basis' ist das Verzeichnis 'de.bund.bva.isyfact.antrag'.
-Dieses Root-Package enthält die Main-Klasse der Anwendung,
-sowie zur Abbildung der 3-Schichten-Architektur die drei untergeordneten Packages 'service', 'core' und 'persistence'.
+Dieses Root-Package enthält die Main-Klasse der Anwendung, sowie zur Abbildung der 3-Schichten-Architektur die drei untergeordneten Packages 'service', 'core' und 'persistence'.
 
 ==== Die Klassen im Überblick
-Bevor wir auf eine Beschreibung der Klassen und Interfaces in diesen Packages eingehen,
-möchten wir mit dem nachfolgenden Klassendiagramm die Aufruf-Hierarchie
-in der Architektur-Durchstich-Anwendung skizzieren:
+Bevor wir auf eine Beschreibung der Klassen und Interfaces in diesen Packages eingehen, möchten wir mit dem nachfolgenden Klassendiagramm die Aufruf-Hierarchie in der Architektur-Durchstich-Anwendung skizzieren:
 
 [id="ref-impl-basis-call-hierachy",reftext="{figure-caption} {counter:figures}"]
 .Klassen und Aufrufbeziehungen der Referenzimplementierung 'Architektur-Durchstich'
@@ -192,16 +174,13 @@ service.rest.AntragController
 |====
 
 ==== Klassen der Exception Fassade
-Wie man in der Implementierung der AntragController-Klasse sehen kann,
-gibt es dort keinerlei try-catch-Blöcke und somit keinerlei Fehlerbehandlung.
+Wie man in der Implementierung der AntragController-Klasse sehen kann, gibt es dort keinerlei try-catch-Blöcke und somit keinerlei Fehlerbehandlung.
 
 Die Fehlerbehandlung ist ausgelagert in eine Exception-Fassade.
 Die zugehörigen Fehlerbehandlungs-Klassen (Advice-Klassen) findet man im 'service.rest.advice' Package.
 Aufgabe der Advice-Klassen ist es, fachliche Exceptions in entsprechende ErrorMessage-Objekte umzuwandeln.
 
-Die fachlichen Exceptions, die von diesen Fehlerbehandlungs-Klassen
-(bzw. Advice-Klassen) verarbeitet werden,
-müssen im 'service.rest.exceptions' Package definiert sein.
+Die fachlichen Exceptions, die von diesen Fehlerbehandlungs-Klassen (bzw. Advice-Klassen) verarbeitet werden, müssen im 'service.rest.exceptions' Package definiert sein.
 
 |====
 |*Klasse* | *Beschreibung* | *Hinweis*
@@ -253,12 +232,10 @@ core.impl.AwfAntragSuchen
 
 | de.bund.bva.isyfact.antrag.
 core.daten.AntragBo
-| Anwendungskern und Service-Fassade arbeiten beide mit Business-Objekten
-und tauschen ausschließlich Business-Objekte untereinander aus.
+| Anwendungskern und Service-Fassade arbeiten beide mit Business-Objekten und tauschen ausschließlich Business-Objekte untereinander aus.
 
   Die Persistenzschicht hingegen arbeitet mit Entitäten.
-  Das bedeutet, dass für den Datenaustausch zwischen Persistenzschicht und Anwendungskern
-  Entitäten und Business-Objekte ineinander umgewandelt werden müssen.
+  Das bedeutet, dass für den Datenaustausch zwischen Persistenzschicht und Anwendungskern Entitäten und Business-Objekte ineinander umgewandelt werden müssen.
 | /
 | de.bund.bva.isyfact.antrag.
   core.daten.AntragBoMapper
@@ -285,33 +262,27 @@ persistenc.entity.Antrag
 |====
 
 == Beschreibung der Tests
-Die in der Referenz-Implementierung enthaltenen Test-Szenarien sind
-entgegen üblichen Unit-Tests als Integrationstests ausgelegt.
-Es wird eine Sicht von außen eingenommen, und `lediglich`
-die korrekte Funktionsweise der AntragController-Methoden verifiziert.
+Die in der Referenz-Implementierung enthaltenen Test-Szenarien sind entgegen üblichen Unit-Tests als Integrationstests ausgelegt.
+Es wird eine Sicht von außen eingenommen, und `lediglich` die korrekte Funktionsweise der AntragController-Methoden verifiziert.
 
 Die Integrationstests erfordern keinerlei manuelle Vorbereitung.
 Sie lassen sich automatisiert in einer Build-Pipeline ausführen.
 
 === Testziel
-Neben einer automatisierbaren Qualitätssicherung,
-die im Rahmen eines professionellen SW-Engineering eine Selbstverständlichkeit sein sollte,
-möchten wir darauf hinweisen, dass vor allem die API-Tests noch einen weiteren Vorteil bieten:
+Neben einer automatisierbaren Qualitätssicherung, die im Rahmen eines professionellen SW-Engineering eine Selbstverständlichkeit sein sollte, möchten wir darauf hinweisen, dass vor allem die API-Tests noch einen weiteren Vorteil bieten:
 nämlich dem Entwickler zu illustrieren, wie er die technischen Features eines IsyFact-Bausteins nutzt.
 
 === Testtechnologien
 Zur Durchführung der Integrations-Tests werden entweder Api-Tests oder Spring-Boot-Tests ausgeführt.
 
-Zur Vorbereitung der Api-Tests wird die Anwendung automatisiert hochgefahren und ist über einen
-zufällig initialisierten Port aufrufbar. Im Api-Test selbst wird dann die Vorgehensweise eines
-REST-Clients simuliert:
+Zur Vorbereitung der Api-Tests wird die Anwendung automatisiert hochgefahren und ist über einen zufällig initialisierten Port aufrufbar.
+Im Api-Test selbst wird dann die Vorgehensweise eines REST-Clients simuliert:
 
 * Http-Request erzeugen
 * Http-Request senden
 * Http-Response prüfen
 
-In den Spring-Boot-Tests dagegen werden Resource-Methoden der AntragController-Klasse
-über Java aufgerufen und geprüft.
+In den Spring-Boot-Tests dagegen werden Resource-Methoden der AntragController-Klasse über Java aufgerufen und geprüft.
 
 === Testklassen und Testfälle
 Die nachfolgende Tabelle gibt eine Übersicht über die implementierten Testklassen und deren Testfälle.
@@ -325,5 +296,4 @@ Zur weiteren Information sollte ein Entwickler die Kommentare im Java-Code heran
 |ProduktControllerTest|Antrag mit Name des Antragstellers suchen - Positiv-Test |SpringBoot-Test
 |ProduktControllerTest|Antrag mit ID suchen - Negativ-Test mit AntragNotFoundException|SpringBoot-Test
 |ProduktControllerTest|Antrag mit Name des Antragstellers suchen - Negativ-Test mit leerer Ergebnisliste |SpringBoot-Test
-
 |===
