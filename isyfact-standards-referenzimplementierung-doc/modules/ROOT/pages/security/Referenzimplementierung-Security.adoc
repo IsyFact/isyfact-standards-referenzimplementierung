@@ -18,7 +18,7 @@ Weiterhin nimmt die Dokumentation für die Maven-Module zwei geplante Umbenennun
 Ziel der Referenzimplementierung 'Security' ist es, mit Erweiterung der Referenzimplementierung 'Architektur-Durchstich' die Funktionsweise und Verwendung des IsyFact-Bausteins 'Security' zu demonstrieren.
 
 === Allgemeine Ziele
-Wie bei der Referenz-Implementierung zum Architektur-Durchstich steht das Keept-it-Simple-Prinzip im Vordergrund.
+Wie bei der Referenz-Implementierung zum Architektur-Durchstich steht das Keep-it-Simple-Prinzip im Vordergrund.
 Es wird angestrebt, die Fachlichkeit minimal zu halten.
 
 Darüberhinaus war es das Ziel, die Anzahl der miteinander kommunizierenden Anwendungen, die nötig sind, um die technischen Features des Security-Bausteins zu demonstrieren,
@@ -83,7 +83,7 @@ Keycloak übernimmt für den IsyFact-Security-Baustein die Rolle eines IAM Syste
 Es besitzt eine eigene Datenbank.
 Diese Datenbank enthält (nach Einspielen einer Konfigurations-Datei)
 die für die Referenzimplementierung relevanten User, deren Rollen und die zugehörigen Rechte.
-Für jeden dieser User kann Keycloak Tokens liefern, die nur für eine bestimmte Zeit gültig sind und die genau die Rollen und Rechte dieses Users wiederspiegeln.
+Für jeden dieser User kann Keycloak Tokens liefern, die nur für eine bestimmte Zeit gültig sind und die genau die Rollen und Rechte dieses Users widerspiegeln.
 Diese Tokens sind signiert.
 Somit können die Anwendungen einer Anwendungslandschaft an ihrer Systemgrenze die Tokens prüfen und auswerten.
 
@@ -123,10 +123,10 @@ Diese Properties werden in den Anwendungen verwendet und sind in KeyCloak defini
 Mit den *application.yml* Dateien werden diese Definitionen repliziert.
 
 Weiterhin existiert in beiden Anwendungen eine *rollenrechte.xml* Datei.
-Diese Datei wird vom IsyFactBaustein 'Security' ausgewertet, um beim Zugriff auf geschützte Resourcen zu prüfen, ob ein User mit seinen Rollen, die er mit seinem Acess-Token mitbringt, auch die in der '@Secured' Annotation spezifizierten Rechte hat.
+Diese Datei wird vom IsyFactBaustein 'Security' ausgewertet, um beim Zugriff auf geschützte Resourcen zu prüfen, ob ein User mit seinen Rollen, die er mit seinem Access-Token mitbringt, auch die in der '@Secured' Annotation spezifizierten Rechte hat.
 
 === Java-Klassen und Interfaces
-Der innere Aufbau von Security-Service-Provider und Security-Service-Consumer entspricht der 3-Schichten-Architektur des Architektur-Durchstichs, wobei im Security-Service-Consumer keine Persistenzschicht, sonderen stattdessen eine Adapterklasse zum Aufruf der REST-Schnittstelle des Security-Service-Providers implementiert ist.
+Der innere Aufbau von Security-Service-Provider und Security-Service-Consumer entspricht der 3-Schichten-Architektur des Architektur-Durchstichs, wobei im Security-Service-Consumer keine Persistenzschicht, sondern stattdessen eine Adapterklasse zum Aufruf der REST-Schnittstelle des Security-Service-Providers implementiert ist.
 
 
 In der folgenden tabellarischen Aufstellung gehen wir nicht mehr auf die Klassen und Interfaces ein, die im Architektur-Durchstich bereits beschrieben sind, sondern wir beschreiben nur noch die Klassen, die für den Aspekt 'Security' eine besondere Rolle spielen.
@@ -204,16 +204,15 @@ Die nachfolgenden Tabellen geben eine Übersicht über die implementierten Testk
 Zur weiteren Information sollte ein Entwickler die Kommentare im Java-Code heranziehen und sich über den Keycloak-Client die in Keycloak persistierte Konfiguration ansehen.
 
 ==== Security-Service-Consumer-Tests
-c
 |====
 |*Testklasse*|*Testfall*|*Testtechnologie*
-|AntragControllerApiTest|Antrag aktualiseren|API-Test
+|AntragControllerApiTest|Antrag aktualisieren|API-Test
 |====
 
 ==== Security-Service-Provider-Tests
 |====
 |*Testklasse*|*Testfall*|*Testtechnologie*
-|AntragControllerApiTest|Antrag aktualiseren|API-Test
+|AntragControllerApiTest|Antrag aktualisieren|API-Test
 |AntragControllerApiTest|Antrag mit ID suchen|API-Test
 |AntragControllerApiTest|Antrag mit Name des Antragstellers suchen|API-Test
 |====
