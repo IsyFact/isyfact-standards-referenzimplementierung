@@ -112,8 +112,8 @@ Weitere Details finden sich auch im https://www.keycloak.org/getting-started/get
 
 Zum Stoppen von KeyCloak brechen Sie den laufenden Kommandozeilenprozess mit <Ctrl-C> (Windows) ab. 
 Andernfalls kann es passieren, dass KeyCloak nicht sauber herunterfährt und nicht wieder gestartet werden kann.
-Es wurde festgestellt, dass sporadisch das Starten von KeyCloak Fehlermeldungen auftreten, falls eine VPN-Verbindung aktiv ist.
-Gegenfalls darum bitte die VPN-Verbindung trennen.
+Es wurde festgestellt, dass sporadisch beim Starten von KeyCloak Fehlermeldungen auftreten, falls eine VPN-Verbindung aktiv ist.
+Gegebenenfalls darum bitte die VPN-Verbindung trennen.
 
 == IsyFact-spezifische Konfiguration von KeyCloak
 IsyFact Security erwartet einige Informationen an bestimmten Stellen in Access-Token:

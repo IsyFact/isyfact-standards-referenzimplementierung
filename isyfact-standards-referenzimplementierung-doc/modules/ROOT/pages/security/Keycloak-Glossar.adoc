@@ -46,7 +46,7 @@ Clients can also be entities that just want to request identity information or a
 
 * *Beschreibung (Verwendung in KeyCloak):* +
 Benannte logische Gruppierung von claims (s.d.) in Listen,
-so daß mehrere zusammengehörige claims unter dem scope-Namen zusammengefasst sind.
+so dass mehrere zusammengehörige claims unter dem scope-Namen zusammengefasst sind.
 In OIDC sind bereits einige scopes vorgegeben (z.B. profile, email, address, phone),
 es können auch eigene definiert werden.
 

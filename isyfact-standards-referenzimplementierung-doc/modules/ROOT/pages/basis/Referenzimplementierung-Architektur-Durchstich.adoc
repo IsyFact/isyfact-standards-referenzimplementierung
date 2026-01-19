@@ -168,7 +168,7 @@ service.rest.AntragController
 
   Mit der Annotation '@ResponseStatus' wird definiert, welcher Status-Code nach
   Ausführung der hier aufgerufenen Resource-Methode zurück gegeben wird.
-  Da in Resource- beziehungsweise Controller-Klassen keinerlei Feherlbehandung stattfindet,
+  Da in Resource- beziehungsweise Controller-Klassen keinerlei Fehlerbehandlung stattfindet,
   liefern die Resource-Methoden von Resourcen der Service-Fassade ausschließlich HttpStatus.OK zurück.
 |====
 
@@ -186,7 +186,7 @@ Die fachlichen Exceptions, die von diesen Fehlerbehandlungs-Klassen (beziehungsw
 | de.bund.bva.isyfact.antrag.
 service.rest.advice.ErrorMessage
 | Die von den Advice-Klassen erzeugten ErrorMessages enthalten eine Fehlermeldung
-und den zugehörgen Http-Status-Code
+und den zugehörigen Http-Status-Code
 | /
 | de.bund.bva.isyfact.antrag.
 service.rest.advice.AntragNotFoundAdvice
