@@ -22,7 +22,7 @@
 
     <properties>
         <!-- isyfact.version>0.0.0-SNAPSHOT</isyfact.version -->
-        <isyfact.version>3.0.1</isyfact.version>
+        <isyfact.version>3.2.1</isyfact.version>
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
